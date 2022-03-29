@@ -2,7 +2,6 @@ import mongoose from 'mongoose';
 import {v4 as uuid4} from "uuid";
 import { createHmac } from "crypto";
 
-const { ObjectId } = mongoose.Schema;
 const userSchema = new mongoose.Schema({
     name: String,
     email: {

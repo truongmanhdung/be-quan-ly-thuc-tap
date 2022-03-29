@@ -7,7 +7,6 @@ export const requiredSignin = expressJwt({
     userProperty: "auth"
 });
 
-
 export const isAuth = (req, res, next) => {
     let user = req.profile && req.auth && req.profile._id == req.auth._id;
 
@@ -18,8 +17,8 @@ export const isAuth = (req, res, next) => {
     }
     next();
 }
+
 export const isAdmin = (req, res, next) => {
-    console.log(req.profile.role);
     if (req.profile.role === 0) {
         return res.status(403).json({
             messenger: "Bạn không có quyền truy cập"
@@ -27,6 +26,7 @@ export const isAdmin = (req, res, next) => {
     }
     next();
 }
+
 export const userById = async (req, res, next, id) => {
     try {
         const user = await User.findById(id).exec(); // tìm user dựa trên ID
@@ -39,6 +39,7 @@ export const userById = async (req, res, next, id) => {
     }
 
 }
+
 export const read = (req, res) => {
     const user = req.profile;
     user.hashed_password = undefined;
