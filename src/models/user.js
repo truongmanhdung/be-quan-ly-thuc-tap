@@ -1,52 +1,21 @@
-import mongoose from 'mongoose';
-import {v4 as uuid4} from "uuid";
-import { createHmac } from "crypto";
-
-const userSchema = new mongoose.Schema({
-    name: String,
-    email: {
-        type: String,
+const mongoose = require('mongoose');
+const userSchema = mongoose.Schema({
+    name:{
+        type:String,
         required: true,
-        index: true
     },
-    picture: String,
-    role: {
+    email:{
+        type:String,
+        required: true,
+    },
+    campus:{
         type: String,
-        default: 'subscriber'
+        require
     },
-    history: {
-        type: Array,
-        default: []
-    },
-    address: String,
-    hashed_password: {
-        type: String,
-    },
-    salt: {
-        type: String
-    }
-}, { timestamps: true });
+    createdAt: {
+        type: Date,
+        default: Date.now,
+      },
+})
 
-userSchema.virtual('password')
-    .set(function (password) {
-        this.salt = uuid4();
-        this.hashed_password = this.encryPassword(password);
-    });
-userSchema.methods =  {
-    authenticate(password) {
-        return this.encryPassword(password) == this.hashed_password;
-    },
-    encryPassword(password) {
-        if (!password) return;
-        try {
-            return createHmac('sha256', this.salt)
-                    .update(password)
-                    .digest("hex");
-        } catch (error) {
-            console.log(error);
-        }
-    }
-}
-
-
-export default mongoose.model('User', userSchema);
+module.exports = mongoose.model("User", userSchema);

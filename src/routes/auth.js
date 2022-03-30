@@ -1,11 +1,10 @@
 import express from 'express';
-import {signup,signin, signout, loginGoogle} from "../controllers/AuthController";
+import {getUsers, loginGoogle} from "../controllers/AuthController";
+import {isAuthenticateUser,authorizeRoles} from '../middlewares/CheckAuth'
 
 const router = express.Router();
 
-router.post("/signup",signup);
-router.post("/signin",signin);
-router.get("/signout",signout);
 router.post('/login-google',loginGoogle)
+router.get('/user',getUsers)
 
 module.exports = router;
