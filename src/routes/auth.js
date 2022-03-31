@@ -5,6 +5,6 @@ import {isAuthenticateUser,authorizeRoles} from '../middlewares/CheckAuth'
 const router = express.Router();
 
 router.post('/login-google',loginGoogle)
-router.get('/user',getManagers)
+router.get('/manager',getManagers)
 
 module.exports = router;
