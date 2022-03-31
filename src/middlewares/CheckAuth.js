@@ -1,4 +1,4 @@
-import User from "../models/User";
+import Manager from "../models/manager";
 
 const { OAuth2Client } = require("google-auth-library");
 const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
@@ -13,13 +13,13 @@ exports.isAuthenticateUser = async (req, res, next) => {
     audience: process.env.GOOGLE_CLIENT_ID,
   });
   const { email } = ticket.getPayload();
-  req.user = User.findOne({ email: email });
+  req.manager = Manager.findOne({ email: email });
   next();
 };
 
 exports.authorizeRoles = (...roles) => {
   return (req, res, next) => {
-    if (!roles.includes(req.user.role)) {
+    if (!roles.includes(req.manager.role)) {
       return res
         .status(403)
         .json({
