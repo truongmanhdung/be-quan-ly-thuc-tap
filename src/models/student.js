@@ -1,37 +1,35 @@
 const mongoose = require('mongoose');
 const studentSchema = mongoose.Schema({
-    listStudent: [
-     {                  
+     
+                     
          id : {
-            type: number
+            type: Number
          },
         studentCode: {
-            type: 'string',
+            type: String,
         },
         name : {
-            type: 'string',
+            type: String,
         },
         email: {
-            type: 'string',
+            type: String,
         },
         phoneNumber : {
-            type: number
+            type: Number
         },
         address : {
-            type: 'string',
+            type: String,
         },
         CV: {
-            type: 'string',
+            type: String,
         },
         internshipIndustry:{
-            type: 'string',
+            type: String,
         },
        
      }
-    ],
-    totalList: {
-        type: number,
-    }
-})
+    
+   
+)
 
 module.exports = mongoose.model("Student", studentSchema);
