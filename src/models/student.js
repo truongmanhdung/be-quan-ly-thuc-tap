@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const {ObjectId} = mongoose.Schema;
 const studentSchema = mongoose.Schema({
     mssv: {
         require: true,
@@ -18,9 +19,18 @@ const studentSchema = mongoose.Schema({
         type: String,
         require: true
     },
-    status: {
-        type: String
+    supplement:{
+        type : String,
+        default: null
     },
+    statusCheck: {
+        type: Number,
+        default: 4
+    },
+    statusStudent: {
+        type:String,
+    }
+    ,
     phoneNumber: {
         type: Number,
         require: true,
@@ -34,11 +44,14 @@ const studentSchema = mongoose.Schema({
         type: String,
         default: null
     },
-    internshipIndustry: {
+    campus_id: {
+        type: ObjectId,
+        ref: 'Cumpus'
+    },
+    reviewer:{
         type: String,
         default: null
-    },
-
+    }
 }
 
 

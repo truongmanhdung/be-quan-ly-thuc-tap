@@ -11,7 +11,7 @@ export const listStudent = async (req, res) => {
     }
     const skipNumber = (perPage - 1) * current
     try {
-      await Student.find({}).skip(skipNumber).limit(current).sort({ 'createdAt': -1 }).exec( (err, doc) => {
+      await Student.find({}).populate('campus_id').skip(skipNumber).limit(current).sort({ 'createdAt': -1 }).exec( (err, doc) => {
         if (err) {
             res.status(400).json(err)
         } else {
@@ -55,9 +55,10 @@ export const readOneStudent = async (req, res) => {
   res.json(student);
 };
 
-export const insertStudent = async (req, res) => {
+export const insertStudent = async (req, res) => {  
   try {
-      const student = await new Student(req.body).save();
+      const student = await Student.insertMany(req.body)
+      
       res.json(student)
       return
   } catch (error) {
