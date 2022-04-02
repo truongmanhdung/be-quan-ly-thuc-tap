@@ -9,8 +9,9 @@ const managerSchema = mongoose.Schema({
         required: true,
     },
     campus:{
-        type: String,
-        require
+        type:mongoose.Schema.ObjectId,
+        ref:"Cumpus",
+        require:true
     },
     createdAt: {
         type: Date,
