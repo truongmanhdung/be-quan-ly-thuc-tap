@@ -26,6 +26,13 @@ export const loginGoogle = async (req, res) => {
   }
 };
 
+//logout
+export const logout = async (req, res) => {
+  res.status(201).json({
+    message: "Logout successfully",
+  });
+};
+
 //getAll
 export const getManagers = async (req, res) => {
   const managers = await Manager.find();
