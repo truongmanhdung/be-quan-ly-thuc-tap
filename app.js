@@ -13,9 +13,8 @@ mongoose.connect(process.env.DATABASE)
 
 // middleware
 app.use(morgan("tiny"));
-app.use(express.json())
+app.use(express.json({limit: '50mb'}))
 app.use(cors())
-
 // Route
 readdirSync('./src/routes').map(route => app.use("/api", require(`./src/routes/${route}`)))
 
