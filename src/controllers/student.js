@@ -1,6 +1,6 @@
 import Student from "../models/student";
 export const listStudent = async (req, res) => {
-  const {limit, page} = req.query
+  const {limit, page } = req.query
   if (page && limit) {
     //getPage
     let perPage = parseInt(page)
@@ -11,11 +11,11 @@ export const listStudent = async (req, res) => {
     }
     const skipNumber = (perPage - 1) * current
     try {
-      await Student.find({}).populate('campus_id').skip(skipNumber).limit(current).sort({ 'createdAt': -1 }).exec( (err, doc) => {
+      await Student.find(req.query).populate('campus_id').populate('campus_id').skip(skipNumber).limit(current).sort({ 'createdAt': -1 }).exec( (err, doc) => {
         if (err) {
             res.status(400).json(err)
         } else {
-            Student.countDocuments({}).exec((count_error, count) => {
+          Student.find(req.query).countDocuments({}).exec((count_error, count) => {
                 if (err) {
                      res.json(count_error);
                      return
