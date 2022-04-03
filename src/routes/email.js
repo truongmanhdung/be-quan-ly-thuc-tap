@@ -1,6 +1,11 @@
-import express from "express";
-import {sendMail} from '../controllers/EmailController'
+const sendMailController = require('../controllers/emailController');
 
-const router = express.Router();
-router.post('/send-email',sendMail)
+const router = require('express').Router();
+
+
+// send mail
+
+router.post("/send-mail", sendMailController.sendMailUser);
+
 module.exports = router;
+
