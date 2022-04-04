@@ -8,4 +8,4 @@ router.post('/login-google',loginGoogle)
 router.get('/manager',getManagers)
 router.get('/logout',logout)
 
-module.exports = router;
+module.exports = router
