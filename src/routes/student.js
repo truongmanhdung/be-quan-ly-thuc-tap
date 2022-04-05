@@ -1,11 +1,13 @@
 import express from 'express';
 const router = express.Router();
 
-import { insertStudent, listStudent, readOneStudent, removeStudent, updateStudent } from '../controllers/student';
+import { insertStudent, listStudent, listStudentAssReviewer, readOneStudent, removeStudent, updateReviewerStudent, updateStudent } from '../controllers/student';
 import student from '../models/student';
 router.get('/student', listStudent );
+router.get('/student/reviewer', listStudentAssReviewer );
 router.get('/student/:id', readOneStudent);
 router.post('/student', insertStudent)
+router.put('/student',updateReviewerStudent)
 router.patch('/student/:id', updateStudent);
 router.delete('/student/:id', removeStudent);
 router.post('/generate-fake-data',() =>{
