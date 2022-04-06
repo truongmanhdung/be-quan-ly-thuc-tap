@@ -1,5 +1,5 @@
 import express from 'express'
-import { createSpecialization, getListSpecialization } from '../controllers/Specialization'
+import { createSpecialization, getListSpecialization } from '../controllers/specialization'
 
 const router = express.Router()
 
