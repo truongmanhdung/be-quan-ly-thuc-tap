@@ -13,7 +13,7 @@ export const listStudent = async (req, res) => {
     }
     const skipNumber = (perPage - 1) * current
     try {
-      await Student.find(req.query).populate('campus_id').populate('campus_id').skip(skipNumber).limit(current).sort({ 'createdAt': -1 }).exec((err, doc) => {
+      await Student.find(req.query).populate('campus_id').populate('campus_id').skip(skipNumber).limit(current).sort({ 'CV': -1 }).exec((err, doc) => {
         if (err) {
           res.status(400).json(err)
         } else {
@@ -76,10 +76,7 @@ export const insertStudent = async (req, res) => {
 
 export const updateReviewerStudent = async (req, res) => {
   const { listIdStudent, email } = req.body
-  console.log(listIdStudent)
   const listIdStudents = listIdStudent.map(id => ObjectId(id))
-  console.log(listIdStudents)
-  console.log(email)
   try {
     Student.updateMany({ _id: { $in: listIdStudents } },
           {

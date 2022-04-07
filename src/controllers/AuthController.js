@@ -19,17 +19,13 @@ export const loginGoogle = async (req, res) => {
   const { email, name, picture } = ticket.getPayload();
   const manager = await Manager.findOne({ email: email ,cumpus:cumpusObjectId});
   const student = await Student.findOne({ email: email ,campus_id:cumpusObjectId})
-  //manager and student 
   if (manager) {
-    res.status(201);
-    res.json({ manager, token, name, picture,isAdmin:true, message: "Đăng nhập thành công" });
-  } 
-  if (student) {
-    res.status(201);
-    res.json({ student, token, name, picture,isStudent:true, message: "Đăng nhập thành công" });
-  } 
-
-  res.json({token:"",message:"Dang nhap that bai"});
+    res.status(200).json({ manager, token, name, picture,isAdmin:true, message: "Đăng nhập thành công" });
+  }else if (student) {
+    res.status(200).json({ student, token, name, picture,isStudent:true, message: "Đăng nhập thành công" });
+  } else {
+    res.status(400).json({token:"",message:"Dang nhap that bai"});
+  }
 };
 
 //logout
