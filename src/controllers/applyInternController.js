@@ -1,31 +1,35 @@
 const Student = require("../models/student");
 export const signUpCVForSupport = async (req, res) => {
-
+  const { address, email, dream, majors, name, phone, CV } = req.body;
   try {
     const filter = { mssv: req.body.user_code };
     const findStudent = await Student.findOne(filter);
     if (!findStudent) {
-      res.status(404).json("Wrong student");
+      const err = {
+        status: false,
+        message: "Mã số sinh viên của bạn không đúng",
+      };
+      res.status(404).send(err);
     }
 
     if (findStudent) {
-      const update = await {
-        address: req.body.address,
-        dream: req.body.dream,
-        email: req.body.email,
-        majors: req.body.majors,
-        name: req.body.name,
-        phoneNumber: req.body.phone,
-        CV: req.body.CV,
-        statusCheck: req.body.statusCheck
+      const update = {
+        address: address,
+        dream: dream,
+        email: email,
+        majors: majors,
+        name: name,
+        phoneNumber: phone,
+        CV: CV,
+        statusCheck: 2,
+        support: 1,
       };
-      const user = await Student.findOneAndUpdate({_id: req.params.id}, update,{new : true} );
+      const user = await Student.findOneAndUpdate(filter, update, {
+        new: true,
+      });
       res.status(200).json(user);
     }
   } catch (error) {
     res.status(500).json(error);
   }
-  
-}
-
-
+};
