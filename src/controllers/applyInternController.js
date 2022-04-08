@@ -1,6 +1,6 @@
 const Student = require("../models/student");
 export const signUpCVForSupport = async (req, res) => {
-  const { address, email, dream, majors, name, phone, CV,support } = req.body;
+  const { address, email, dream, majors, name, phone, CV, support } = req.body;
   try {
     const filter = { mssv: req.body.user_code };
     const findStudent = await Student.findOne(filter);
@@ -22,14 +22,14 @@ export const signUpCVForSupport = async (req, res) => {
         phoneNumber: phone,
         CV: CV,
         statusCheck: 0,
-        support: support
+        support: support,
       };
       const user = await Student.findOneAndUpdate(filter, update, {
         new: true,
       });
-      res.status(200).json(user);
+      res.status(200).send(user);
     }
   } catch (error) {
-    res.status(500).json(error);
+    res.status(500).send(error);
   }
 };

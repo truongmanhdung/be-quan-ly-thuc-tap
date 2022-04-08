@@ -15,6 +15,15 @@ export const reportFormStudent = async (req, res) => {
       res.status(404).send(err);
     }
 
+    if (!findStudent.CV) {
+      const err = {
+        status: false,
+        message: "Vui lòng nộp CV trước khi nộp báo cáo!",
+      };
+      res.status(500).send(err);
+      return;
+    }
+
     const update = {
       attitudePoint: attitudePoint,
       internShipTime: internShipTime,
