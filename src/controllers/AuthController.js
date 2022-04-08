@@ -17,12 +17,10 @@ export const loginGoogle = async (req, res) => {
     audience: process.env.GOOGLE_CLIENT_ID,
   });
   const { email, name, picture } = ticket.getPayload();
-  console.log('email',email)
   const manager = await Manager.findOne({
     email: email,
     campus_id: cumpusObjectId,
   });
-  console.log(manager)
   const student = await Student.findOne({
     email: email,
     campus_id: cumpusObjectId,
