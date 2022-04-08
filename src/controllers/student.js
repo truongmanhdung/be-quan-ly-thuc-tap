@@ -1,6 +1,7 @@
 import Student from "../models/student";
 const ObjectId = require('mongodb').ObjectID;
 
+//listStudent
 export const listStudent = async (req, res) => {
   const { limit, page } = req.query
   if (page && limit) {
@@ -38,6 +39,7 @@ export const listStudent = async (req, res) => {
   }
 };
 
+//updateStudent
 export const updateStudent = async (req, res) => {
   const student = await Student.findOneAndUpdate(
     { id: req.params.id },
@@ -46,6 +48,7 @@ export const updateStudent = async (req, res) => {
   res.json(student);
 };
 
+//removeStudent
 export const removeStudent = async (req, res) => {
   try {
     const student = await Student.findOneAndDelete({ id: req.params.id });
@@ -55,11 +58,13 @@ export const removeStudent = async (req, res) => {
   }
 };
 
+//readOneStudent
 export const readOneStudent = async (req, res) => {
   const student = await Student.findOne({ id: req.params.id }).exec();
   res.json(student);
 };
 
+//insertStudent
 export const insertStudent = async (req, res) => {
   try {
     const student = await Student.insertMany(req.body)
@@ -74,35 +79,61 @@ export const insertStudent = async (req, res) => {
   }
 }
 
+//updateReviewerStudent
 export const updateReviewerStudent = async (req, res) => {
   const { listIdStudent, email } = req.body
   const listIdStudents = listIdStudent.map(id => ObjectId(id))
   try {
     Student.updateMany({ _id: { $in: listIdStudents } },
-          {
-            $set: {
-              reviewer: email
-            }
-          },
-          { multi: true },
+      {
+        $set: {
+          reviewer: email
+        }
+      },
+      { multi: true },
 
-          function(err, records){
-            if (err) {
-                console.error('ERR', err);
-            }
-        })
+      function (err, records) {
+        if (err) {
+          console.error('ERR', err);
+        }
+      })
   } catch (error) {
-      console.log(error)
+    console.log(error)
   }
 }
 
+//listStudentAssReviewer
 export const listStudentAssReviewer = async (req, res) => {
-    const emailReviewer = req.query
-    try {
-      const listStudentAssReviewer = await Student.find({reviewer:emailReviewer})
-      res.status(200).json(listStudentAssReviewer)
-    } catch (error) {
-      res.status(400).json(error)
-    }
-  
+  const {emailReviewer} = req.query
+  try {
+    const listStudentAssReviewer = await Student.find({ reviewer: emailReviewer })
+    res.status(200).json(listStudentAssReviewer)
+  } catch (error) {
+    res.status(400).json(error)
+  }
+
+};
+
+//listStudentReviewForm
+export const listStudentReviewForm = async (req, res) => {
+  const {emailUser} = req.query
+  try {
+    const listStudentReviewForm = await Student.find({ reviewer: emailUser,  form: { $exists: true, $ne: null }})
+    res.status(200).json(listStudentReviewForm)
+  } catch (error) {
+    res.status(400).json(error)
+  }
+
+};
+
+//listStudentReviewCV
+export const listStudentReviewCV = async (req, res) => {
+  const {emailUser} = req.query
+  try {
+    const listStudentReviewCV = await Student.find({ reviewer: emailUser, form: { $exists: true, $ne: null }, report: { $exists: true, $ne: null } })
+    res.status(200).json(listStudentReviewCV)
+  } catch (error) {
+    res.status(400).json(error)
+  }
+
 };
