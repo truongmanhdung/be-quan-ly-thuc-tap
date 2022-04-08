@@ -6,13 +6,13 @@ export const listStudent = async (req, res) => {
   const { limit, page } = req.query
   if (page && limit) {
     //getPage
-    let perPage = parseInt(page)
-    let current = parseInt(limit)
+    let perPage = parseInt(page);
+    let current = parseInt(limit);
     if (perPage < 1 || perPage == undefined || current == undefined) {
       perPage = 1
       current = 9
     }
-    const skipNumber = (perPage - 1) * current
+    const skipNumber = (perPage - 1) * current;
     try {
       await Student.find(req.query).populate('campus_id').populate('campus_id').skip(skipNumber).limit(current).sort({ 'CV': -1 }).exec((err, doc) => {
         if (err) {
@@ -137,3 +137,38 @@ export const listStudentReviewCV = async (req, res) => {
   }
 
 };
+
+//updateStatusStudent
+export const updateStatusStudent = async (req, res) => {
+  const { listIdStudent, email, status } = req.body
+  const listIdStudents = listIdStudent.map(id => ObjectId(id))
+  try {
+    const listUpdateStudent = Student.updateMany({ _id: { $in: listIdStudents } , reviewer:email},
+      {
+        $set: {
+          statusCheck: status
+        }
+      },
+      { multi: true },
+
+      function (err, records) {
+        if (err) {
+          console.error('ERR', err);
+        }
+      })
+      res.status(200).json({listUpdateStudent,message:"update successfully"})
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+//lay danh sach sinh vien co link CV va co statusCheck = 2
+export const listStudentCVStatusSuccess = async (req, res) => {
+  try {
+    const listStudentCVStatusSuccess = await Student.find({CV: { $exists: true, $ne: null }, statusCheck:2 })
+    res.status(200).json(listStudentCVStatusSuccess)
+  } catch (error) {
+    res.status(400).json(error)
+  }
+};
+
