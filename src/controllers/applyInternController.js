@@ -5,11 +5,16 @@ export const signUpCVForSupport = async (req, res) => {
     const filter = { mssv: req.body.user_code };
     const findStudent = await Student.findOne(filter);
     if (!findStudent) {
-      const err = {
-        status: false,
-        message: "Mã số sinh viên của bạn không đúng",
+      const message = {
+        status: true,
+        message: "Mã số sinh viên không đúng. Vui lòng nhập lại",
       };
-      res.status(404).send(err);
+      res.status(500).send(message);
+    }
+
+    if (findStudent.CV) {
+      const message = "Sinh viên đã đăng ký CV";
+      res.status(500).send(message);
     }
 
     if (findStudent) {
