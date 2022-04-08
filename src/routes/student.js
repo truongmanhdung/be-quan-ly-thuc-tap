@@ -1,9 +1,10 @@
 import express from 'express';
 const router = express.Router();
 
-import { insertStudent, listStudent, readOneStudent, removeStudent, updateStudent } from '../controllers/student';
+import { insertStudent, listStudent, readOneStudent, removeStudent, updateMywork, updateStudent } from '../controllers/student';
 import student from '../models/student';
 router.get('/student', listStudent );
+router.put('/student', updateMywork );
 router.get('/student/:id', readOneStudent);
 router.post('/student', insertStudent)
 router.patch('/student/:id', updateStudent);

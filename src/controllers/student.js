@@ -1,37 +1,44 @@
 import Student from "../models/student";
 export const listStudent = async (req, res) => {
-  const {limit, page } = req.query
+  const { limit, page } = req.query;
   if (page && limit) {
     //getPage
-    let perPage = parseInt(page)
-    let current = parseInt(limit)
+    let perPage = parseInt(page);
+    let current = parseInt(limit);
     if (perPage < 1 || perPage == undefined || current == undefined) {
-        perPage = 1
-        current = 9
+      perPage = 1;
+      current = 9;
     }
-    const skipNumber = (perPage - 1) * current
+    const skipNumber = (perPage - 1) * current;
     try {
-      await Student.find(req.query).populate('campus_id').populate('campus_id').skip(skipNumber).limit(current).sort({ 'createdAt': -1 }).exec( (err, doc) => {
-        if (err) {
-            res.status(400).json(err)
-        } else {
-          Student.find(req.query).countDocuments({}).exec((count_error, count) => {
+      await Student.find(req.query)
+        .populate("campus_id")
+        .populate("campus_id")
+        .skip(skipNumber)
+        .limit(current)
+        .sort({ createdAt: -1 })
+        .exec((err, doc) => {
+          if (err) {
+            res.status(400).json(err);
+          } else {
+            Student.find(req.query)
+              .countDocuments({})
+              .exec((count_error, count) => {
                 if (err) {
-                     res.json(count_error);
-                     return
-                }else{
-                 res.status(200).json({
+                  res.json(count_error);
+                  return;
+                } else {
+                  res.status(200).json({
                     total: count,
-                    list: doc
-                })
-                return
-            }
-            })
-        }
-
-    })
-    } catch (error) { 
-      res.status(400).json(error)
+                    list: doc,
+                  });
+                  return;
+                }
+              });
+          }
+        });
+    } catch (error) {
+      res.status(400).json(error);
     }
   }
 };
@@ -55,16 +62,29 @@ export const readOneStudent = async (req, res) => {
   res.json(student);
 };
 
-export const insertStudent = async (req, res) => {  
+export const insertStudent = async (req, res) => {
   try {
-      const student = await Student.insertMany(req.body)
-      
-      res.json(student)
-      return
+    const student = await Student.insertMany(req.body);
+
+    res.json(student);
+    return;
   } catch (error) {
-      res.status(400).json({
-          error: "Create Student failed"
-      })
-      return
+    res.status(400).json({
+      error: "Create Student failed",
+    });
+    return;
   }
-}
+};
+
+export const updateMywork = async (req, res) => {
+  const {listStudent,email} = req.body
+  const listMyWork = await Student.bulkWrite( [
+    { updateMany :
+       {
+        update:listStudent,
+        reviewer:email,
+       }
+    }
+ ] )
+ console.log(listMyWork)
+};
