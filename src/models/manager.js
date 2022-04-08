@@ -8,7 +8,7 @@ const managerSchema = mongoose.Schema({
         type:String,
         required: true,
     },
-    campus:{
+    campus_id:{
         type:mongoose.Schema.ObjectId,
         ref:"Cumpus",
         require:true
