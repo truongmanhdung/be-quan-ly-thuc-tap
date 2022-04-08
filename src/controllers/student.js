@@ -137,3 +137,29 @@ export const listStudentReviewCV = async (req, res) => {
   }
 
 };
+
+//updateStatusStudent
+export const updateStatusStudent = async (req, res) => {
+  const { listIdStudent, email, status } = req.body
+  const listIdStudents = listIdStudent.map(id => ObjectId(id))
+  try {
+    const listUpdateStudent = Student.updateMany({ _id: { $in: listIdStudents } , reviewer:email},
+      {
+        $set: {
+          statusCheck: status
+        }
+      },
+      { multi: true },
+
+      function (err, records) {
+        if (err) {
+          console.error('ERR', err);
+        }
+      })
+      res.status(200).json({listUpdateStudent,message:"update successfully"})
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+
