@@ -1,15 +1,20 @@
 const Student = require("../models/student");
 export const signUpCVForSupport = async (req, res) => {
-  const { address, email, dream, majors, name, phone, CV,support } = req.body;
+  const { address, email, dream, majors, name, phone, CV, support } = req.body;
   try {
     const filter = { mssv: req.body.user_code };
     const findStudent = await Student.findOne(filter);
     if (!findStudent) {
-      const err = {
-        status: false,
-        message: "Mã số sinh viên của bạn không đúng",
+      const message = {
+        status: true,
+        message: "Mã số sinh viên không đúng. Vui lòng nhập lại",
       };
-      res.status(404).send(err);
+      res.status(500).send(message);
+    }
+
+    if (findStudent.CV) {
+      const message = "Sinh viên đã đăng ký CV";
+      res.status(500).send(message);
     }
 
     if (findStudent) {
@@ -22,7 +27,7 @@ export const signUpCVForSupport = async (req, res) => {
         phoneNumber: phone,
         CV: CV,
         statusCheck: 0,
-        support: support
+        support: support,
       };
       const user = await Student.findOneAndUpdate(filter, update, {
         new: true,
