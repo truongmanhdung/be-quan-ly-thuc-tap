@@ -32,9 +32,9 @@ export const signUpCVForSupport = async (req, res) => {
       const user = await Student.findOneAndUpdate(filter, update, {
         new: true,
       });
-      res.status(200).json(user);
+      res.status(200).send(user);
     }
   } catch (error) {
-    res.status(500).json(error);
+    res.status(500).send(error);
   }
 };
