@@ -162,4 +162,13 @@ export const updateStatusStudent = async (req, res) => {
   }
 }
 
+//lay danh sach sinh vien co link CV va co statusCheck = 2
+export const listStudentCVStatusSuccess = async (req, res) => {
+  try {
+    const listStudentCVStatusSuccess = await Student.find({CV: { $exists: true, $ne: null }, statusCheck:2 })
+    res.status(200).json(listStudentCVStatusSuccess)
+  } catch (error) {
+    res.status(400).json(error)
+  }
+};
 
