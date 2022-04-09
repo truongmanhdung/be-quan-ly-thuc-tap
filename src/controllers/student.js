@@ -131,8 +131,6 @@ export const listStudentReviewForm = async (req, res) => {
     const listStudentReviewForm = await Student.find({
       CV:{$ne:null},
       statusCheck:2,
-      form:{$ne:null},
-      report:null
     });
     res.status(200).json(listStudentReviewForm);
   } catch (error) {
@@ -146,7 +144,7 @@ export const listStudentReviewReport = async (req, res) => {
     const listStudentReport = await Student.find({
       CV:{$ne:null},
       form:{$ne:null},
-      report:{$ne:null}
+      statusCheck: 2
     });
     res.status(200).json(listStudentReport);
   } catch (error) {
