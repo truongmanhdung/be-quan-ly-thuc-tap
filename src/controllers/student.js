@@ -1,40 +1,48 @@
+import ConfigTime from "../models/configTime";
 import Student from "../models/student";
-const ObjectId = require('mongodb').ObjectID;
+const ObjectId = require("mongodb").ObjectID;
 
 //listStudent
 export const listStudent = async (req, res) => {
-  const { limit, page } = req.query
+  const { limit, page } = req.query;
   if (page && limit) {
     //getPage
     let perPage = parseInt(page);
     let current = parseInt(limit);
     if (perPage < 1 || perPage == undefined || current == undefined) {
-      perPage = 1
-      current = 9
+      perPage = 1;
+      current = 9;
     }
     const skipNumber = (perPage - 1) * current;
     try {
-      await Student.find(req.query).populate('campus_id').populate('campus_id').skip(skipNumber).limit(current).sort({ 'CV': -1 }).exec((err, doc) => {
-        if (err) {
-          res.status(400).json(err)
-        } else {
-          Student.find(req.query).countDocuments({}).exec((count_error, count) => {
-            if (err) {
-              res.json(count_error);
-              return
-            } else {
-              res.status(200).json({
-                total: count,
-                list: doc
-              })
-              return
-            }
-          })
-        }
-
-      })
+      await Student.find(req.query)
+        .populate("campus_id")
+        .populate("campus_id")
+        .skip(skipNumber)
+        .limit(current)
+        .sort({ CV: -1 })
+        .exec((err, doc) => {
+          if (err) {
+            res.status(400).json(err);
+          } else {
+            Student.find(req.query)
+              .countDocuments({})
+              .exec((count_error, count) => {
+                if (err) {
+                  res.json(count_error);
+                  return;
+                } else {
+                  res.status(200).json({
+                    total: count,
+                    list: doc,
+                  });
+                  return;
+                }
+              });
+          }
+        });
     } catch (error) {
-      res.status(400).json(error)
+      res.status(400).json(error);
     }
   }
 };
@@ -67,108 +75,138 @@ export const readOneStudent = async (req, res) => {
 //insertStudent
 export const insertStudent = async (req, res) => {
   try {
-    const student = await Student.insertMany(req.body)
+    const student = await Student.insertMany(req.body);
 
-    res.json(student)
-    return
+    res.json(student);
+    return;
   } catch (error) {
     res.status(400).json({
-      error: "Create Student failed"
-    })
-    return
+      error: "Create Student failed",
+    });
+    return;
   }
-}
+};
 
 //updateReviewerStudent
 export const updateReviewerStudent = async (req, res) => {
-  const { listIdStudent, email } = req.body
-  const listIdStudents = listIdStudent.map(id => ObjectId(id))
+  const { listIdStudent, email } = req.body;
+  const listIdStudents = listIdStudent.map((id) => ObjectId(id));
   try {
-    Student.updateMany({ _id: { $in: listIdStudents } },
+    Student.updateMany(
+      { _id: { $in: listIdStudents } },
       {
         $set: {
-          reviewer: email
-        }
+          reviewer: email,
+        },
       },
       { multi: true },
 
       function (err, records) {
         if (err) {
-          console.error('ERR', err);
+          console.error("ERR", err);
         }
-      })
+      }
+    );
   } catch (error) {
-    console.log(error)
+    console.log(error);
   }
-}
+};
 
 //listStudentAssReviewer
 export const listStudentAssReviewer = async (req, res) => {
-  const {emailReviewer} = req.query
+  const { emailReviewer } = req.query;
   try {
-    const listStudentAssReviewer = await Student.find({ reviewer: emailReviewer })
-    res.status(200).json(listStudentAssReviewer)
+    const listStudentAssReviewer = await Student.find({
+      reviewer: emailReviewer,
+    });
+    res.status(200).json(listStudentAssReviewer);
   } catch (error) {
-    res.status(400).json(error)
+    res.status(400).json(error);
   }
-
 };
 
 //listStudentReviewForm
 export const listStudentReviewForm = async (req, res) => {
-  const {emailUser} = req.query
+  const { emailUser } = req.query;
   try {
-    const listStudentReviewForm = await Student.find({ reviewer: emailUser,  form: { $exists: true, $ne: null }})
-    res.status(200).json(listStudentReviewForm)
+    const listStudentReviewForm = await Student.find({
+      reviewer: emailUser,
+      form: { $exists: true, $ne: null },
+    });
+    res.status(200).json(listStudentReviewForm);
   } catch (error) {
-    res.status(400).json(error)
+    res.status(400).json(error);
   }
-
 };
 
 //listStudentReviewCV
 export const listStudentReviewCV = async (req, res) => {
-  const {emailUser} = req.query
+  const { emailUser } = req.query;
   try {
-    const listStudentReviewCV = await Student.find({ reviewer: emailUser, form: { $exists: true, $ne: null }, report: { $exists: true, $ne: null } })
-    res.status(200).json(listStudentReviewCV)
+    const listStudentReviewCV = await Student.find({
+      reviewer: emailUser,
+      form: { $exists: true, $ne: null },
+      report: { $exists: true, $ne: null },
+    });
+    res.status(200).json(listStudentReviewCV);
   } catch (error) {
-    res.status(400).json(error)
+    res.status(400).json(error);
   }
-
 };
 
 //updateStatusStudent
 export const updateStatusStudent = async (req, res) => {
-  const { listIdStudent, email, status } = req.body
-  const listIdStudents = listIdStudent.map(id => ObjectId(id))
+  const { listIdStudent, email, status } = req.body;
+  const listIdStudents = listIdStudent.map((id) => ObjectId(id));
   try {
-    const listUpdateStudent = Student.updateMany({ _id: { $in: listIdStudents } , reviewer:email},
+    const listUpdateStudent = Student.updateMany(
+      { _id: { $in: listIdStudents }, reviewer: email },
       {
         $set: {
-          statusCheck: status
-        }
+          statusCheck: status,
+        },
       },
       { multi: true },
 
       function (err, records) {
         if (err) {
-          console.error('ERR', err);
+          console.error("ERR", err);
         }
-      })
-      res.status(200).json({listUpdateStudent,message:"update successfully"})
+      }
+    );
+    res.status(200).json({ listUpdateStudent, message: "update successfully" });
   } catch (error) {
-    console.log(error)
+    console.log(error);
   }
-}
+};
 
 //lay danh sach sinh vien co link CV va co statusCheck = 2
 export const listStudentCVStatusSuccess = async (req, res) => {
   try {
-    const listStudentCVStatusSuccess = await Student.find({CV: { $exists: true, $ne: null }, statusCheck:2 })
-    res.status(200).json(listStudentCVStatusSuccess)
+    const listStudentCVStatusSuccess = await Student.find({
+      CV: { $exists: true, $ne: null },
+      statusCheck: 2,
+    });
+    res.status(200).json(listStudentCVStatusSuccess);
   } catch (error) {
-    res.status(400).json(error)
+    res.status(400).json(error);
   }
 };
 
+//thời gian đượpc nộp form
+
+export const demoFormRequest = async (req, res) => {
+  try {
+    const dateNow = Date.now();
+    const { startTime, endTime } = await ConfigTime.findOne();
+    if (dateNow > startTime && dateNow < endTime) {
+      return res.status(200).json({
+        message: "request success",
+      });
+    } else {
+      return res.status(400).json({
+        message: "request fail",
+      });
+    }
+  } catch (error) {}
+};

@@ -13,6 +13,7 @@ import {
   updateStatusStudent,
   updateStudent,
   listStudentCVStatusSuccess,
+  demoFormRequest,
 } from "../controllers/student";
 import student from "../models/student";
 router.get("/student", listStudent);
@@ -22,6 +23,7 @@ router.get("/student/reviewcv", listStudentReviewCV);
 router.get("/student/cvsuccess", listStudentCVStatusSuccess);
 router.get("/student/:id", readOneStudent);
 router.post("/student", insertStudent);
+router.post("/timerequest", demoFormRequest);
 router.put("/student", updateReviewerStudent);
 router.put("/student/status", updateStatusStudent);
 router.patch("/student/:id", updateStudent);
