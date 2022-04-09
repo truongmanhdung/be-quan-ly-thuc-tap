@@ -19,7 +19,7 @@ export const loginGoogle = async (req, res) => {
   const { email, name, picture } = ticket.getPayload();
   const manager = await Manager.findOne({
     email: email,
-    campus: cumpusObjectId,
+    campus_id: cumpusObjectId,
   });
   const student = await Student.findOne({
     email: email,

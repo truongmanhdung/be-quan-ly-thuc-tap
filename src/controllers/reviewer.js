@@ -15,14 +15,12 @@ export const listReviewer = async (req, res) => {
         try {
             await Student.find({
                 ...req.query,
-                statusCheck: 0
             }).populate('campus_id').skip(skipNumber).limit(current).sort({ 'createdAt': -1, 'CV': -1 }).exec((err, doc) => {
                 if (err) {
                     res.status(400).json(err)
                 } else {
                     Student.find({
                         ...req.query,
-                        statusCheck: 0,
                         CV: { $ne: null }
 
                     }).countDocuments({}).exec((count_error, count) => {
