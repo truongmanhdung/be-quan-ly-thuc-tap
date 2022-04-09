@@ -4,7 +4,6 @@ const router = express.Router();
 import {
   insertStudent,
   listStudent,
-  listStudentAssReviewer,
   listStudentReviewCV,
   listStudentReviewForm,
   readOneStudent,
@@ -12,15 +11,14 @@ import {
   updateReviewerStudent,
   updateStatusStudent,
   updateStudent,
-  listStudentCVStatusSuccess,
   demoFormRequest,
+  listStudentReviewReport,
 } from "../controllers/student";
 import student from "../models/student";
 router.get("/student", listStudent);
-router.get("/student/reviewer", listStudentAssReviewer);
 router.get("/student/reviewform", listStudentReviewForm);
 router.get("/student/reviewcv", listStudentReviewCV);
-router.get("/student/cvsuccess", listStudentCVStatusSuccess);
+router.get("/student/reviewreport", listStudentReviewReport);
 router.get("/student/:id", readOneStudent);
 router.post("/student", insertStudent);
 router.post("/timerequest", demoFormRequest);
