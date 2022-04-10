@@ -112,6 +112,30 @@ export const updateReviewerStudent = async (req, res) => {
   }
 };
 
+//updateStatusStudent
+export const updateStatusStudent = async (req, res) => {
+  const { listIdStudent, status } = req.body;
+  const listIdStudents = await listIdStudent.map((id) => ObjectId(id));
+  try {
+    await Student.updateMany(
+      { _id: { $in: listIdStudents } },
+      {
+        $set: {
+          statusCheck: status,
+        },
+      },
+      { multi: true, new: true }
+    );
+    const listStudentChangeStatus = await Student.find({ statusCheck: status });
+    return res.json({
+      listStudentChangeStatus,
+      message: "update status success",
+    });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 //listStudentAssReviewer
 // export const listStudentAssReviewer = async (req, res) => {
 //   const { emailReviewer } = req.query;
@@ -129,8 +153,8 @@ export const updateReviewerStudent = async (req, res) => {
 export const listStudentReviewForm = async (req, res) => {
   try {
     const listStudentReviewForm = await Student.find({
-      CV:{$ne:null},
-      statusCheck:2,
+      CV: { $ne: null },
+      statusCheck: 2,
     });
     res.status(200).json(listStudentReviewForm);
   } catch (error) {
@@ -142,9 +166,9 @@ export const listStudentReviewForm = async (req, res) => {
 export const listStudentReviewReport = async (req, res) => {
   try {
     const listStudentReport = await Student.find({
-      CV:{$ne:null},
-      form:{$ne:null},
-      statusCheck: 2
+      CV: { $ne: null },
+      form: { $ne: null },
+      statusCheck: 2,
     });
     res.status(200).json(listStudentReport);
   } catch (error) {
@@ -156,39 +180,13 @@ export const listStudentReviewReport = async (req, res) => {
 export const listStudentReviewCV = async (req, res) => {
   try {
     const listStudentReviewCV = await Student.find({
-      CV:{$ne:null},
-      form: null ,
-      report: null ,
+      CV: { $ne: null },
+      form: null,
+      report: null,
     });
     res.status(200).json(listStudentReviewCV);
   } catch (error) {
     res.status(400).json(error);
-  }
-};
-
-//updateStatusStudent
-export const updateStatusStudent = async (req, res) => {
-  const { listIdStudent, email, status } = req.body;
-  const listIdStudents = listIdStudent.map((id) => ObjectId(id));
-  try {
-    const listUpdateStudent = Student.updateMany(
-      { _id: { $in: listIdStudents } },
-      {
-        $set: {
-          statusCheck: status,
-        },
-      },
-      { multi: true },
-
-      function (err, records) {
-        if (err) {
-          console.error("ERR", err);
-        }
-      }
-    );
-    res.status(200).json({ listUpdateStudent, message: "update successfully" });
-  } catch (error) {
-    console.log(error);
   }
 };
 
