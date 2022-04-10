@@ -22,8 +22,8 @@ router.get("/student/reviewreport", listStudentReviewReport);
 router.get("/student/:id", readOneStudent);
 router.post("/student", insertStudent);
 router.post("/timerequest", demoFormRequest);
-router.put("/student", updateReviewerStudent);
-router.put("/student/status", updateStatusStudent);
+router.patch("/student", updateReviewerStudent);
+router.patch("/student/status", updateStatusStudent);
 router.patch("/student/:id", updateStudent);
 router.delete("/student/:id", removeStudent);
 router.post("/generate-fake-data", () => {
