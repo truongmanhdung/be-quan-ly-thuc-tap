@@ -20,11 +20,9 @@ exports.isAuthenticateUser = async (req, res, next) => {
 exports.authorizeRoles = (...roles) => {
   return (req, res, next) => {
     if (!roles.includes(req.manager.role)) {
-      return res
-        .status(403)
-        .json({
-          message: `Tài khoản quyền :${req.user.role} không được phép truy cập page quản lý Admin`,
-        });
+      return res.status(403).json({
+        message: `Tài khoản quyền :${req.user.role} không được phép truy cập page quản lý Admin`,
+      });
     }
     next();
   };

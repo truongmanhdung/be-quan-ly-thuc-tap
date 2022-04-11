@@ -67,6 +67,14 @@ const studentSchema = mongoose.Schema({
     type: String,
     default: null,
   },
+  typeRegister: {
+    type: Number,
+    default: null,
+  },
+  numberOfTime: {
+    type: Number,
+    default: 0,
+  },
   //cong ty
   nameCompany: {
     type: String,
@@ -76,7 +84,7 @@ const studentSchema = mongoose.Schema({
     type: String,
     default: null,
   },
-  postCode: {
+  taxCode: {
     type: Number,
     default: null,
   },
@@ -89,7 +97,7 @@ const studentSchema = mongoose.Schema({
     default: null,
   },
   emailEnterprise: {
-    type: Number,
+    type: String,
     default: null,
   },
   // bieu mau
