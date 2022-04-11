@@ -63,6 +63,10 @@ const studentSchema = mongoose.Schema({
     type: String,
     default: null,
   },
+  note: {
+    type: String,
+    default: null,
+  },
   //cong ty
   nameCompany: {
     type: String,
