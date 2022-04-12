@@ -13,6 +13,7 @@ import {
   updateStudent,
   demoFormRequest,
   listStudentReviewReport,
+  updateListData,
 } from "../controllers/student";
 import student from "../models/student";
 router.get("/student", listStudent);
@@ -26,6 +27,7 @@ router.patch("/student", updateReviewerStudent);
 router.patch("/student/status", updateStatusStudent);
 router.patch("/student/:id", updateStudent);
 router.delete("/student/:id", removeStudent);
+router.post('/student/update', updateListData);
 router.post("/generate-fake-data", () => {
   for (let i = 0; i <= 30; i++) {
     student.create({

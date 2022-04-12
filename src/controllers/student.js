@@ -207,3 +207,20 @@ export const demoFormRequest = async (req, res) => {
     }
   } catch (error) {}
 };
+
+
+export const updateListData = async (req, res) => {
+  const { listId } = req.body;
+  // console.log(listId);
+  const listStudent = await Student.find();
+  const a = [];
+  listStudent.forEach((item) => {
+    if (listId.includes(item.mssv)) {
+      a.push(item);
+    }
+  });
+  await Student.deleteMany();
+  const student = await Student.insertMany(a);
+
+  res.json({ student });
+};
