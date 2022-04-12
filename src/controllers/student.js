@@ -90,23 +90,17 @@ export const insertStudent = async (req, res) => {
 //updateReviewerStudent
 export const updateReviewerStudent = async (req, res) => {
   const { listIdStudent, email } = req.body;
-  const listIdStudents = listIdStudent.map((id) => ObjectId(id));
   try {
-    Student.updateMany(
-      { _id: { $in: listIdStudents } },
+   const data =  await Student.updateMany(
+      { _id: { $in: listIdStudent } },
       {
         $set: {
           reviewer: email,
         },
       },
       { multi: true },
-
-      function (err, records) {
-        if (err) {
-          console.error("ERR", err);
-        }
-      }
     );
+    res.status(200).json(data)
   } catch (error) {
     console.log(error);
   }
