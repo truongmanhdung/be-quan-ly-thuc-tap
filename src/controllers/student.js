@@ -77,7 +77,7 @@ export const insertStudent = async (req, res) => {
   try {
     const student = await Student.insertMany(req.body);
 
-    res.json(student);
+    res.status(200).json(student);
     return;
   } catch (error) {
     res.status(400).json({

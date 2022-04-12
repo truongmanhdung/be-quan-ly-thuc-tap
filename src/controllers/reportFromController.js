@@ -8,6 +8,7 @@ export const report = async (req, res) => {
     internShipTime,
     mssv,
     email,
+    report,
     nameCompany,
     resultScore,
   } = req.body;
@@ -21,8 +22,6 @@ export const report = async (req, res) => {
       };
       res.status(404).send(err);
     }
-
-    console.log(findStudent.nameCompany);
 
     const nameCompanyD = findStudent.nameCompany === nameCompany;
     const dateIntern = findStudent.internShipTime === internShipTime;
@@ -78,10 +77,9 @@ export const report = async (req, res) => {
       internshipTime: time,
       nameCompany: nameCompany,
       resultScore: resultScore,
+      report: report,
       statusCheck: 0,
     };
-
-    console.log(update);
 
     if (findStudent.statusCheck === 2 && findStudent.CV && findStudent.form) {
       const content = `
@@ -157,17 +155,15 @@ export const report = async (req, res) => {
       });
       res.status(200).send({ message: "Cập nhật báo cáo thành công" });
     }
-    console.log(update);
   } catch (error) {
-    console.log(error);
     res.status(500).send({
-      message: "Đã xảy ra lỗi! Vui lòng kiểm tra lại thông tin biểu!",
+      message: "Đã xảy ra lỗi! Vui lòng kiểm tra lại thông tin biểu mẫu!",
     });
   }
 };
 
 export const form = async (req, res) => {
-  const { nameCompany, internShipTime, postCode, mssv, email } = req.body;
+  const { nameCompany, internShipTime, form, postCode, mssv, email } = req.body;
   const filter = { mssv: mssv, email: email };
   const findStudent = await Student.findOne(filter);
 
@@ -198,11 +194,11 @@ export const form = async (req, res) => {
     }
 
     const time = moment(internShipTime).format("DD/MM/YYYY");
-    console.log("time: ", time);
     const update = {
       postCode: postCode,
-      internShipTime: time,
+      internshipTime: time,
       nameCompany: nameCompany,
+      form: form,
       statusCheck: 0,
     };
 
