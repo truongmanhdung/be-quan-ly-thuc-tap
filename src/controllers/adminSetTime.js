@@ -10,7 +10,10 @@ export const handleSetTimeRequest = async (req, res) => {
       time: time,
     });
   } else {
-    const time = await ConfigTime.findOneAndUpdate({ typeRegister }, { startTime, endTime });
+    const time = await ConfigTime.findOneAndUpdate(
+      { typeRegister },
+      { startTime, endTime }
+    );
     res.status(200).json({
       message: "update time success",
       time: time,
@@ -18,9 +21,16 @@ export const handleSetTimeRequest = async (req, res) => {
   }
 };
 
-export const getTimeSelect = async (req, res) => {
-
-}
-
-
-
+export const getTimeRequestForm = async (req, res) => {
+  const { formcheck } = req.params;
+  try {
+    const time = await ConfigTime.findOne({ typeRegister: Number(formcheck) });
+    res.status(200).json({
+      time,
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: "get time fail",
+    });
+  }
+};
