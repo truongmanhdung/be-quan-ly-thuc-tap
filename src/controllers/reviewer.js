@@ -14,16 +14,20 @@ export const listReviewer = async (req, res) => {
         const skipNumber = (perPage - 1) * current
         try {
             await Student.find({
-                ...req.query,
-            }).populate('campus_id').skip(skipNumber).limit(current).sort({ 'createdAt': -1, 'CV': -1 }).exec((err, doc) => {
+                CV: { $ne: null },
+                form: null,
+                report: null,
+                statusCheck: {$in: [0,1]}
+              }).populate('campus_id').skip(skipNumber).limit(current).sort({ 'createdAt': -1, 'CV': -1 }).exec((err, doc) => {
                 if (err) {
                     res.status(400).json(err)
                 } else {
                     Student.find({
-                        ...req.query,
-                        CV: { $ne: null }
-
-                    }).countDocuments({}).exec((count_error, count) => {
+                        CV: { $ne: null },
+                        form: null,
+                        report: null,
+                        statusCheck: {$in: [0,1]}
+                      }).countDocuments({}).exec((count_error, count) => {
                         if (err) {
                             res.json(count_error);
                             return
@@ -58,17 +62,16 @@ export const listReviewForm = async (req, res) => {
         const skipNumber = (perPage - 1) * current
         try {
             await Student.find({
-                ...req.query,
-                statusCheck: 0,
-                form: { $ne: null }
-            }).populate('campus_id').skip(skipNumber).limit(current).sort({ 'createdAt': -1, 'CV': -1 }).exec((err, doc) => {
+                CV: { $ne: null },
+                statusCheck: 2,
+              }).populate('campus_id').skip(skipNumber).limit(current).sort({ 'createdAt': -1, 'CV': -1 }).exec((err, doc) => {
                 if (err) {
                     res.status(400).json(err)
                 } else {
                     Student.find({
-                        ...req.query,
-                        statusCheck: 0
-                    }).countDocuments({}).exec((count_error, count) => {
+                        CV: { $ne: null },
+                        statusCheck: 2,
+                      }).countDocuments({}).exec((count_error, count) => {
                         if (err) {
                             res.json(count_error);
                             return
