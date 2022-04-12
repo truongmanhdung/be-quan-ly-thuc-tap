@@ -40,7 +40,7 @@ export const loginGoogle = async (req, res) => {
       token,
       name,
       picture,
-      isStudent: true,
+      isAdmin: false,
       message: "Đăng nhập thành công",
     });
   } else {
