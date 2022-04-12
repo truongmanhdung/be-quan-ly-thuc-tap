@@ -91,16 +91,16 @@ export const insertStudent = async (req, res) => {
 export const updateReviewerStudent = async (req, res) => {
   const { listIdStudent, email } = req.body;
   try {
-   const data =  await Student.updateMany(
+    const data = await Student.updateMany(
       { _id: { $in: listIdStudent } },
       {
         $set: {
           reviewer: email,
         },
       },
-      { multi: true },
+      { multi: true }
     );
-    res.status(200).json(data)
+    res.status(200).json(data);
   } catch (error) {
     console.log(error);
   }
@@ -111,7 +111,7 @@ export const updateStatusStudent = async (req, res) => {
   const { listIdStudent, status } = req.body;
   const listIdStudents = await listIdStudent.map((id) => ObjectId(id));
   try {
-   const data =  await Student.updateMany(
+    const data = await Student.updateMany(
       { _id: { $in: listIdStudents } },
       {
         $set: {
@@ -121,9 +121,10 @@ export const updateStatusStudent = async (req, res) => {
       { multi: true, new: true }
     );
     const listStudentChangeStatus = await Student.find({
-       _id: {$in:listIdStudent},
-      statusCheck: status });
-    return res.json(listStudentChangeStatus);
+      _id: { $in: listIdStudent },
+      statusCheck: status,
+    });
+    return res.json({ listStudentChangeStatus, status });
   } catch (error) {
     console.log(error);
   }
@@ -176,7 +177,7 @@ export const listStudentReviewCV = async (req, res) => {
       CV: { $ne: null },
       form: null,
       report: null,
-      statusCheck: {$in: [0,1]}
+      statusCheck: { $in: [0, 1] },
     });
     res.status(200).json(listStudentReviewCV);
   } catch (error) {
@@ -186,7 +187,7 @@ export const listStudentReviewCV = async (req, res) => {
 
 //thời gian đượpc nộp form
 
-export const demoFormRequest = async (req, res) => {  
+export const demoFormRequest = async (req, res) => {
   try {
     const dateNow = Date.now();
     const { startTime, endTime } = await ConfigTime.findOne();
