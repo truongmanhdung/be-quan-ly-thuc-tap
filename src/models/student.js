@@ -4,6 +4,7 @@ const studentSchema = mongoose.Schema({
   mssv: {
     require: true,
     type: String,
+    lowercase: true,
   },
   name: {
     type: String,
