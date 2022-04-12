@@ -1,11 +1,8 @@
-const {
-  reportFormStudent,
-  reportForm,
-} = require("../controllers/reportFromController");
+const { report, form } = require("../controllers/reportFromController");
 
 const router = require("express").Router();
 
-router.patch("/report-form", reportFormStudent);
-router.patch("/form", reportForm);
+router.patch("/report", report);
+router.patch("/form", form);
 
 module.exports = router;
