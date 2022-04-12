@@ -183,6 +183,7 @@ export const listStudentReviewCV = async (req, res) => {
       CV: { $ne: null },
       form: null,
       report: null,
+      statusCheck: {$in: [0,1]}
     });
     res.status(200).json(listStudentReviewCV);
   } catch (error) {
@@ -192,7 +193,7 @@ export const listStudentReviewCV = async (req, res) => {
 
 //thời gian đượpc nộp form
 
-export const demoFormRequest = async (req, res) => {
+export const demoFormRequest = async (req, res) => {  
   try {
     const dateNow = Date.now();
     const { startTime, endTime } = await ConfigTime.findOne();
