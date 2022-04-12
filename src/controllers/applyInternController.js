@@ -4,8 +4,7 @@ const Student = require("../models/student");
 export const signUpCVForSupport = async (req, res) => {
   const { address, email, dream, majors, name, phone, CV, support } = req.body;
   try {
-    const userCode = req.body.user_code.toUpperCase();
-    const filter = { mssv: userCode, email: email };
+    const filter = { mssv: req.body.user_code, email: email };
     const findStudent = await Student.findOne(filter);
     if (!findStudent) {
       res.status(500).send({
@@ -106,8 +105,7 @@ export const signUpProactive = async (req, res) => {
   } = req.body;
 
   try {
-    const userCode = req.body.user_code.toUpperCase();
-    const filter = { mssv: userCode, email: email };
+    const filter = { mssv: mssv, email: email };
     const findStudent = await Student.findOne(filter);
     console.log(findStudent.statusCheck === 4);
 
