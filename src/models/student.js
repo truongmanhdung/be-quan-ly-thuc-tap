@@ -110,6 +110,10 @@ const studentSchema = mongoose.Schema({
     type: Number,
     default: null,
   },
-});
+  createdAt: {
+    type: Date,
+    default: Date.now,
+  },
+},{timestamps: true});
 
 module.exports = mongoose.model("Student", studentSchema);
