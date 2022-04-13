@@ -68,10 +68,6 @@ const studentSchema = mongoose.Schema({
     type: String,
     default: null,
   },
-  typeRegister: {
-    type: Number,
-    default: null,
-  },
   numberOfTime: {
     type: Number,
     default: 0,

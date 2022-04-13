@@ -13,7 +13,7 @@ exports.isAuthenticateUser = async (req, res, next) => {
     audience: process.env.GOOGLE_CLIENT_ID,
   });
   const { email } = ticket.getPayload();
-  req.manager = Manager.findOne({ email: email });
+  req.manager = await Manager.findOne({ email: email });
   next();
 };
 

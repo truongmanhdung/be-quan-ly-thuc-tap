@@ -1,4 +1,3 @@
-import ConfigTime from "../models/configTime";
 import Student from "../models/student";
 const ObjectId = require("mongodb").ObjectID;
 
@@ -49,11 +48,15 @@ export const listStudent = async (req, res) => {
 
 //updateStudent
 export const updateStudent = async (req, res) => {
-  const student = await Student.findOneAndUpdate(
-    { id: req.params.id },
-    { new: true }
-  );
-  res.json(student);
+  try {
+    const student = await Student.findOneAndUpdate(
+      { id: req.params.id },
+      { new: true }
+    );
+    return res.status(200).json(student);
+  } catch (error) {
+    return res.status(400).json(error);
+  }
 };
 
 //removeStudent
@@ -185,20 +188,3 @@ export const listStudentReviewCV = async (req, res) => {
   }
 };
 
-//thời gian đượpc nộp form
-
-export const demoFormRequest = async (req, res) => {
-  try {
-    const dateNow = Date.now();
-    const { startTime, endTime } = await ConfigTime.findOne();
-    if (dateNow > startTime && dateNow < endTime) {
-      return res.status(200).json({
-        message: "request success",
-      });
-    } else {
-      return res.status(400).json({
-        message: "request fail",
-      });
-    }
-  } catch (error) {}
-};

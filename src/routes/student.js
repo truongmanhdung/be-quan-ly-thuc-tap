@@ -11,7 +11,6 @@ import {
   updateReviewerStudent,
   updateStatusStudent,
   updateStudent,
-  demoFormRequest,
   listStudentReviewReport,
 } from "../controllers/student";
 import student from "../models/student";
@@ -21,7 +20,6 @@ router.get("/student/reviewcv", listStudentReviewCV);
 router.get("/student/reviewreport", listStudentReviewReport);
 router.get("/student/:id", readOneStudent);
 router.post("/student", insertStudent);
-router.post("/timerequest", demoFormRequest);
 router.patch("/student", updateReviewerStudent);
 router.patch("/student/status", updateStatusStudent);
 router.patch("/student/:id", updateStudent);
