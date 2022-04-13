@@ -72,6 +72,7 @@ export const signUpCVForSupport = async (req, res) => {
         text: content,
       };
       sendMail(dataMail);
+      //Ho tro
       await Student.findOneAndUpdate(filter, update, {
         new: true,
       });
@@ -180,6 +181,7 @@ export const signUpProactive = async (req, res) => {
       };
       sendMail(dataMail);
 
+      //Tu tim
       await Student.findOneAndUpdate(filter, newData, {
         new: true,
       });
