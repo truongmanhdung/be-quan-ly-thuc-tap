@@ -159,19 +159,6 @@ export const listStudentReviewForm = async (req, res) => {
   }
 };
 
-//listStudentReport
-export const listStudentReviewReport = async (req, res) => {
-  try {
-    const listStudentReport = await Student.find({
-      CV: { $ne: null },
-      form: { $ne: null },
-      statusCheck: 2,
-    });
-    res.status(200).json(listStudentReport);
-  } catch (error) {
-    res.status(400).json(error);
-  }
-};
 
 //listStudentReviewCV
 export const listStudentReviewCV = async (req, res) => {

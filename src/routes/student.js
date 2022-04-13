@@ -15,9 +15,8 @@ import {
 } from "../controllers/student";
 import student from "../models/student";
 router.get("/student", listStudent);
-router.get("/student/reviewform", listStudentReviewForm);
 router.get("/student/reviewcv", listStudentReviewCV);
-router.get("/student/reviewreport", listStudentReviewReport);
+
 router.get("/student/:id", readOneStudent);
 router.post("/student", insertStudent);
 router.patch("/student", updateReviewerStudent);
