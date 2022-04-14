@@ -16,10 +16,9 @@ export const listStudent = async (req, res) => {
     try {
       await Student.find(req.query)
         .populate("campus_id")
-        .populate("campus_id")
         .skip(skipNumber)
         .limit(current)
-        .sort({ CV: -1 })
+        .sort({ statusCheck: 1, createdAt: -1 })
         .exec((err, doc) => {
           if (err) {
             res.status(400).json(err);
@@ -79,7 +78,6 @@ export const readOneStudent = async (req, res) => {
 export const insertStudent = async (req, res) => {
   try {
     const student = await Student.insertMany(req.body);
-
     res.status(200).json(student);
     return;
   } catch (error) {
@@ -159,19 +157,6 @@ export const listStudentReviewForm = async (req, res) => {
   }
 };
 
-//listStudentReport
-export const listStudentReviewReport = async (req, res) => {
-  try {
-    const listStudentReport = await Student.find({
-      CV: { $ne: null },
-      form: { $ne: null },
-      statusCheck: 2,
-    });
-    res.status(200).json(listStudentReport);
-  } catch (error) {
-    res.status(400).json(error);
-  }
-};
 
 //listStudentReviewCV
 export const listStudentReviewCV = async (req, res) => {
