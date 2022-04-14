@@ -4,6 +4,7 @@ const studentSchema = mongoose.Schema({
   mssv: {
     require: true,
     type: String,
+    lowercase: true,
   },
   name: {
     type: String,
@@ -65,10 +66,6 @@ const studentSchema = mongoose.Schema({
   },
   note: {
     type: String,
-    default: null,
-  },
-  typeRegister: {
-    type: Number,
     default: null,
   },
   numberOfTime: {

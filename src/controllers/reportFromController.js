@@ -150,6 +150,7 @@ export const report = async (req, res) => {
         text: content,
       };
       sendMail(dataMail);
+      //bao cao
       await Student.findOneAndUpdate(filter, update, {
         new: true,
       });
@@ -232,6 +233,7 @@ export const form = async (req, res) => {
       };
       sendMail(dataMail);
 
+      //bieu mau
       await Student.findOneAndUpdate(filter, update, { new: true });
       res.status(200).send({ message: "Cập nhật biểu mẫu thành công" });
     }

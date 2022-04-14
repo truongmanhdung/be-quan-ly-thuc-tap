@@ -1,9 +1,13 @@
 const mongoose = require("mongoose");
 const configTimeSchema = mongoose.Schema(
   {
-    typeRegister: {
+    typeNumber: {
       type: Number,
-      required: true
+      required: true,
+    },
+    typeName: {
+      type: String,
+      default: ''
     },
     startTime: {
       type: Number,
