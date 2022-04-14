@@ -7,7 +7,7 @@ const configTimeSchema = mongoose.Schema(
     },
     typeName: {
       type: String,
-      required: true,
+      default: ''
     },
     startTime: {
       type: Number,

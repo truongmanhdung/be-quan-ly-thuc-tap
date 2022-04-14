@@ -5,7 +5,7 @@ export const checkRequestTime = async (req, res, next) => {
     try {
       const dateNow = Date.now();
       const { startTime, endTime } = await ConfigTime.findOne({
-        typeNumber: typeNumber,
+        typeNumber
       });
       if (dateNow > startTime && dateNow < endTime) {
         next();
