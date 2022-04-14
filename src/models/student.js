@@ -26,7 +26,7 @@ const studentSchema = mongoose.Schema({
   },
   statusCheck: {
     type: Number,
-    default: 4,
+    default: 10,
   },
   statusStudent: {
     type: String,

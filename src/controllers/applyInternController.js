@@ -4,8 +4,8 @@ const Student = require("../models/student");
 export const signUpCVForSupport = async (req, res) => {
   const { address, email, dream, majors, name, phone, CV, support } = req.body;
   try {
-    const filter = { mssv: req.body.user_code, email: email };
-    const findStudent = await Student.findOne(filter);
+
+    const findStudent = await Student.findOne({ mssv: req.body.user_code, email: email });
     if (!findStudent) {
       res.status(500).send({
         message: "Thông tin sinh viên gửi lên không đúng, vui lòng nhập lại!",
