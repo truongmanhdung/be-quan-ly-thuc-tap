@@ -18,7 +18,7 @@ export const listStudent = async (req, res) => {
         .populate("campus_id")
         .skip(skipNumber)
         .limit(current)
-        .sort({ statusCheck: 1, createdAt: -1 })
+        .sort({ statusCheck: 1})
         .exec((err, doc) => {
           if (err) {
             res.status(400).json(err);
