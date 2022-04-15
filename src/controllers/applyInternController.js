@@ -56,7 +56,8 @@ export const signUpCVForSupport = async (req, res) => {
 
     if (findStudent.numberOfTime < 2 && findStudent.statusCheck === 10) {
       const count = findStudent.numberOfTime + 1;
-
+      let isSupport = 0;
+      support === 1 ? (isSupport = 0) : (isSupport = 4);
       const update = {
         address: address,
         dream: dream,
@@ -65,7 +66,7 @@ export const signUpCVForSupport = async (req, res) => {
         name: name,
         phoneNumber: phone,
         CV: CV,
-        statusCheck: 0,
+        statusCheck: isSupport,
         support: support,
         numberOfTime: count,
         nameCompany: unit,
