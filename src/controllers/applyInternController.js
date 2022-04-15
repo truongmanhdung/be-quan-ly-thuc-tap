@@ -66,6 +66,8 @@ export const signUpCVForSupport = async (req, res) => {
         name: name,
         phoneNumber: phone,
         CV: CV,
+        form: null,
+        report: null,
         statusCheck: isSupport,
         support: support,
         numberOfTime: count,

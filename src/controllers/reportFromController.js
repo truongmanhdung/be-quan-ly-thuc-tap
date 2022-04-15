@@ -1,4 +1,3 @@
-import moment from "moment";
 import { sendMail } from "./emailController";
 
 const Student = require("../models/student");
@@ -14,6 +13,7 @@ export const report = async (req, res) => {
   } = req.body;
   const filter = { mssv: mssv, email: email };
   const findStudent = await Student.findOne(filter);
+  console.log(findStudent);
   try {
     if (!findStudent) {
       const err = {
@@ -24,7 +24,6 @@ export const report = async (req, res) => {
     }
 
     const nameCompanyD = findStudent.nameCompany === nameCompany;
-    const dateIntern = findStudent.internShipTime === internShipTime;
 
     if (!nameCompanyD) {
       const err = {
@@ -34,52 +33,17 @@ export const report = async (req, res) => {
       return;
     }
 
-    // if (!dateIntern) {
-    //   const err = {
-    //     message: "Thời gian bắt đầu thực tập không khớp với biểu mẫu!",
-    //   };
-    //   res.status(500).send(err);
-    //   return;
-    // }
-
-    if (
-      (findStudent.statusCheck === 0 &&
-        findStudent.attitudePoint &&
-        findStudent.resultScore) ||
-      (findStudent.statusCheck === 1 &&
-        findStudent.attitudePoint &&
-        findStudent.resultScore)
-    ) {
-      const err = {
-        status: false,
-        message: "Thông tin báo cáo đã tồn tại và đang chờ xác nhận!",
-      };
-      res.status(500).send(err);
-      return;
-    }
-
-    // if (!findStudent.CV && !findStudent.form) {
-    //   const err = {
-    //     status: false,
-    //     message: "CV và biểu mẫu cần được duyệt trước khi nộp báo cáo!",
-    //   };
-    //   res.status(500).send(err);
-    //   return;
-    // }
-
-    const time = moment(internShipTime).format();
-
     const update = {
       attitudePoint: attitudePoint,
-      internshipTime: time,
+      internshipTime: internShipTime,
       nameCompany: nameCompany,
       resultScore: resultScore,
       report: report,
       statusCheck: 0,
     };
-    console.log(update);
-    // if (findStudent.statusCheck === 2 && findStudent.CV && findStudent.form) {
-    const content = `
+    console.log("update", update);
+    if (findStudent.statusCheck === 6) {
+      const content = `
       <div id=":18p" class="ii gt" jslog="20277; u014N:xr6bB; 4:W251bGwsbnVsbCxbXV0."><div id=":18o" class="a3s aiL "><div style="background-color:#eeeeee;padding:15px"><div class="adM">
     </div><div style="margin:auto;background-color:#ffffff;width:500px;padding:10px;border-top:2px solid #e37c41"><div class="adM">
         </div><img src="https://i.imgur.com/q7xM8RP.png" width="120" alt="logo" data-image-whitelisted="" class="CToWUd">
@@ -101,21 +65,21 @@ export const report = async (req, res) => {
       </div></div></div>
       `;
 
-    const dataMail = {
-      mail: email,
-      subject: "Cập nhật báo cáo thực tập thành công",
-      text: content,
-    };
-    sendMail(dataMail);
+      const dataMail = {
+        mail: email,
+        subject: "Nộp báo cáo thực tập thành công",
+        text: content,
+      };
+      sendMail(dataMail);
 
-    await Student.findOneAndUpdate(filter, update, {
-      new: true,
-    });
-    res.status(200).send({ message: "Nộp báo cáo thành công" });
-    // }
+      await Student.findOneAndUpdate(filter, update, {
+        new: true,
+      });
+      res.status(200).send({ message: "Nộp báo cáo thành công" });
+    }
   } catch (error) {
     res.status(500).send({
-      message: "Đã xảy ra lỗi! Vui lòng kiểm tra lại thông tin biểu mẫu!",
+      message: "Đã xảy ra lỗi! Vui lòng kiểm tra lại thông tin biên bản!",
     });
   }
 };
@@ -151,12 +115,13 @@ export const form = async (req, res) => {
     //   return;
     // }
 
-    const time = moment(internshipTime).format();
+    // const time = moment(internshipTime).format();
     const update = {
       taxCode: taxCode,
-      internshipTime: time,
+      internshipTime: internshipTime,
       nameCompany: nameCompany,
       form: form,
+      report: null,
       statusCheck: 0,
     };
     if (findStudent.statusCheck === 2 && findStudent.CV) {
@@ -184,7 +149,7 @@ export const form = async (req, res) => {
 
       const dataMail = {
         mail: email,
-        subject: "Nộp biểu mẫu thực tập thành công",
+        subject: "Nộp biên bản thực tập thành công",
         text: content,
       };
       sendMail(dataMail);
@@ -192,11 +157,10 @@ export const form = async (req, res) => {
       const result = await Student.findOneAndUpdate(filter, update, {
         new: true,
       });
-      console.log("result", result);
-      res.status(200).send({ message: "Nộp báo cáo thành công" });
+      res.status(200).send({ message: "Nộp biên bản thành công" });
     } else {
       res.status(500).send({
-        message: "Trạng thái CV của bạn không đủ điều kiện nộp biểu mẫu!",
+        message: "Trạng thái CV của bạn không đủ điều kiện nộp biên bản!",
       });
     }
   } catch (error) {

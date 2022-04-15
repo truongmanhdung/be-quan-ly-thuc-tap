@@ -2,13 +2,11 @@ import ConfigTime from "../models/configTime";
 
 export const checkRequestTime = async (req, res, next) => {
   const { typeNumber } = req.body;
-  console.log(typeNumber);
   try {
     const dateNow = Date.now();
     const { startTime, endTime } = await ConfigTime.findOne({
       typeNumber,
     });
-    console.log(startTime, endTime);
     if (dateNow > startTime && dateNow < endTime) {
       next();
     } else {
