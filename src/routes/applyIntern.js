@@ -4,6 +4,6 @@ import { checkRequestTime } from "../middlewares/CheckTimeRequest";
 
 const router = express.Router();
 
-router.patch("/intern/support", signUpCVForSupport);
+router.patch("/intern/support", checkRequestTime, signUpCVForSupport);
 
 module.exports = router;
