@@ -13,14 +13,39 @@ import {
 } from "../controllers/student";
 import { authorizeRoles, isAuthenticateUser } from "../middlewares/CheckAuth";
 import student from "../models/student";
-router.get("/student", listStudent);
-router.get("/student/reviewcv", listStudentReviewCV);
-router.get("/student/:id", readOneStudent);
-router.post("/student", authorizeRoles("manager"), insertStudent);
-router.patch("/student", authorizeRoles("manager"), updateReviewerStudent);
-router.patch("/student/status", authorizeRoles("manager"), updateStatusStudent);
-router.patch("/student/:id", authorizeRoles("manager"), updateStudent);
-router.delete("/student/:id", authorizeRoles("manager"), removeStudent);
+router.get("/student", isAuthenticateUser, listStudent);
+router.get("/student/reviewcv", isAuthenticateUser, listStudentReviewCV);
+router.get("/student/:id", isAuthenticateUser, readOneStudent);
+router.post(
+  "/student",
+  isAuthenticateUser,
+  authorizeRoles("manager"),
+  insertStudent
+);
+router.patch(
+  "/student",
+  isAuthenticateUser,
+  authorizeRoles("manager"),
+  updateReviewerStudent
+);
+router.patch(
+  "/student/status",
+  isAuthenticateUser,
+  authorizeRoles("manager"),
+  updateStatusStudent
+);
+router.patch(
+  "/student/:id",
+  isAuthenticateUser,
+  authorizeRoles("manager"),
+  updateStudent
+);
+router.delete(
+  "/student/:id",
+  isAuthenticateUser,
+  authorizeRoles("manager"),
+  removeStudent
+);
 router.post("/generate-fake-data", () => {
   for (let i = 0; i <= 30; i++) {
     student.create({
