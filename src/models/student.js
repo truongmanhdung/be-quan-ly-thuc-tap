@@ -106,6 +106,10 @@ const studentSchema = mongoose.Schema({
     type: Number,
     default: null,
   },
+  update: {
+    type: Boolean,
+    default: false,
+  },
   resultScore: {
     type: Number,
     default: null,
