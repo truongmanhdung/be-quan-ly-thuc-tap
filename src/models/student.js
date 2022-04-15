@@ -10,6 +10,10 @@ const studentSchema = mongoose.Schema({
     type: String,
     require: true,
   },
+  role: {
+    type: String,
+    required: true,
+  },
   course: {
     type: String,
   },
@@ -114,6 +118,6 @@ const studentSchema = mongoose.Schema({
     type: Date,
     default: Date.now,
   },
-},{timestamps: true});
+}, { timestamps: true });
 
 module.exports = mongoose.model("Student", studentSchema);

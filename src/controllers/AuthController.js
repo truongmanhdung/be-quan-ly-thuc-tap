@@ -1,5 +1,6 @@
 import Manager from "../models/manager";
 import Student from "../models/student";
+const jwt = require("jsonwebtoken");
 
 const { OAuth2Client } = require("google-auth-library");
 const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
@@ -26,6 +27,11 @@ export const loginGoogle = async (req, res) => {
     campus_id: cumpusObjectId,
   });
   if (manager) {
+    const accessToken = jwt.sign(
+      { userId: manager._id, campusId: manager.campus_id },
+      process.env.ACCESS_TOKEN_SECRET
+    );
+
     res.status(200).json({
       manager,
       token,
@@ -33,8 +39,14 @@ export const loginGoogle = async (req, res) => {
       picture,
       isAdmin: true,
       message: "Đăng nhập thành công",
+      accessToken: accessToken
     });
   } else if (student) {
+    const accessToken = jwt.sign(
+      { userId: student._id, campusId: student.campus_id },
+      process.env.ACCESS_TOKEN_SECRET
+    );
+
     res.status(200).json({
       student,
       token,
@@ -42,6 +54,7 @@ export const loginGoogle = async (req, res) => {
       picture,
       isAdmin: false,
       message: "Đăng nhập thành công",
+      accessToken:accessToken
     });
   } else {
     res.status(400).json({ token: "", message: "Dang nhap that bai" });
