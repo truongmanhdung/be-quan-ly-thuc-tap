@@ -39,7 +39,7 @@ export const report = async (req, res) => {
       nameCompany: nameCompany,
       resultScore: resultScore,
       report: report,
-      statusCheck: 0,
+      statusCheck: 4,
     };
 
     if (findStudent.statusCheck === 0 && findStudent.form) {
@@ -174,7 +174,7 @@ export const form = async (req, res) => {
       nameCompany: nameCompany,
       form: form,
       report: null,
-      statusCheck: 0,
+      statusCheck: 7,
     };
     if (findStudent.statusCheck === 5) {
       const content = `
