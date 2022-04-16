@@ -45,7 +45,7 @@ export const signUpCVForSupport = async (req, res) => {
     }
 
     if (
-      (findStudent.numberOfTime === 2 && findStudent.statusCheck === 10) ||
+      (findStudent.numberOfTime === 2 && findStudent.statusCheck === 1) ||
       (findStudent.numberOfTime === 2 && findStudent.statusCheck <= 3)
     ) {
       res.status(500).send({
@@ -54,31 +54,76 @@ export const signUpCVForSupport = async (req, res) => {
       });
     }
 
-    if (findStudent.numberOfTime < 2 && findStudent.statusCheck === 10) {
-      const count = findStudent.numberOfTime + 1;
-      let isSupport = 0;
-      support === 1 ? (isSupport = 0) : (isSupport = 4);
-      const update = {
-        address: address,
-        dream: dream,
-        email: email,
-        majors: majors,
-        name: name,
-        phoneNumber: phone,
-        CV: CV,
-        form: null,
-        report: null,
-        statusCheck: isSupport,
-        support: support,
-        numberOfTime: count,
-        nameCompany: unit,
-        addressCompany: unitAddress,
-        taxCode: taxCode,
-        position: position,
-        phoneNumberCompany: numberEnterprise,
-        emailEnterprise: emailEnterprise,
+    const count = findStudent.numberOfTime + 1;
+    let isSupport = 0;
+    support === 1 ? (isSupport = 0) : (isSupport = 4);
+    const update = {
+      address: address,
+      dream: dream,
+      email: email,
+      majors: majors,
+      name: name,
+      phoneNumber: phone,
+      CV: CV,
+      form: null,
+      report: null,
+      statusCheck: isSupport,
+      support: support,
+      numberOfTime: count,
+      nameCompany: unit,
+      addressCompany: unitAddress,
+      taxCode: taxCode,
+      position: position,
+      phoneNumberCompany: numberEnterprise,
+      emailEnterprise: emailEnterprise,
+    };
+
+    if (findStudent.statusCheck === 1 && findStudent.support === 0) {
+      return res
+        .status(500)
+        .send({ message: "Thông tin tự đăng ký người dùng không được sửa" });
+    }
+
+    if (findStudent.statusCheck === 1 && findStudent.support === 1) {
+      const content = `
+      <div id=":18p" class="ii gt" jslog="20277; u014N:xr6bB; 4:W251bGwsbnVsbCxbXV0."><div id=":18o" class="a3s aiL "><div style="background-color:#eeeeee;padding:15px"><div class="adM">
+    </div><div style="margin:auto;background-color:#ffffff;width:500px;padding:10px;border-top:2px solid #e37c41"><div class="adM">
+        </div><img src="https://i.imgur.com/q7xM8RP.png" width="120" alt="logo" data-image-whitelisted="" class="CToWUd">
+        <p>
+            Xin chào <b>${findStudent.name}</b>,<br>
+            Bạn vừa <b style="color:green"><span class="il">đăng</span> <span class="il">ký</span> <span class="il">thành</span> <span class="il">công</span></b> dịch vụ <b><span class="il">Đăng</span> <span class="il">ký</span> hỗ trợ thực tập</b> <br>
+            Trạng thái hiện tại của dịch vụ là <b style="color:orange">Chờ kiểm tra </b><br>
+            Nội dung(nếu có): Lưu ý mỗi sinh viên sẽ giới hạn 2 lần được nộp hỗ trợ tìm nơi thực tập từ phòng quan hệ doanh nghiẹp
+        </p>
+        <hr style="border-top:1px solid">
+        <div style="font-style:italic">
+            <span>Lưu ý: đây là email tự động vui lòng không phản hồi lại email này, mọi thắc mắc xin liên hệ phòng QHDN qua số điện thoại bên dưới</span><div class="yj6qo"></div><div class="adL"><br>
+        </div></div><div class="adL">
+        </div><div class="adL">
+          </div><div class="adL">
+          </div></div><div class="adL">
+      </div></div><div class="adL">
+
+      </div></div></div>
+      `;
+
+      const dataMail = {
+        mail: email,
+        subject: "Thành công sửa thông tin CV",
+        text: content,
       };
-      console.log("update", update);
+      sendMail(dataMail);
+      //Ho tro
+      await Student.findOneAndUpdate(filter, update, {
+        new: true,
+      });
+
+      res
+        .status(200)
+        .send({ message: "Sửa thông tin CV thành công!", support: support });
+    }
+
+    if (findStudent.numberOfTime < 2 && findStudent.statusCheck === 10) {
       const content = `
       <div id=":18p" class="ii gt" jslog="20277; u014N:xr6bB; 4:W251bGwsbnVsbCxbXV0."><div id=":18o" class="a3s aiL "><div style="background-color:#eeeeee;padding:15px"><div class="adM">
     </div><div style="margin:auto;background-color:#ffffff;width:500px;padding:10px;border-top:2px solid #e37c41"><div class="adM">

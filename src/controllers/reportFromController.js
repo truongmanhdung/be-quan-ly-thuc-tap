@@ -41,7 +41,52 @@ export const report = async (req, res) => {
       report: report,
       statusCheck: 0,
     };
-    console.log("update", update);
+
+    if (findStudent.statusCheck === 0 && findStudent.form) {
+      const err = {
+        status: false,
+        message: "Thông tin biên bản đã tồn tại và đang chờ xác nhận!",
+      };
+      res.status(500).send(err);
+      return;
+    }
+
+    if (findStudent.statusCheck === 8) {
+      const content = `
+      <div id=":18p" class="ii gt" jslog="20277; u014N:xr6bB; 4:W251bGwsbnVsbCxbXV0."><div id=":18o" class="a3s aiL "><div style="background-color:#eeeeee;padding:15px"><div class="adM">
+    </div><div style="margin:auto;background-color:#ffffff;width:500px;padding:10px;border-top:2px solid #e37c41"><div class="adM">
+        </div><img src="https://i.imgur.com/q7xM8RP.png" width="120" alt="logo" data-image-whitelisted="" class="CToWUd">
+        <p>
+            Xin chào <b>${findStudent.name}</b>,<br>
+            Bạn vừa <b style="color:green"><span class="il">Sửa</span> <span class="il">thành</span> <span class="il">công</span></b> thông tin <b><span class="il">Báo</span> <span class="il">cáo</span></b> <br>
+            Trạng thái hiện tại của dịch vụ là <b style="color:orange">Chờ kiểm tra </b><br>
+            Nội dung(nếu có): Lưu ý mỗi sinh viên sẽ giới hạn 2 lần được nộp đăng tìm nơi thực tập tới phòng QHDN
+        </p>
+        <hr style="border-top:1px solid">
+        <div style="font-style:italic">
+            <span>Lưu ý: đây là email tự động vui lòng không phản hồi lại email này, mọi thắc mắc xin liên hệ phòng QHDN qua số điện thoại bên dưới</span><div class="yj6qo"></div><div class="adL"><br>
+        </div></div><div class="adL">
+        </div><div class="adL">
+                                                                          </div><div class="adL">
+          </div></div><div class="adL">
+      </div></div><div class="adL">
+
+      </div></div></div>
+      `;
+
+      const dataMail = {
+        mail: email,
+        subject: "Sửa báo cáo thực tập thành công",
+        text: content,
+      };
+      sendMail(dataMail);
+
+      await Student.findOneAndUpdate(filter, update, {
+        new: true,
+      });
+      res.status(200).send({ message: "Sửa báo cáo thành công" });
+    }
+
     if (findStudent.statusCheck === 6) {
       const content = `
       <div id=":18p" class="ii gt" jslog="20277; u014N:xr6bB; 4:W251bGwsbnVsbCxbXV0."><div id=":18o" class="a3s aiL "><div style="background-color:#eeeeee;padding:15px"><div class="adM">
@@ -106,14 +151,21 @@ export const form = async (req, res) => {
       return;
     }
 
-    // if (findStudent.statusCheck < 2 && findStudent.form) {
-    //   const err = {
-    //     status: false,
-    //     message: "Thông tin biên bản đã tồn tại và đang chờ xác nhận!",
-    //   };
-    //   res.status(500).send(err);
-    //   return;
-    // }
+    if (findStudent.statusCheck === 3) {
+      const err = {
+        message: "CV của bạn trượt không đủ điều kiện nộp báo cáo!",
+      };
+      res.status(500).send(err);
+      return;
+    }
+
+    if (findStudent.statusCheck === 0 && findStudent.form) {
+      const err = {
+        message: "Biên bản của bạn đang được kiểm tra !",
+      };
+      res.status(500).send(err);
+      return;
+    }
 
     // const time = moment(internshipTime).format();
     const update = {
@@ -124,7 +176,42 @@ export const form = async (req, res) => {
       report: null,
       statusCheck: 0,
     };
-    if (findStudent.statusCheck === 2 && findStudent.CV) {
+    if (findStudent.statusCheck === 5) {
+      const content = `
+      <div id=":18p" class="ii gt" jslog="20277; u014N:xr6bB; 4:W251bGwsbnVsbCxbXV0."><div id=":18o" class="a3s aiL "><div style="background-color:#eeeeee;padding:15px"><div class="adM">
+    </div><div style="margin:auto;background-color:#ffffff;width:500px;padding:10px;border-top:2px solid #e37c41"><div class="adM">
+        </div><img src="https://i.imgur.com/q7xM8RP.png" width="120" alt="logo" data-image-whitelisted="" class="CToWUd">
+        <p>
+            Xin chào <b>${findStudent.name}</b>,<br>
+            Bạn vừa <b style="color:green"><span class="il">sửa</span><span class="il">thành</span> <span class="il">công</span></b> thông tin <b><span class="il">Biểu</span> <span class="il">mẫu</span></b> <br>
+            Trạng thái hiện tại của dịch vụ là <b style="color:orange">Chờ kiểm tra </b><br>
+            Nội dung(nếu có): Lưu ý mỗi sinh viên sẽ giới hạn 2 lần được nộp đăng tìm nơi thực tập tới phòng QHDN
+        </p>
+        <hr style="border-top:1px solid">
+        <div style="font-style:italic">
+            <span>Lưu ý: đây là email tự động vui lòng không phản hồi lại email này, mọi thắc mắc xin liên hệ phòng QHDN qua số điện thoại bên dưới</span><div class="yj6qo"></div><div class="adL"><br>
+        </div></div><div class="adL">
+        </div><div class="adL">
+                                                                          </div><div class="adL">
+          </div></div><div class="adL">
+      </div></div><div class="adL">
+
+      </div></div></div>
+      `;
+
+      const dataMail = {
+        mail: email,
+        subject: "Sửa biên bản thực tập thành công",
+        text: content,
+      };
+      sendMail(dataMail);
+
+      const result = await Student.findOneAndUpdate(filter, update, {
+        new: true,
+      });
+      res.status(200).send({ message: "Sửa biên bản thành công" });
+    }
+    if (findStudent.statusCheck === 2) {
       const content = `
       <div id=":18p" class="ii gt" jslog="20277; u014N:xr6bB; 4:W251bGwsbnVsbCxbXV0."><div id=":18o" class="a3s aiL "><div style="background-color:#eeeeee;padding:15px"><div class="adM">
     </div><div style="margin:auto;background-color:#ffffff;width:500px;padding:10px;border-top:2px solid #e37c41"><div class="adM">
@@ -158,10 +245,6 @@ export const form = async (req, res) => {
         new: true,
       });
       res.status(200).send({ message: "Nộp biên bản thành công" });
-    } else {
-      res.status(500).send({
-        message: "Trạng thái CV của bạn không đủ điều kiện nộp biên bản!",
-      });
     }
   } catch (error) {
     res
