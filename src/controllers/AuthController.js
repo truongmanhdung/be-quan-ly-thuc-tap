@@ -8,8 +8,7 @@ const ObjectId = require("mongodb").ObjectID;
 
 //login
 export const loginGoogle = async (req, res) => {
-  const { token, cumpusId } = req.body;
-  const cumpusObjectId = ObjectId(cumpusId);
+  const { token, cumpusId: campusId } = req.body;
   if (!token) {
     return res.status(401).json({ message: "Vui lòng đăng nhập tài khoản" });
   }
@@ -20,12 +19,13 @@ export const loginGoogle = async (req, res) => {
   const { email, name, picture } = ticket.getPayload();
   const manager = await Manager.findOne({
     email: email,
-    campus_id: cumpusObjectId,
+    campus_id: campusId,
   });
   const student = await Student.findOne({
     email: email,
-    campus_id: cumpusObjectId,
+    campus_id: campusId,
   });
+
   if (manager) {
     const accessToken = jwt.sign(
       { userId: manager._id, campusId: manager.campus_id },

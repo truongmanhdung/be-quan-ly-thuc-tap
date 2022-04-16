@@ -13,9 +13,9 @@ import {
 } from "../controllers/student";
 import { authorizeRoles, isAuthenticateUser } from "../middlewares/CheckAuth";
 import student from "../models/student";
-router.get("/student",isAuthenticateUser, listStudent);
-router.get("/student/reviewcv",isAuthenticateUser, listStudentReviewCV);
-router.get("/student/:id",isAuthenticateUser, readOneStudent);
+router.get("/student", isAuthenticateUser, listStudent);
+router.get("/student/reviewcv", isAuthenticateUser, listStudentReviewCV);
+router.get("/student/:id", isAuthenticateUser, readOneStudent);
 router.post(
   "/student",
   isAuthenticateUser,
