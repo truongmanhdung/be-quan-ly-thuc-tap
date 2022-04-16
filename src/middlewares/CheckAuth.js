@@ -1,27 +1,47 @@
 import Manager from "../models/manager";
+import Student from "../models/student"
+const jwt = require('jsonwebtoken');
 
 const { OAuth2Client } = require("google-auth-library");
 const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 
-exports.isAuthenticateUser = async (req, res, next) => {
-  const { token } = req.body;
-  if (!token) {
+export const isAuthenticateUser = async (req, res, next) => {
+  const authHeader = req.header('Authorization');
+  const accessToken = authHeader && authHeader.split(' ')[1]
+  if (!accessToken) {
     return res.status(401).json({ message: "Vui lòng đăng nhập tài khoản" });
   }
-  const ticket = await client.verifyIdToken({
-    idToken: token,
-    audience: process.env.GOOGLE_CLIENT_ID,
-  });
-  const { email } = ticket.getPayload();
-  req.manager = await Manager.findOne({ email: email });
-  next();
+
+  try {
+    const decoded = jwt.verify(accessToken, process.env.ACCESS_TOKEN_SECRET)
+    const manager = await Manager.findOne({
+      _id: decoded.userId,
+      campus_id: decoded.campusId,
+    });
+    const student = await Student.findOne({
+      _id: decoded.userId,
+      campus_id: decoded.campusId,
+    });
+
+    if (manager) {
+      req.role = manager.role
+      next();
+    }
+    if (student) {
+      req.role = "student"
+      next();
+    }
+
+  } catch (error) {
+    res.status(401).json(error)
+  }
 };
 
-exports.authorizeRoles = (...roles) => {
+export const authorizeRoles = (roles) => {
   return (req, res, next) => {
-    if (!roles.includes(req.manager.role)) {
+    if (!(roles === req.role)) {
       return res.status(403).json({
-        message: `Tài khoản quyền :${req.user.role} không được phép truy cập page quản lý Admin`,
+        message: `Tài khoản quyền :${req.role} không được phép truy cập quyền giáo viên`,
       });
     }
     next();
