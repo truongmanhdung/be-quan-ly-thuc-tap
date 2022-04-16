@@ -6,6 +6,6 @@ const router = express.Router()
 
 router.post('/settime', isAuthenticateUser, authorizeRoles('manager'), handleSetTimeRequest)
 router.get('/settime', isAuthenticateUser, authorizeRoles('manager'), getListTypeSetTime)
-router.get('/settime/:type', isAuthenticateUser, authorizeRoles('manager'), getOneTypeSetTime)
+router.get('/settime/:type', isAuthenticateUser, getOneTypeSetTime)
 
 module.exports = router;
