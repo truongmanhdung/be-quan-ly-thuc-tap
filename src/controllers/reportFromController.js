@@ -174,7 +174,7 @@ export const form = async (req, res) => {
       nameCompany: nameCompany,
       form: form,
       report: null,
-      statusCheck: 7,
+      statusCheck: 4,
     };
     if (findStudent.statusCheck === 5) {
       const content = `
