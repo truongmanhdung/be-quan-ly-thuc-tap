@@ -1,5 +1,8 @@
 const { report, form } = require("../controllers/reportFromController");
-const { isAuthenticateUser, authorizeRoles } = require("../middlewares/CheckAuth");
+const {
+  isAuthenticateUser,
+  authorizeRoles,
+} = require("../middlewares/CheckAuth");
 const { checkRequestTime } = require("../middlewares/CheckTimeRequest");
 const router = require("express").Router();
 

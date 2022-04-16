@@ -70,7 +70,7 @@ export const removeStudent = async (req, res) => {
 
 //readOneStudent
 export const readOneStudent = async (req, res) => {
-  const student = await Student.findOne({ id: req.params.id }).exec();
+  const student = await Student.findOne({ mssv: req.params.id }).exec();
   res.json(student);
 };
 
@@ -87,7 +87,7 @@ export const insertStudent = async (req, res) => {
         {},
         {
           $set: {
-            update: false,
+            checkUpdate: false,
           },
         },
         { multi: true }
@@ -96,11 +96,13 @@ export const insertStudent = async (req, res) => {
         { mssv: { $in: listNew } },
         {
           $set: {
-            update: true,
+            checkUpdate: true,
           },
         },
         { multi: true }
       );
+      
+
       await Student.deleteMany({ update: false });
       res.status(200).json(data);
     } else {
