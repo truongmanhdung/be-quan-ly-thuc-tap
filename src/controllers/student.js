@@ -77,9 +77,38 @@ export const readOneStudent = async (req, res) => {
 //insertStudent
 export const insertStudent = async (req, res) => {
   try {
-    const student = await Student.insertMany(req.body);
-    res.status(200).json(student);
-    return;
+    const checkStudent = await Student.find({}).limit(3);
+    if (checkStudent.length > 0) {
+      const listNew = [];
+      req.body.forEach((item) => {
+        listNew.push(item.mssv);
+      });
+      await Student.updateMany(
+        {},
+        {
+          $set: {
+            checkUpdate: false,
+          },
+        },
+        { multi: true }
+      );
+      const data = await Student.updateMany(
+        { mssv: { $in: listNew } },
+        {
+          $set: {
+            checkUpdate: true,
+          },
+        },
+        { multi: true }
+      );
+      
+
+      await Student.deleteMany({ update: false });
+      res.status(200).json(data);
+    } else {
+      const students = await Student.insertMany(req.body);
+      res.status(200).json(students);
+    }
   } catch (error) {
     res.status(400).json({
       error: "Create Student failed",
