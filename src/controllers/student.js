@@ -92,7 +92,7 @@ export const insertStudent = async (req, res) => {
         },
         { multi: true }
       );
-      const data = await Student.updateMany(
+      await Student.updateMany(
         { mssv: { $in: listNew } },
         {
           $set: {
@@ -101,10 +101,16 @@ export const insertStudent = async (req, res) => {
         },
         { multi: true }
       );
-      
 
-      await Student.deleteMany({ update: false });
-      res.status(200).json(data);
+      await Student.insertMany(req.body);
+
+      await Student.deleteMany({ mssv: { $in: listNew }, checkUpdate: false });
+
+      const studentList = await Student.find({}).populate("campus_id");
+
+      res.status(200).json({
+        list: studentList
+      });
     } else {
       const students = await Student.insertMany(req.body);
       res.status(200).json(students);
