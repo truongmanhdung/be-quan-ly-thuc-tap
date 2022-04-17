@@ -101,7 +101,7 @@ export const insertStudent = async (req, res) => {
         },
         { multi: true }
       );
-      
+
 
       await Student.deleteMany({ update: false });
       res.status(200).json(data);
@@ -142,7 +142,9 @@ export const updateStatusStudent = async (req, res) => {
   const listIdStudents = await listIdStudent.map((id) => ObjectId(id));
   try {
     const data = await Student.updateMany(
-      { _id: { $in: listIdStudents } },
+      {
+        _id: { $in: listIdStudents }
+      },
       {
         $set: {
           statusCheck: status,

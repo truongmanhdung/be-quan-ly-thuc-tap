@@ -13,7 +13,7 @@ export const report = async (req, res) => {
   } = req.body;
   const filter = { mssv: mssv, email: email };
   const findStudent = await Student.findOne(filter);
-  console.log(findStudent);
+
   try {
     if (!findStudent) {
       const err = {
@@ -39,7 +39,7 @@ export const report = async (req, res) => {
       nameCompany: nameCompany,
       resultScore: resultScore,
       report: report,
-      statusCheck: 4,
+      statusCheck: 7,
     };
 
     if (findStudent.statusCheck === 0 && findStudent.form) {
