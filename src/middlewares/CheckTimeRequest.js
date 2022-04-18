@@ -11,7 +11,7 @@ export const checkRequestTime = async (req, res, next) => {
       next();
     } else {
       return res.status(400).json({
-        message: "request fail",
+        message: "Hết thời gian nộp form",
       });
     }
   } catch (error) {
