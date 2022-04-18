@@ -14,6 +14,7 @@ export const isAuthenticateUser = async (req, res, next) => {
 
   try {
     const decoded = jwt.verify(accessToken, process.env.ACCESS_TOKEN_SECRET)
+    console.log(decoded);
     const manager = await Manager.findOne({
       _id: decoded.userId,
       campus_id: decoded.campusId,
