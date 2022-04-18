@@ -23,7 +23,11 @@ const studentSchema = mongoose.Schema(
     },
     checkUpdate: {
       type: Boolean,
-      default: false
+      default: true,
+    },
+    checkMulti: {
+      type: Boolean,
+      default: false,
     },
     supplement: {
       type: String,

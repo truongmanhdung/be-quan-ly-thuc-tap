@@ -80,11 +80,48 @@ export const insertStudent = async (req, res) => {
     const checkStudent = await Student.find({}).limit(3);
     if (checkStudent.length > 0) {
       const listNew = [];
-      req.body.forEach((item) => {
+      await req.body.forEach((item) => {
         listNew.push(item.mssv);
       });
-      await Student.updateMany(
+
+      const lan1 = await Student.updateMany(
         {},
+        {
+          $set: {
+            checkUpdate: false,
+            checkMulti: false,
+          },
+        },
+        { multi: true }
+      );
+      // console.log("lan1", lan1);
+      const lan2 = await Student.updateMany(
+        { mssv: { $in: listNew } },
+        {
+          $set: {
+            checkUpdate: true,
+            checkMulti: true,
+          },
+        },
+        { multi: true }
+      );
+      // console.log("lan2", lan2);
+
+      const lan3 = await Student.updateMany(
+        { checkUpdate: false },
+        {
+          $set: {
+            statusCheck: 3,
+            checkUpdate: true,
+          },
+        },
+        { multi: true }
+      );
+      // console.log("lan3", lan3);
+      await Student.insertMany(req.body);
+
+      const c = await Student.updateMany(
+        { $and: [{ mssv: { $in: listNew } }, { checkMulti: false }] },
         {
           $set: {
             checkUpdate: false,
@@ -92,22 +129,60 @@ export const insertStudent = async (req, res) => {
         },
         { multi: true }
       );
-      const data = await Student.updateMany(
-        { mssv: { $in: listNew } },
-        {
-          $set: {
-            checkUpdate: true,
-          },
-        },
-        { multi: true }
-      );
+      // console.log("áddsa", c);
+      const a = await Student.deleteMany({ checkUpdate: false });
+      // console.log(a);
 
-
-      await Student.deleteMany({ update: false });
-      res.status(200).json(data);
+      await Student.find(req.query)
+        .populate("campus_id")
+        .limit(20)
+        .sort({ statusCheck: 1 })
+        .exec((err, doc) => {
+          if (err) {
+            res.status(400).json(err);
+          } else {
+            Student.find(req.query)
+              .countDocuments({})
+              .exec((count_error, count) => {
+                if (err) {
+                  res.json(count_error);
+                  return;
+                } else {
+                  res.status(200).json({
+                    total: count,
+                    list: doc,
+                  });
+                  return;
+                }
+              });
+          }
+        });
     } else {
-      const students = await Student.insertMany(req.body);
-      res.status(200).json(students);
+      await Student.insertMany(req.body);
+      await Student.find(req.query)
+        .populate("campus_id")
+        .limit(20)
+        .sort({ statusCheck: 1 })
+        .exec((err, doc) => {
+          if (err) {
+            res.status(400).json(err);
+          } else {
+            Student.find(req.query)
+              .countDocuments({})
+              .exec((count_error, count) => {
+                if (err) {
+                  res.json(count_error);
+                  return;
+                } else {
+                  res.status(200).json({
+                    total: count,
+                    list: doc,
+                  });
+                  return;
+                }
+              });
+          }
+        });
     }
   } catch (error) {
     res.status(400).json({
@@ -143,7 +218,7 @@ export const updateStatusStudent = async (req, res) => {
   try {
     const data = await Student.updateMany(
       {
-        _id: { $in: listIdStudents }
+        _id: { $in: listIdStudents },
       },
       {
         $set: {
