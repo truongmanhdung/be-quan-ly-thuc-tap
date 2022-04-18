@@ -4,44 +4,54 @@ const ObjectId = require("mongodb").ObjectID;
 //listStudent
 export const listStudent = async (req, res) => {
   const { limit, page } = req.query;
-  if (page && limit) {
-    //getPage
-    let perPage = parseInt(page);
-    let current = parseInt(limit);
-    if (perPage < 1 || perPage == undefined || current == undefined) {
-      perPage = 1;
-      current = 9;
+  try {
+    if (page && limit) {
+      //getPage
+      let perPage = parseInt(page);
+      let current = parseInt(limit);
+      if (perPage < 1 || perPage == undefined || current == undefined) {
+        perPage = 1;
+        current = 9;
+      }
+      const skipNumber = (perPage - 1) * current;
+      try {
+        await Student.find(req.query)
+          .populate("campus_id")
+          .skip(skipNumber)
+          .limit(current)
+          .sort({ statusCheck: 1 })
+          .exec((err, doc) => {
+            if (err) {
+              res.status(400).json(err);
+            } else {
+              Student.find(req.query)
+                .countDocuments({})
+                .exec((count_error, count) => {
+                  if (err) {
+                    res.json(count_error);
+                    return;
+                  } else {
+                    res.status(200).json({
+                      total: count,
+                      list: doc,
+                    });
+                    return;
+                  }
+                });
+            }
+          });
+      } catch (error) {
+        res.status(400).json(error);
+      }
+    }else{
+      const listStudent =  await Student.find({});
+      res.status(200).json({
+        total: listStudent.length,
+        list: listStudent,
+      });
     }
-    const skipNumber = (perPage - 1) * current;
-    try {
-      await Student.find(req.query)
-        .populate("campus_id")
-        .skip(skipNumber)
-        .limit(current)
-        .sort({ statusCheck: 1 })
-        .exec((err, doc) => {
-          if (err) {
-            res.status(400).json(err);
-          } else {
-            Student.find(req.query)
-              .countDocuments({})
-              .exec((count_error, count) => {
-                if (err) {
-                  res.json(count_error);
-                  return;
-                } else {
-                  res.status(200).json({
-                    total: count,
-                    list: doc,
-                  });
-                  return;
-                }
-              });
-          }
-        });
-    } catch (error) {
-      res.status(400).json(error);
-    }
+  } catch (error) {
+    res.status(500).json(error);
   }
 };
 
