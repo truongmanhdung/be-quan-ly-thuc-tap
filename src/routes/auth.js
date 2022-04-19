@@ -6,6 +6,6 @@ const router = express.Router();
 
 router.post('/login-google', loginGoogle)
 router.get('/manager', isAuthenticateUser, authorizeRoles('manager'), getManagers)
-router.get('/logout', isAuthenticateUser, logout)
+router.get('/logout', logout)
 
 module.exports = router
