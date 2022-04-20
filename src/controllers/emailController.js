@@ -1,21 +1,20 @@
 const nodemailer = require("nodemailer");
-
+const transporter = nodemailer.createTransport({
+  // config mail server
+  host: "smtp.gmail.com",
+  port: 465,
+  secure: true,
+  auth: {
+    user: "hantvnodemailer@gmail.com", //Tài khoản gmail vừa tạo
+    pass: "15062001b", //Mật khẩu tài khoản gmail vừa tạo
+  },
+  tls: {
+    rejectUnauthorized: false,
+  },
+});
 export const sendMailUser = async (req, res) => {
   try {
     //Tiến hành gửi mail, nếu có gì đó bạn có thể xử lý trước khi gửi mail
-    const transporter = nodemailer.createTransport({
-      // config mail server
-      host: "smtp.gmail.com",
-      port: 465,
-      secure: true,
-      auth: {
-        user: "hantvnodemailer@gmail.com", //Tài khoản gmail vừa tạo
-        pass: "15062001b", //Mật khẩu tài khoản gmail vừa tạo
-      },
-      tls: {
-        rejectUnauthorized: false,
-      },
-    });
     let content = "";
     content += `
                   <div style="padding: 10px; background-color: #003375">
@@ -50,20 +49,6 @@ export const sendMailUser = async (req, res) => {
 
 export const sendMail = async (data) => {
   try {
-    //Tiến hành gửi mail, nếu có gì đó bạn có thể xử lý trước khi gửi mail
-    const transporter = nodemailer.createTransport({
-      // config mail server
-      host: "smtp.gmail.com",
-      port: 465,
-      secure: true,
-      auth: {
-        user: "hantvnodemailer@gmail.com", //Tài khoản gmail vừa tạo
-        pass: "15062001b", //Mật khẩu tài khoản gmail vừa tạo
-      },
-      tls: {
-        rejectUnauthorized: false,
-      },
-    });
     let mainOptions = {
       from: "NQH-Test nodemailer",
       to: data.mail,
