@@ -53,7 +53,7 @@ export const sendMail = async (data) => {
       from: "NQH-Test nodemailer",
       to: data.mail,
       subject: data.subject,
-      html: data.text,
+      html: data.content,
     };
     transporter.sendMail(mainOptions, function (err, info) {
       if (err) {
