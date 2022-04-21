@@ -1,4 +1,5 @@
 import Student from "../models/student";
+import { sendMail } from "./emailController";
 const ObjectId = require("mongodb").ObjectID;
 
 //listStudent
@@ -43,8 +44,8 @@ export const listStudent = async (req, res) => {
       } catch (error) {
         res.status(400).json(error);
       }
-    }else{
-      const listStudent =  await Student.find({});
+    } else {
+      const listStudent = await Student.find({});
       res.status(200).json({
         total: listStudent.length,
         list: listStudent,
@@ -223,8 +224,18 @@ export const updateReviewerStudent = async (req, res) => {
 
 //updateStatusStudent
 export const updateStatusStudent = async (req, res) => {
-  const { listIdStudent, status } = req.body;
+  const { listIdStudent, status, listEmailStudent } = req.body;
+  const dataEmail = {};
   const listIdStudents = await listIdStudent.map((id) => ObjectId(id));
+  const newArr = [];
+  if (listEmailStudent) {
+    listEmailStudent.forEach((value) => {
+      newArr.push(value.email);
+    });
+  }
+
+  dataEmail.mail = newArr;
+
   try {
     const data = await Student.updateMany(
       {
@@ -241,6 +252,67 @@ export const updateStatusStudent = async (req, res) => {
       _id: { $in: listIdStudent },
       statusCheck: status,
     });
+    if (status === 2) {
+      dataEmail.subject = "Thông báo nhận CV sinh viên thành công";
+      dataEmail.content = `
+      <div id=":18p" class="ii gt" jslog="20277; u014N:xr6bB; 4:W251bGwsbnVsbCxbXV0.">
+      <div id=":18o" class="a3s aiL ">
+      <div style="background-color:#eeeeee;padding:15px">
+      <div class="adM">
+      </div>
+      <div style="margin:auto;background-color:#ffffff;width:500px;padding:10px;border-top:2px solid #e37c41">
+      <div class="adM">
+      </div>
+      <img src="https://i.imgur.com/q7xM8RP.png" width="120" alt="logo" data-image-whitelisted="" class="CToWUd">
+      <p>
+        Xin chào ,<br>
+        Bạn vừa được <b style="color:green"><span class="il">xác</span> <span class="il">nhận</span> <span class="il">thành</span> <span class="il">công</span></b> CV <b><span class="il">Đăng</span> <span class="il">ký</span> thông tin hỗ trợ thực tập từ phòng QHDN</b> <br>
+        Trạng thái hiện tại của dịch vụ là <b style="color:orange">Nhận CV </b><br>
+        Nội dung(nếu có): Lưu ý mỗi sinh viên sẽ giới hạn 2 lần được nộp hỗ trợ tìm nơi thực tập từ phòng quan hệ doanh nghiệp
+      </p>
+      `;
+      sendMail(dataEmail);
+    } else if (status === 6) {
+      dataEmail.subject = "Thông báo nhận Biên bản sinh viên thành công";
+      dataEmail.content = `
+      <div id=":18p" class="ii gt" jslog="20277; u014N:xr6bB; 4:W251bGwsbnVsbCxbXV0.">
+      <div id=":18o" class="a3s aiL ">
+      <div style="background-color:#eeeeee;padding:15px">
+      <div class="adM">
+      </div>
+      <div style="margin:auto;background-color:#ffffff;width:500px;padding:10px;border-top:2px solid #e37c41">
+      <div class="adM">
+      </div>
+      <img src="https://i.imgur.com/q7xM8RP.png" width="120" alt="logo" data-image-whitelisted="" class="CToWUd">
+      <p>
+        Xin chào ,<br>
+        Bạn vừa được <b style="color:green"><span class="il">xác</span> <span class="il">nhận</span> <span class="il">thành</span> <span class="il">công</span></b> Báo cáo <b><span class="il">
+        Trạng thái hiện tại của dịch vụ là <b style="color:orange">Nhận biên bản </b><br>
+        Nội dung(nếu có): Lưu ý mỗi sinh viên sẽ giới hạn 2 lần được nộp hỗ trợ tìm nơi thực tập từ phòng quan hệ doanh nghiệp
+      </p>
+      `;
+      sendMail(dataEmail);
+    } else if (status === 9) {
+      dataEmail.subject = "Thông báo nhận Báo cáo sinh viên thành công";
+      dataEmail.content = `
+      <div id=":18p" class="ii gt" jslog="20277; u014N:xr6bB; 4:W251bGwsbnVsbCxbXV0.">
+      <div id=":18o" class="a3s aiL ">
+      <div style="background-color:#eeeeee;padding:15px">
+      <div class="adM">
+      </div>
+      <div style="margin:auto;background-color:#ffffff;width:500px;padding:10px;border-top:2px solid #e37c41">
+      <div class="adM">
+      </div>
+      <img src="https://i.imgur.com/q7xM8RP.png" width="120" alt="logo" data-image-whitelisted="" class="CToWUd">
+      <p>
+        Xin chào ,<br>
+        Bạn vừa được <b style="color:green"><span class="il">xác</span> <span class="il">nhận</span> <span class="il">thành</span> <span class="il">công</span></b> Biên bản <b><span class="il">
+        Trạng thái hiện tại của dịch vụ là <b style="color:orange">Nhận báo cáo </b><br>
+        Nội dung(nếu có): Lưu ý mỗi sinh viên sẽ giới hạn 2 lần được nộp hỗ trợ tìm nơi thực tập từ phòng quan hệ doanh nghiệp
+      </p>
+      `;
+      sendMail(dataEmail);
+    }
     return res.json({ listStudentChangeStatus, status });
   } catch (error) {
     console.log(error);
