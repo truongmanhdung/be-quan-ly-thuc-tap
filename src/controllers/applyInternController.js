@@ -76,8 +76,6 @@ export const signUpCVForSupport = async (req, res) => {
       emailEnterprise: emailEnterprise,
     };
 
-    let content = ``;
-
     if (findStudent.statusCheck === 1 && findStudent.support === 0) {
       return res
         .status(500)
