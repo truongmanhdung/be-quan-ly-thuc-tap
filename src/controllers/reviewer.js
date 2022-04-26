@@ -1,5 +1,4 @@
 import Student from "../models/student";
-const ObjectId = require("mongodb").ObjectID;
 
 export const listReviewer = async (req, res) => {
   const { limit, page } = req.query;
@@ -16,6 +15,7 @@ export const listReviewer = async (req, res) => {
       try {
         await Student.find({
           $and: [
+            req.query,
             {
               CV: { $ne: null },
             },
@@ -43,6 +43,7 @@ export const listReviewer = async (req, res) => {
             } else {
               Student.find({
                 $and: [
+                  req.query,
                   {
                     CV: { $ne: null },
                   },
@@ -81,6 +82,7 @@ export const listReviewer = async (req, res) => {
     } else {
       const listReview = await Student.find({
         $and: [
+          req.query,
           {
             CV: { $ne: null },
           },
@@ -121,7 +123,7 @@ export const listReviewForm = async (req, res) => {
     const skipNumber = (perPage - 1) * current;
     try {
       await Student.find({
-        statusCheck: { $in: [2, 4, 5] },
+        $and: [req.query, { statusCheck: { $in: [2, 4, 5] } }],
       })
         .populate("campus_id")
         .skip(skipNumber)
@@ -174,6 +176,7 @@ export const reviewReport = async (req, res) => {
           {
             statusCheck: { $in: [6, 7, 8, 9] },
           },
+          req.query,
         ],
       })
         .populate("campus_id")
