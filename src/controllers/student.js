@@ -18,6 +18,7 @@ export const listStudent = async (req, res) => {
       try {
         await Student.find(req.query)
           .populate("campus_id")
+          .populate("smester_id")
           .skip(skipNumber)
           .limit(current)
           .sort({ statusCheck: 1 })
@@ -45,7 +46,7 @@ export const listStudent = async (req, res) => {
         res.status(400).json(error);
       }
     } else {
-      const listStudent = await Student.find({});
+      const listStudent = await Student.find({}).populate('campus_id').populate("smester_id");
       res.status(200).json({
         total: listStudent.length,
         list: listStudent,
@@ -178,6 +179,7 @@ export const insertStudent = async (req, res) => {
       await Student.insertMany(req.body);
       await Student.find(req.query)
         .populate("campus_id")
+        .populate("smester_id")
         .limit(20)
         .sort({ statusCheck: 1 })
         .exec((err, doc) => {
