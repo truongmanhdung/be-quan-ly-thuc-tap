@@ -89,6 +89,11 @@ export const readOneStudent = async (req, res) => {
 export const insertStudent = async (req, res) => {
   try {
     const checkStudent = await Student.find({}).limit(3);
+    const listMSSV = await Student.find({});
+    const listMS = [];
+    listMSSV.forEach((item) => {
+      listMS.push(item.mssv);
+    });
     if (checkStudent.length > 0) {
       const listNew = [];
       await req.body.forEach((item) => {
@@ -105,8 +110,8 @@ export const insertStudent = async (req, res) => {
         },
         { multi: true }
       );
-      // console.log("lan1", lan1);
-      const lan2 = await Student.updateMany(
+
+      await Student.updateMany(
         { mssv: { $in: listNew } },
         {
           $set: {
@@ -116,33 +121,34 @@ export const insertStudent = async (req, res) => {
         },
         { multi: true }
       );
-      // console.log("lan2", lan2);
 
-      const lan3 = await Student.updateMany(
+      await Student.updateMany(
         { checkUpdate: false },
         {
           $set: {
             statusCheck: 3,
             checkUpdate: true,
+            checkMulti: true,
           },
         },
         { multi: true }
       );
-      // console.log("lan3", lan3);
+
       await Student.insertMany(req.body);
 
       const c = await Student.updateMany(
-        { $and: [{ mssv: { $in: listNew } }, { checkMulti: false }] },
+        { mssv: { $nin: listMS } },
         {
           $set: {
-            checkUpdate: false,
+            checkMulti: true,
           },
         },
         { multi: true }
       );
-      // console.log("áddsa", c);
-      const a = await Student.deleteMany({ checkUpdate: false });
-      // console.log(a);
+
+      await Student.deleteMany({
+        checkMulti: false,
+      });
 
       await Student.find(req.query)
         .populate("campus_id")
