@@ -18,6 +18,7 @@ export const listStudent = async (req, res) => {
       try {
         await Student.find(req.query)
           .populate("campus_id")
+          .populate("smester_id")
           .skip(skipNumber)
           .limit(current)
           .sort({ statusCheck: 1 })
@@ -45,7 +46,9 @@ export const listStudent = async (req, res) => {
         res.status(400).json(error);
       }
     } else {
-      const listStudent = await Student.find({});
+      const listStudent = await Student.find({})
+        .populate("campus_id")
+        .populate("smester_id");
       res.status(200).json({
         total: listStudent.length,
         list: listStudent,
@@ -87,64 +90,76 @@ export const readOneStudent = async (req, res) => {
 
 //insertStudent
 export const insertStudent = async (req, res) => {
+  const { data, smester_id } = req.body;
   try {
     const checkStudent = await Student.find({}).limit(3);
+
     if (checkStudent.length > 0) {
-      const listNew = [];
-      await req.body.forEach((item) => {
-        listNew.push(item.mssv);
-      });
+      const listMSSV = await Student.find({ smester_id });
+      if (listMSSV.length === 0) {
+        await Student.insertMany(data);
+      } else {
+        const listMS = [];
+        listMSSV.forEach((item) => {
+          listMS.push(item.mssv);
+        });
+        const listNew = [];
+        await data.forEach((item) => {
+          listNew.push(item.mssv);
+        });
 
-      const lan1 = await Student.updateMany(
-        {},
-        {
-          $set: {
-            checkUpdate: false,
-            checkMulti: false,
+        await Student.updateMany(
+          { smester_id },
+          {
+            $set: {
+              checkUpdate: false,
+              checkMulti: false,
+            },
           },
-        },
-        { multi: true }
-      );
-      // console.log("lan1", lan1);
-      const lan2 = await Student.updateMany(
-        { mssv: { $in: listNew } },
-        {
-          $set: {
-            checkUpdate: true,
-            checkMulti: true,
-          },
-        },
-        { multi: true }
-      );
-      // console.log("lan2", lan2);
+          { multi: true }
+        );
 
-      const lan3 = await Student.updateMany(
-        { checkUpdate: false },
-        {
-          $set: {
-            statusCheck: 3,
-            checkUpdate: true,
+        await Student.updateMany(
+          { $and: [{ mssv: { $in: listNew } }, { smester_id }] },
+          {
+            $set: {
+              checkUpdate: true,
+              checkMulti: true,
+            },
           },
-        },
-        { multi: true }
-      );
-      // console.log("lan3", lan3);
-      await Student.insertMany(req.body);
+          { multi: true }
+        );
 
-      const c = await Student.updateMany(
-        { $and: [{ mssv: { $in: listNew } }, { checkMulti: false }] },
-        {
-          $set: {
-            checkUpdate: false,
+        await Student.updateMany(
+          { $and: [{ checkUpdate: false }, { smester_id }] },
+          {
+            $set: {
+              statusCheck: 3,
+              checkUpdate: true,
+              checkMulti: true,
+            },
           },
-        },
-        { multi: true }
-      );
-      // console.log("áddsa", c);
-      const a = await Student.deleteMany({ checkUpdate: false });
-      // console.log(a);
+          { multi: true }
+        );
 
-      await Student.find(req.query)
+        await Student.insertMany(data);
+
+        await Student.updateMany(
+          { $and: [{ mssv: { $nin: listMS } }, { smester_id }] },
+          {
+            $set: {
+              checkMulti: true,
+            },
+          },
+          { multi: true }
+        );
+
+        await Student.deleteMany({
+          $and: [{ checkMulti: false }, { smester_id }],
+        });
+      }
+
+      await Student.find({ smester_id })
         .populate("campus_id")
         .limit(20)
         .sort({ statusCheck: 1 })
@@ -152,7 +167,7 @@ export const insertStudent = async (req, res) => {
           if (err) {
             res.status(400).json(err);
           } else {
-            Student.find(req.query)
+            Student.find({ smester_id })
               .countDocuments({})
               .exec((count_error, count) => {
                 if (err) {
@@ -169,16 +184,17 @@ export const insertStudent = async (req, res) => {
           }
         });
     } else {
-      await Student.insertMany(req.body);
-      await Student.find(req.query)
+      await Student.insertMany(req.body.data);
+      await Student.find({ smester_id })
         .populate("campus_id")
+        .populate("smester_id")
         .limit(20)
         .sort({ statusCheck: 1 })
         .exec((err, doc) => {
           if (err) {
             res.status(400).json(err);
           } else {
-            Student.find(req.query)
+            Student.find({ smester_id })
               .countDocuments({})
               .exec((count_error, count) => {
                 if (err) {
