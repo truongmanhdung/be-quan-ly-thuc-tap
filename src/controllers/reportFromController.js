@@ -82,7 +82,7 @@ export const form = async (req, res) => {
       };
       res.status(404).send(err);
     }
-    if (!findStudent.CV) {
+    if (findStudent.support === 1 && findStudent.CV !== null) {
       const err = {
         status: false,
         message: "CV phải được duyệt trước khi nộp biên bản!",
