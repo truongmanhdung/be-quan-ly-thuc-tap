@@ -61,6 +61,10 @@ const studentSchema = mongoose.Schema(
       type: ObjectId,
       ref: "Cumpus",
     },
+    smester_id: {
+      type: ObjectId,
+      ref: "Semester"
+    },
     reviewer: {
       type: String,
       default: null,
