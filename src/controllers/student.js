@@ -159,7 +159,7 @@ export const insertStudent = async (req, res) => {
         });
       }
 
-      await Student.find(req.query)
+      await Student.find({ smester_id })
         .populate("campus_id")
         .limit(20)
         .sort({ statusCheck: 1 })
@@ -167,7 +167,7 @@ export const insertStudent = async (req, res) => {
           if (err) {
             res.status(400).json(err);
           } else {
-            Student.find(req.query)
+            Student.find({ smester_id })
               .countDocuments({})
               .exec((count_error, count) => {
                 if (err) {
@@ -185,7 +185,7 @@ export const insertStudent = async (req, res) => {
         });
     } else {
       await Student.insertMany(req.body.data);
-      await Student.find(req.query)
+      await Student.find({ smester_id })
         .populate("campus_id")
         .populate("smester_id")
         .limit(20)
@@ -194,7 +194,7 @@ export const insertStudent = async (req, res) => {
           if (err) {
             res.status(400).json(err);
           } else {
-            Student.find(req.query)
+            Student.find({ smester_id })
               .countDocuments({})
               .exec((count_error, count) => {
                 if (err) {
