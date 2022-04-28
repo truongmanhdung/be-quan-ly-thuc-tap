@@ -414,6 +414,7 @@ export const updateStatusStudent = async (req, res) => {
       `;
       sendMail(dataEmail);
     }
+
     return res.json({ listStudentChangeStatus, status });
   } catch (error) {
     console.log(error);
