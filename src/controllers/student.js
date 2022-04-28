@@ -250,6 +250,7 @@ export const updateStatusStudent = async (req, res) => {
     });
   }
 
+  console.log("listEmailStudent: ", listEmailStudent);
   dataEmail.mail = newArr;
 
   try {
@@ -260,7 +261,7 @@ export const updateStatusStudent = async (req, res) => {
       {
         $set: {
           statusCheck: status,
-          note: textNote
+          note: textNote,
         },
       },
       { multi: true, new: true }
@@ -268,8 +269,10 @@ export const updateStatusStudent = async (req, res) => {
     const listStudentChangeStatus = await Student.find({
       _id: { $in: listIdStudent },
       statusCheck: status,
-      note: textNote
+      note: textNote,
     });
+    console.log("textNote: ", textNote);
+    console.log("status: ", status);
     if (status === 2) {
       dataEmail.subject = "Thông báo nhận CV sinh viên thành công";
       dataEmail.content = `
@@ -346,7 +349,50 @@ export const updateStatusStudent = async (req, res) => {
       <p>
         Xin chào ,<br>
         Bạn vừa được <b style="color:green"><span class="il">xác</span> <span class="il">nhận</span> <span class="il">trượt</span> <span class="il">thực tập doanh nghiệp</span></b> <b><span class="il">
+        Lý do trượt thực tập doanh nghiệp: ${textNote}
         Trạng thái hiện tại của dịch vụ là <b style="color:orange">Trượt thực tập doanh nghiệp </b><br>
+        Nội dung(nếu có): Lưu ý mỗi sinh viên sẽ giới hạn 2 lần được nộp hỗ trợ tìm nơi thực tập từ phòng quan hệ doanh nghiệp
+      </p>
+      `;
+      sendMail(dataEmail);
+    } else if (status === 8) {
+      dataEmail.subject =
+        "Thông báo sinh viên sửa báo cáo thực tập doanh nghiệp";
+      dataEmail.content = `
+      <div id=":18p" class="ii gt" jslog="20277; u014N:xr6bB; 4:W251bGwsbnVsbCxbXV0.">
+      <div id=":18o" class="a3s aiL ">
+      <div style="background-color:#eeeeee;padding:15px">
+      <div class="adM">
+      </div>
+      <div style="margin:auto;background-color:#ffffff;width:500px;padding:10px;border-top:2px solid #e37c41">
+      <div class="adM">
+      </div>
+      <img src="https://i.imgur.com/q7xM8RP.png" width="120" alt="logo" data-image-whitelisted="" class="CToWUd">
+      <p>
+        Xin chào sinh viên,<br>
+        Phòng QHDN yêu cầu bạn cần sửa lại nội dung báo cáo những phần sau: ${textNote}
+        Trạng thái hiện tại của dịch vụ là <b style="color:orange">Sửa báo cáo</b><br>
+        Nội dung(nếu có): Lưu ý mỗi sinh viên sẽ giới hạn 2 lần được nộp hỗ trợ tìm nơi thực tập từ phòng quan hệ doanh nghiệp
+      </p>
+      `;
+      sendMail(dataEmail);
+    } else if (status === 5) {
+      console.log("dataEmail: ", dataEmail);
+      dataEmail.subject = "Thông báo hoàn trả báo cáo thực tập doanh nghiệp";
+      dataEmail.content = `
+      <div id=":18p" class="ii gt" jslog="20277; u014N:xr6bB; 4:W251bGwsbnVsbCxbXV0.">
+      <div id=":18o" class="a3s aiL ">
+      <div style="background-color:#eeeeee;padding:15px">
+      <div class="adM">
+      </div>
+      <div style="margin:auto;background-color:#ffffff;width:500px;padding:10px;border-top:2px solid #e37c41">
+      <div class="adM">
+      </div>
+      <img src="https://i.imgur.com/q7xM8RP.png" width="120" alt="logo" data-image-whitelisted="" class="CToWUd">
+      <p>
+        Xin chào sinh viên,<br>
+        Phòng QHDN hoàn trả lại báo của bạn với lý do như sau: ${textNote}
+        Trạng thái hiện tại của dịch vụ là <b style="color:orange">Sửa báo cáo</b><br>
         Nội dung(nếu có): Lưu ý mỗi sinh viên sẽ giới hạn 2 lần được nộp hỗ trợ tìm nơi thực tập từ phòng quan hệ doanh nghiệp
       </p>
       `;
