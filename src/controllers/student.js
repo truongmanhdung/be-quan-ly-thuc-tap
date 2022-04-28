@@ -240,7 +240,7 @@ export const updateReviewerStudent = async (req, res) => {
 
 //updateStatusStudent
 export const updateStatusStudent = async (req, res) => {
-  const { listIdStudent, status, listEmailStudent } = req.body;
+  const { listIdStudent, status, listEmailStudent, textNote } = req.body;
   const dataEmail = {};
   const listIdStudents = await listIdStudent.map((id) => ObjectId(id));
   const newArr = [];
@@ -260,6 +260,7 @@ export const updateStatusStudent = async (req, res) => {
       {
         $set: {
           statusCheck: status,
+          note: textNote
         },
       },
       { multi: true, new: true }
@@ -267,6 +268,7 @@ export const updateStatusStudent = async (req, res) => {
     const listStudentChangeStatus = await Student.find({
       _id: { $in: listIdStudent },
       statusCheck: status,
+      note: textNote
     });
     if (status === 2) {
       dataEmail.subject = "Thông báo nhận CV sinh viên thành công";
