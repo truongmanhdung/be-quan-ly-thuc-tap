@@ -1,3 +1,4 @@
+import configTime from "../models/configTime";
 import { sendMail } from "./emailController";
 
 const Student = require("../models/student");
@@ -16,10 +17,14 @@ export const signUpCVForSupport = async (req, res) => {
     taxCode,
     position,
     numberEnterprise,
+    typeNumber,
     emailEnterprise,
   } = req.body;
 
   try {
+    const conFigTime = await configTime.findOne({ typeNumber: typeNumber });
+    const timeNow = new Date().getTime();
+    const check = conFigTime.endTime > timeNow;
     const ms = req.body.user_code.toLowerCase();
     const dataEmail = {};
 
@@ -32,6 +37,14 @@ export const signUpCVForSupport = async (req, res) => {
       mssv: ms,
       email: email,
     };
+
+    if (!check) {
+      {
+        res.status(500).send({
+          message: "Thời gian đăng ký đã hết!",
+        });
+      }
+    }
 
     if (!findStudent) {
       res.status(500).send({

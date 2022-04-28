@@ -1,11 +1,13 @@
+import moment from "moment";
+import configTime from "../models/configTime";
 import { sendMail } from "./emailController";
 
 const Student = require("../models/student");
 export const report = async (req, res) => {
-  const dataEmail = {};
   const {
     attitudePoint,
     EndInternShipTime,
+    typeNumber,
     mssv,
     email,
     report,
@@ -14,8 +16,33 @@ export const report = async (req, res) => {
   } = req.body;
   const filter = { mssv: mssv, email: email };
   const findStudent = await Student.findOne(filter);
-  console.log(" req.body: ", req.body);
+
+  const conFigTime = await configTime.findOne({ typeNumber: typeNumber });
+  const timeNow = new Date().getTime();
+  const check = conFigTime.endTime > timeNow;
+
+  const startTimeReport = moment(
+    findStudent.internshipTime,
+    "M/D/YYYY H:mm"
+  ).valueOf();
+  const endTimeReport = moment(EndInternShipTime, "M/D/YYYY H:mm").valueOf();
+  const checkTimeReport = endTimeReport > startTimeReport;
   try {
+    const dataEmail = {};
+    if (!check) {
+      {
+        res.status(500).send({
+          message: "Thời gian đăng ký đã hết!",
+        });
+      }
+    }
+
+    if (!checkTimeReport) {
+      return res.status(500).send({
+        message: "Thời gian kết thúc thực tập phải lớn hơn thời gian bắt đầu!",
+      });
+    }
+
     if (!findStudent) {
       const err = {
         status: false,
@@ -136,9 +163,21 @@ export const report = async (req, res) => {
 export const form = async (req, res) => {
   try {
     const dataEmail = {};
-    const { nameCompany, internshipTime, form, mssv, email } = req.body;
+    const { nameCompany, internshipTime, typeNumber, form, mssv, email } =
+      req.body;
     const filter = { mssv: mssv, email: email };
     const findStudent = await Student.findOne(filter);
+    const conFigTime = await configTime.findOne({ typeNumber: typeNumber });
+    const timeNow = new Date().getTime();
+    const check = conFigTime.endTime > timeNow;
+    if (!check) {
+      {
+        res.status(500).send({
+          message: "Thời gian đăng ký đã hết!",
+        });
+      }
+    }
+
     if (!findStudent) {
       const err = {
         status: false,
