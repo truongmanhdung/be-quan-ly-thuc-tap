@@ -309,7 +309,8 @@ export const updateStatusStudent = async (req, res) => {
       `;
       sendMail(dataEmail);
     } else if (status === 9) {
-      dataEmail.subject = "Thông báo nhận Báo cáo sinh viên thành công";
+      dataEmail.subject =
+        "Thông báo Hoàn thành thông tin thực tập sinh viên thành công";
       dataEmail.content = `
       <div id=":18p" class="ii gt" jslog="20277; u014N:xr6bB; 4:W251bGwsbnVsbCxbXV0.">
       <div id=":18o" class="a3s aiL ">

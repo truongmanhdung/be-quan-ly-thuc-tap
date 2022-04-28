@@ -57,7 +57,7 @@ export const signUpCVForSupport = async (req, res) => {
     }
 
     let isSupport = 0;
-    support === 1 ? (isSupport = 0) : (isSupport = 4);
+    support === 1 ? (isSupport = 0) : (isSupport = 2);
 
     const update = {
       address: address,

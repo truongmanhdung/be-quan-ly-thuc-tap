@@ -63,7 +63,7 @@ const studentSchema = mongoose.Schema(
     },
     smester_id: {
       type: ObjectId,
-      ref: "Semester"
+      ref: "Semester",
     },
     reviewer: {
       type: String,
@@ -112,6 +112,10 @@ const studentSchema = mongoose.Schema(
     },
     // bieu mau
     internshipTime: {
+      type: Date,
+      default: null,
+    },
+    endInternShipTime: {
       type: Date,
       default: null,
     },
