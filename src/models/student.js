@@ -123,6 +123,10 @@ const studentSchema = mongoose.Schema(
       type: Number,
       default: null,
     },
+    note:{
+      type: String,
+      default: null
+    },
     resultScore: {
       type: Number,
       default: null,
