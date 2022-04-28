@@ -413,6 +413,46 @@ export const updateStatusStudent = async (req, res) => {
       </p>
       `;
       sendMail(dataEmail);
+    } else if (status === 52) {
+      dataEmail.subject = "Thông báo sửa biên bản thực tập doanh nghiệp";
+      dataEmail.content = `
+      <div id=":18p" class="ii gt" jslog="20277; u014N:xr6bB; 4:W251bGwsbnVsbCxbXV0.">
+      <div id=":18o" class="a3s aiL ">
+      <div style="background-color:#eeeeee;padding:15px">
+      <div class="adM">
+      </div>
+      <div style="margin:auto;background-color:#ffffff;width:500px;padding:10px;border-top:2px solid #e37c41">
+      <div class="adM">
+      </div>
+      <img src="https://i.imgur.com/q7xM8RP.png" width="120" alt="logo" data-image-whitelisted="" class="CToWUd">
+      <p>
+        Xin chào sinh viên,<br>
+        Phòng QHDN thông báo biên bản của bạn cần sửa với lý do như sau: ${textNote}
+        Trạng thái hiện tại của dịch vụ là <b style="color:orange">Sửa báo cáo</b><br>
+        Nội dung(nếu có): Lưu ý mỗi sinh viên sẽ giới hạn 2 lần được nộp hỗ trợ tìm nơi thực tập từ phòng quan hệ doanh nghiệp
+      </p>
+      `;
+      sendMail(dataEmail);
+    } else if (status === 12) {
+      dataEmail.subject = "Thông báo hoàn CV thực tập doanh nghiệp";
+      dataEmail.content = `
+      <div id=":18p" class="ii gt" jslog="20277; u014N:xr6bB; 4:W251bGwsbnVsbCxbXV0.">
+      <div id=":18o" class="a3s aiL ">
+      <div style="background-color:#eeeeee;padding:15px">
+      <div class="adM">
+      </div>
+      <div style="margin:auto;background-color:#ffffff;width:500px;padding:10px;border-top:2px solid #e37c41">
+      <div class="adM">
+      </div>
+      <img src="https://i.imgur.com/q7xM8RP.png" width="120" alt="logo" data-image-whitelisted="" class="CToWUd">
+      <p>
+        Xin chào sinh viên,<br>
+        Phòng QHDN thông báo hoàn CV của bạn với lý do như sau: ${textNote}
+        Trạng thái hiện tại của dịch vụ là <b style="color:orange">Sửa báo cáo</b><br>
+        Nội dung(nếu có): Lưu ý mỗi sinh viên sẽ giới hạn 2 lần được nộp hỗ trợ tìm nơi thực tập từ phòng quan hệ doanh nghiệp
+      </p>
+      `;
+      sendMail(dataEmail);
     }
     return res.json({ listStudentChangeStatus, status });
   } catch (error) {
