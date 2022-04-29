@@ -21,11 +21,8 @@ export const report = async (req, res) => {
   const timeNow = new Date().getTime();
   const check = conFigTime.endTime > timeNow;
 
-  const startTimeReport = moment(
-    findStudent.internshipTime,
-    "M/D/YYYY H:mm"
-  ).valueOf();
-  const endTimeReport = moment(EndInternShipTime, "M/D/YYYY H:mm").valueOf();
+  const startTimeReport = moment(findStudent.internshipTime).valueOf();
+  const endTimeReport = moment(EndInternShipTime).valueOf();
   const checkTimeReport = endTimeReport > startTimeReport;
   try {
     const dataEmail = {};
