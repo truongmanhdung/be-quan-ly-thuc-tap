@@ -100,6 +100,7 @@ export const signUpCVForSupport = async (req, res) => {
 
     if (findStudent.statusCheck === 1 && findStudent.support === 1) {
       //Ho tro
+      update.note = null;
       await Student.findOneAndUpdate(filter, update, {
         new: true,
       });
@@ -181,8 +182,6 @@ export const signUpCVForSupport = async (req, res) => {
     }
 
     if (findStudent.statusCheck === 1 && findStudent.support === 0) {
-      //Ho tro
-
       if (findStudent.numberOfTime >= 2) {
         res.status(500).send({
           message: "Bạn đã vượt quá 2 lần cho phép sửa thông tin tự đăng ký!",
@@ -192,6 +191,7 @@ export const signUpCVForSupport = async (req, res) => {
 
       const count = findStudent.numberOfTime + 1;
       update.numberOfTime = count;
+      update.note = null;
       await Student.findOneAndUpdate(filter, update, {
         new: true,
       });

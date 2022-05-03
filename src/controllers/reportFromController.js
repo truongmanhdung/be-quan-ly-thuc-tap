@@ -77,7 +77,7 @@ export const report = async (req, res) => {
     }
 
     if (findStudent.statusCheck === 8) {
-      console.log("DONE");
+      update.note = null;
       await Student.findOneAndUpdate(filter, update, {
         new: true,
       });
@@ -219,6 +219,7 @@ export const form = async (req, res) => {
     }
 
     if (findStudent.statusCheck === 5) {
+      update.note = null;
       const result = await Student.findOneAndUpdate(filter, update, {
         new: true,
       });
