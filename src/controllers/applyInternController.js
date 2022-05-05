@@ -100,6 +100,7 @@ export const signUpCVForSupport = async (req, res) => {
 
     if (findStudent.statusCheck === 1 && findStudent.support === 1) {
       //Ho tro
+      update.note = null;
       await Student.findOneAndUpdate(filter, update, {
         new: true,
       });
@@ -181,8 +182,6 @@ export const signUpCVForSupport = async (req, res) => {
     }
 
     if (findStudent.statusCheck === 1 && findStudent.support === 0) {
-      //Ho tro
-
       if (findStudent.numberOfTime >= 2) {
         res.status(500).send({
           message: "Bạn đã vượt quá 2 lần cho phép sửa thông tin tự đăng ký!",
@@ -192,6 +191,7 @@ export const signUpCVForSupport = async (req, res) => {
 
       const count = findStudent.numberOfTime + 1;
       update.numberOfTime = count;
+      update.note = null;
       await Student.findOneAndUpdate(filter, update, {
         new: true,
       });
@@ -246,7 +246,7 @@ export const signUpCVForSupport = async (req, res) => {
       <img src="https://i.imgur.com/q7xM8RP.png" width="120" alt="logo" class="CToWUd">
       <p>
           Xin chào <b>${name}</b>,<br>
-          Bạn vừa <b style="color:green"><span><span class="il">đăng</span></span> <span><span class="il">ký</span></span> <span>thành</span> <span>công</span></b> thông tin <b><span>Hỗ</span> <span>trợ</span> tự tìm nơi thực tập</b> <br>
+          Bạn vừa <b style="color:green"><span><span class="il">đăng</span></span> <span><span class="il">ký</span></span> <span>thành</span> <span>công</span></b> thông tin <b><span>Tự</span> <span>tìm</span> nơi thực tập</b> <br>
           Trạng thái hiện tại của dịch vụ là <b style="color:orange">Chờ kiểm tra </b><br>
           Nội dung(nếu có): Lưu ý mỗi sinh viên sẽ giới hạn 3 lần được hỗ trợ tìm nơi thực tập từ phòng quan hệ doanh nghiệp
       </p>

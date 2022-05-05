@@ -270,147 +270,224 @@ export const updateStatusStudent = async (req, res) => {
       statusCheck: status,
       note: textNote,
     });
-    if (status === 2) {
+    if (status === 1) {
+      dataEmail.subject = "Thông báo sửa CV thực tập doanh nghiệp";
+      dataEmail.content = `
+      <div style="margin:auto;background-color:#ffffff;width:500px;padding:10px;border-top:2px solid #e37c41">
+      <div class="adM">
+      </div>
+      <img src="https://i.imgur.com/q7xM8RP.png" width="120" alt="logo" class="CToWUd">
+      <p>
+        Phòng QHDN yêu cầu bạn sửa lại thông tin <b style="color:green"><span><span class="il">CV</span></span> <span></span></b><br> <br>
+        Lý do SV phải sửa CV: ${textNote} <br>
+        Trạng thái hiện tại của dịch vụ là <b style="color:orange">Sửa CV </b><br>
+        <p>Sinh vi&ecirc;n vui l&ograve;ng đăng nhập v&agrave;o trang web <a href="http://apartment-client.xyz">apartment-system</a>&nbsp;sửa CV</p><br>
+        Nội dung(nếu có): Lưu ý mỗi sinh viên sẽ giới hạn 3 lần được hỗ trợ tìm nơi thực tập từ phòng quan hệ doanh nghiệp
+      </p>
+      <hr style="border-top:1px solid">
+      <div style="font-style:italic">
+          <span>Lưu ý: đây là email tự động vui lòng không phản hồi lại email này, mọi thắc mắc xin liên hệ phòng QHDN qua số điện thoại bên dưới</span>
+          <div class="yj6qo"></div>
+          <div class="adL"></div>
+          <div class="adL"><br>
+          </div>
+      </div>
+      <div class="adL">
+      </div>
+      <div class="adL">
+      </div>
+      <div class="adL">
+      </div>
+      </div>
+      `;
+      sendMail(dataEmail);
+    } else if (status === 2) {
       dataEmail.subject = "Thông báo nhận CV sinh viên thành công";
       dataEmail.content = `
-      <div id=":18p" class="ii gt" jslog="20277; u014N:xr6bB; 4:W251bGwsbnVsbCxbXV0.">
-      <div id=":18o" class="a3s aiL ">
-      <div style="background-color:#eeeeee;padding:15px">
-      <div class="adM">
-      </div>
       <div style="margin:auto;background-color:#ffffff;width:500px;padding:10px;border-top:2px solid #e37c41">
       <div class="adM">
       </div>
-      <img src="https://i.imgur.com/q7xM8RP.png" width="120" alt="logo" data-image-whitelisted="" class="CToWUd">
+      <img src="https://i.imgur.com/q7xM8RP.png" width="120" alt="logo" class="CToWUd">
       <p>
-        Xin chào ,<br>
-        Bạn vừa được <b style="color:green"><span class="il">xác</span> <span class="il">nhận</span> <span class="il">thành</span> <span class="il">công</span></b> CV <b><span class="il">Đăng</span> <span class="il">ký</span> thông tin hỗ trợ thực tập từ phòng QHDN</b> <br>
-        Trạng thái hiện tại của dịch vụ là <b style="color:orange">Nhận CV </b><br>
-        Nội dung(nếu có): Lưu ý mỗi sinh viên sẽ giới hạn 2 lần được nộp hỗ trợ tìm nơi thực tập từ phòng quan hệ doanh nghiệp
+          Xin chào sinh viên,<br>
+          CV của bạn đã được phòng QHDN <b><span>Xác</span> <span>Nhận</span></b>
+          Trạng thái hiện tại của dịch vụ là <b style="color:orange">Nhận CV </b><br>
+          <p>Sinh vi&ecirc;n vui l&ograve;ng đăng nhập v&agrave;o trang web <a href="http://apartment-client.xyz">apartment-system</a>&nbsp;xem trạng thái CV</p>
+          Nội dung(nếu có): Lưu ý mỗi sinh viên sẽ giới hạn 3 lần được hỗ trợ tìm nơi thực tập từ phòng quan hệ doanh nghiệp
       </p>
-      `;
-      sendMail(dataEmail);
-    } else if (status === 6) {
-      dataEmail.subject = "Thông báo nhận Biên bản sinh viên thành công";
-      dataEmail.content = `
-      <div id=":18p" class="ii gt" jslog="20277; u014N:xr6bB; 4:W251bGwsbnVsbCxbXV0.">
-      <div id=":18o" class="a3s aiL ">
-      <div style="background-color:#eeeeee;padding:15px">
-      <div class="adM">
+      <hr style="border-top:1px solid">
+      <div style="font-style:italic">
+          <span>Lưu ý: đây là email tự động vui lòng không phản hồi lại email này, mọi thắc mắc xin liên hệ phòng QHDN qua số điện thoại bên dưới</span>
+          <div class="yj6qo"></div>
+          <div class="adL"></div>
+          <div class="adL"><br>
+          </div>
       </div>
-      <div style="margin:auto;background-color:#ffffff;width:500px;padding:10px;border-top:2px solid #e37c41">
-      <div class="adM">
+      <div class="adL">
       </div>
-      <img src="https://i.imgur.com/q7xM8RP.png" width="120" alt="logo" data-image-whitelisted="" class="CToWUd">
-      <p>
-        Xin chào ,<br>
-        Bạn vừa được <b style="color:green"><span class="il">xác</span> <span class="il">nhận</span> <span class="il">thành</span> <span class="il">công</span></b> Báo cáo <b><span class="il">
-        Trạng thái hiện tại của dịch vụ là <b style="color:orange">Nhận biên bản </b><br>
-        Nội dung(nếu có): Lưu ý mỗi sinh viên sẽ giới hạn 2 lần được nộp hỗ trợ tìm nơi thực tập từ phòng quan hệ doanh nghiệp
-      </p>
-      `;
-      sendMail(dataEmail);
-    } else if (status === 9) {
-      dataEmail.subject =
-        "Thông báo Hoàn thành thông tin thực tập sinh viên thành công";
-      dataEmail.content = `
-      <div id=":18p" class="ii gt" jslog="20277; u014N:xr6bB; 4:W251bGwsbnVsbCxbXV0.">
-      <div id=":18o" class="a3s aiL ">
-      <div style="background-color:#eeeeee;padding:15px">
-      <div class="adM">
+      <div class="adL">
       </div>
-      <div style="margin:auto;background-color:#ffffff;width:500px;padding:10px;border-top:2px solid #e37c41">
-      <div class="adM">
+      <div class="adL">
       </div>
-      <img src="https://i.imgur.com/q7xM8RP.png" width="120" alt="logo" data-image-whitelisted="" class="CToWUd">
-      <p>
-        Xin chào ,<br>
-        Bạn vừa được <b style="color:green"><span class="il">xác</span> <span class="il">nhận</span> <span class="il">thành</span> <span class="il">công</span></b> Biên bản <b><span class="il">
-        Trạng thái hiện tại của dịch vụ là <b style="color:orange">Nhận báo cáo </b><br>
-        Nội dung(nếu có): Lưu ý mỗi sinh viên sẽ giới hạn 2 lần được nộp hỗ trợ tìm nơi thực tập từ phòng quan hệ doanh nghiệp
-      </p>
+      </div>
       `;
       sendMail(dataEmail);
     } else if (status === 3) {
       dataEmail.subject = "Thông báo sinh viên trượt thực tập doanh nghiệp";
       dataEmail.content = `
-      <div id=":18p" class="ii gt" jslog="20277; u014N:xr6bB; 4:W251bGwsbnVsbCxbXV0.">
-      <div id=":18o" class="a3s aiL ">
-      <div style="background-color:#eeeeee;padding:15px">
-      <div class="adM">
-      </div>
       <div style="margin:auto;background-color:#ffffff;width:500px;padding:10px;border-top:2px solid #e37c41">
       <div class="adM">
       </div>
-      <img src="https://i.imgur.com/q7xM8RP.png" width="120" alt="logo" data-image-whitelisted="" class="CToWUd">
+      <img src="https://i.imgur.com/q7xM8RP.png" width="120" alt="logo" class="CToWUd">
       <p>
-        Xin chào ,<br>
-        Bạn vừa được <b style="color:green"><span class="il">xác</span> <span class="il">nhận</span> <span class="il">trượt</span> <span class="il">thực tập doanh nghiệp</span></b> <b><span class="il">
-        Lý do trượt thực tập doanh nghiệp: ${textNote}
-        Trạng thái hiện tại của dịch vụ là <b style="color:orange">Trượt thực tập doanh nghiệp </b><br>
-        Nội dung(nếu có): Lưu ý mỗi sinh viên sẽ giới hạn 2 lần được nộp hỗ trợ tìm nơi thực tập từ phòng quan hệ doanh nghiệp
+          Xin chào Sinh viên,<br>
+          Bạn đã trượt thực tập. Phòng QHDN <b><span>Xác</span> <span>Nhận</span></b> <br> <br>
+          Lý do SV trượt: ${textNote}<br>
+          Trạng thái hiện tại của dịch vụ là <b style="color:orange">Trượt thực tập </b><br>
+          <p>Sinh vi&ecirc;n vui l&ograve;ng đăng k&yacute; thực tập lại v&agrave;o kỳ sau tr&ecirc;n hệ thống <a href="https://ap.poly.edu.vn/">ap.poly.edu.vn</a></p><br>
+          Nội dung(nếu có): Lưu ý mỗi sinh viên sẽ giới hạn 3 lần được hỗ trợ tìm nơi thực tập từ phòng quan hệ doanh nghiệp
       </p>
+      <hr style="border-top:1px solid">
+      <div style="font-style:italic">
+          <span>Lưu ý: đây là email tự động vui lòng không phản hồi lại email này, mọi thắc mắc xin liên hệ phòng QHDN qua số điện thoại bên dưới</span>
+          <div class="yj6qo"></div>
+          <div class="adL"></div>
+          <div class="adL"><br>
+          </div>
+      </div>
+      <div class="adL">
+      </div>
+      <div class="adL">
+      </div>
+      <div class="adL">
+      </div>
+      </div>
+      `;
+      sendMail(dataEmail);
+    } else if (status === 5) {
+      dataEmail.subject = "Thông báo sửa biên bản thực tập doanh nghiệp";
+      dataEmail.content = `
+      <div style="margin:auto;background-color:#ffffff;width:500px;padding:10px;border-top:2px solid #e37c41">
+      <div class="adM">
+      </div>
+      <img src="https://i.imgur.com/q7xM8RP.png" width="120" alt="logo" class="CToWUd">
+      <p>
+          Xin chào Sinh viên,<br>
+          Phòng QHDN yêu cầu bạn sửa lại thông tin <b style="color:green"><span><span class="il">Biên</span></span> <span><span class="il">bản</span></span></b><br> <br>
+          Lý do SV phải sửa báo cáo: ${textNote}<br>
+          <p>Sinh vi&ecirc;n vui l&ograve;ng đăng nhập v&agrave;o trang web <a href="http://apartment-client.xyz">apartment-system</a>&nbsp;sửa biên bản</p><br>
+          Trạng thái hiện tại của dịch vụ là <b style="color:orange">Sửa biên bản </b><br>
+      </p>
+      <hr style="border-top:1px solid">
+      <div style="font-style:italic">
+          <span>Lưu ý: đây là email tự động vui lòng không phản hồi lại email này, mọi thắc mắc xin liên hệ phòng QHDN qua số điện thoại bên dưới</span>
+          <div class="yj6qo"></div>
+          <div class="adL"></div>
+          <div class="adL"><br>
+          </div>
+      </div>
+      <div class="adL">
+      </div>
+      <div class="adL">
+      </div>
+      <div class="adL">
+      </div>
+      </div>
+      `;
+      sendMail(dataEmail);
+    } else if (status === 6) {
+      dataEmail.subject = "Thông báo nhận biên bản sinh viên thành công";
+      dataEmail.content = `
+      <div style="margin:auto;background-color:#ffffff;width:500px;padding:10px;border-top:2px solid #e37c41">
+      <div class="adM">
+      </div>
+      <img src="https://i.imgur.com/q7xM8RP.png" width="120" alt="logo" class="CToWUd">
+      <p>
+          Xin chào Sinh viên,<br>
+          Biên bản của bạn đã được phòng QHDN <b><span>Xác</span> <span>Nhận</span></b><br>
+          <p>Sinh vi&ecirc;n vui l&ograve;ng đăng nhập v&agrave;o trang web <a href="http://apartment-client.xyz">apartment-system</a>&nbsp;xem trạng thái báo cáo</p><br>
+          Trạng thái hiện tại của dịch vụ là <b style="color:orange">Đang thực tập </b><br>
+      </p>
+      <hr style="border-top:1px solid">
+      <div style="font-style:italic">
+          <span>Lưu ý: đây là email tự động vui lòng không phản hồi lại email này, mọi thắc mắc xin liên hệ phòng QHDN qua số điện thoại bên dưới</span>
+          <div class="yj6qo"></div>
+          <div class="adL"></div>
+          <div class="adL"><br>
+          </div>
+      </div>
+      <div class="adL">
+      </div>
+      <div class="adL">
+      </div>
+      <div class="adL">
+      </div>
+      </div>
       `;
       sendMail(dataEmail);
     } else if (status === 8) {
       dataEmail.subject =
         "Thông báo sinh viên sửa báo cáo thực tập doanh nghiệp";
       dataEmail.content = `
-      <div id=":18p" class="ii gt" jslog="20277; u014N:xr6bB; 4:W251bGwsbnVsbCxbXV0.">
-      <div id=":18o" class="a3s aiL ">
-      <div style="background-color:#eeeeee;padding:15px">
-      <div class="adM">
-      </div>
       <div style="margin:auto;background-color:#ffffff;width:500px;padding:10px;border-top:2px solid #e37c41">
       <div class="adM">
       </div>
-      <img src="https://i.imgur.com/q7xM8RP.png" width="120" alt="logo" data-image-whitelisted="" class="CToWUd">
+      <img src="https://i.imgur.com/q7xM8RP.png" width="120" alt="logo" class="CToWUd">
       <p>
-        Xin chào sinh viên,<br>
-        Phòng QHDN yêu cầu bạn cần sửa lại nội dung báo cáo những phần sau: ${textNote}
-        Trạng thái hiện tại của dịch vụ là <b style="color:orange">Sửa báo cáo</b><br>
-        Nội dung(nếu có): Lưu ý mỗi sinh viên sẽ giới hạn 2 lần được nộp hỗ trợ tìm nơi thực tập từ phòng quan hệ doanh nghiệp
+          Xin chào Sinh viên,<br>
+          Phòng QHDN yêu cầu bạn sửa lại thông tin <b style="color:green"><span><span class="il">Báo</span></span> <span><span class="il">cáo</span></span></b><br> <br>
+          Lý do SV phải sửa báo cáo: ${textNote}<br>
+          Trạng thái hiện tại của dịch vụ là <b style="color:orange">Sửa báo cáo </b><br>
+          <p>Sinh vi&ecirc;n vui l&ograve;ng đăng nhập v&agrave;o trang web <a href="http://apartment-client.xyz">apartment-system</a>&nbsp;sửa báo cáo</p><br>
+          Nội dung(nếu có): Lưu ý mỗi sinh viên sẽ giới hạn 3 lần được hỗ trợ tìm nơi thực tập từ phòng quan hệ doanh nghiệp
       </p>
+      <hr style="border-top:1px solid">
+      <div style="font-style:italic">
+          <span>Lưu ý: đây là email tự động vui lòng không phản hồi lại email này, mọi thắc mắc xin liên hệ phòng QHDN qua số điện thoại bên dưới</span>
+          <div class="yj6qo"></div>
+          <div class="adL"></div>
+          <div class="adL"><br>
+          </div>
+      </div>
+      <div class="adL">
+      </div>
+      <div class="adL">
+      </div>
+      <div class="adL">
+      </div>
+      </div>
       `;
       sendMail(dataEmail);
-    } else if (status === 5) {
-      dataEmail.subject = "Thông báo hoàn trả báo cáo thực tập doanh nghiệp";
+    } else if (status === 9) {
+      dataEmail.subject =
+        "Thông báo Hoàn thành thông tin thực tập sinh viên thành công";
       dataEmail.content = `
-      <div id=":18p" class="ii gt" jslog="20277; u014N:xr6bB; 4:W251bGwsbnVsbCxbXV0.">
-      <div id=":18o" class="a3s aiL ">
-      <div style="background-color:#eeeeee;padding:15px">
-      <div class="adM">
-      </div>
       <div style="margin:auto;background-color:#ffffff;width:500px;padding:10px;border-top:2px solid #e37c41">
       <div class="adM">
       </div>
-      <img src="https://i.imgur.com/q7xM8RP.png" width="120" alt="logo" data-image-whitelisted="" class="CToWUd">
+      <img src="https://i.imgur.com/q7xM8RP.png" width="120" alt="logo" class="CToWUd">
       <p>
-        Xin chào sinh viên,<br>
-        Phòng QHDN hoàn trả lại báo của bạn với lý do như sau: ${textNote}
-        Trạng thái hiện tại của dịch vụ là <b style="color:orange">Sửa báo cáo</b><br>
-        Nội dung(nếu có): Lưu ý mỗi sinh viên sẽ giới hạn 2 lần được nộp hỗ trợ tìm nơi thực tập từ phòng quan hệ doanh nghiệp
+          Xin chào Sinh viên,<br>
+          Bạn đã hoành thành thông tin thực tập. Phòng QHDN <b><span>Xác</span> <span>Nhận</span></b> <br> <br>
+          Trạng thái hiện tại của dịch vụ là <b style="color:orange">Hoàn thành báo cáo thực tập </b><br>
+          Điểm của bạn sẽ được phòng QHDN cập nhật sau 1-2 ngày trên hệ thống  <a href="https://ap.poly.edu.vn/">ap.poly.edu.vn</a> <br>
+          <p>Sinh vi&ecirc;n vui l&ograve;ng đăng nhập v&agrave;o trang web <a href="http://apartment-client.xyz">apartment-system</a>&nbsp;xem trạng thái báo cáo</p>
       </p>
-      `;
-      sendMail(dataEmail);
-    } else if (status === 1) {
-      dataEmail.subject = "Thông báo hoàn trả CV thực tập doanh nghiệp";
-      dataEmail.content = `
-      <div id=":18p" class="ii gt" jslog="20277; u014N:xr6bB; 4:W251bGwsbnVsbCxbXV0.">
-      <div id=":18o" class="a3s aiL ">
-      <div style="background-color:#eeeeee;padding:15px">
-      <div class="adM">
+      <hr style="border-top:1px solid">
+      <div style="font-style:italic">
+          <span>Lưu ý: đây là email tự động vui lòng không phản hồi lại email này, mọi thắc mắc xin liên hệ phòng QHDN qua số điện thoại bên dưới</span>
+          <div class="yj6qo"></div>
+          <div class="adL"></div>
+          <div class="adL"><br>
+          </div>
       </div>
-      <div style="margin:auto;background-color:#ffffff;width:500px;padding:10px;border-top:2px solid #e37c41">
-      <div class="adM">
+      <div class="adL">
       </div>
-      <img src="https://i.imgur.com/q7xM8RP.png" width="120" alt="logo" data-image-whitelisted="" class="CToWUd">
-      <p>
-        Xin chào sinh viên,<br>
-        Phòng QHDN hoàn trả lại báo của bạn với lý do như sau: ${textNote}
-        Trạng thái hiện tại của dịch vụ là <b style="color:orange">Sửa báo cáo</b><br>
-        Nội dung(nếu có): Lưu ý mỗi sinh viên sẽ giới hạn 2 lần được nộp hỗ trợ tìm nơi thực tập từ phòng quan hệ doanh nghiệp
-      </p>
+      <div class="adL">
+      </div>
+      <div class="adL">
+      </div>
+      </div>
       `;
       sendMail(dataEmail);
     }
