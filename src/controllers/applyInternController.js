@@ -246,7 +246,7 @@ export const signUpCVForSupport = async (req, res) => {
       <img src="https://i.imgur.com/q7xM8RP.png" width="120" alt="logo" class="CToWUd">
       <p>
           Xin chào <b>${name}</b>,<br>
-          Bạn vừa <b style="color:green"><span><span class="il">đăng</span></span> <span><span class="il">ký</span></span> <span>thành</span> <span>công</span></b> thông tin <b><span>Hỗ</span> <span>trợ</span> tự tìm nơi thực tập</b> <br>
+          Bạn vừa <b style="color:green"><span><span class="il">đăng</span></span> <span><span class="il">ký</span></span> <span>thành</span> <span>công</span></b> thông tin <b><span>Tự</span> <span>tìm</span> nơi thực tập</b> <br>
           Trạng thái hiện tại của dịch vụ là <b style="color:orange">Chờ kiểm tra </b><br>
           Nội dung(nếu có): Lưu ý mỗi sinh viên sẽ giới hạn 3 lần được hỗ trợ tìm nơi thực tập từ phòng quan hệ doanh nghiệp
       </p>
