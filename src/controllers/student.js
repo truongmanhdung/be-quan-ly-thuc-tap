@@ -232,7 +232,7 @@ export const updateReviewerStudent = async (req, res) => {
       },
       { multi: true }
     );
-    res.status(200).json(data);
+    res.status(200).json({listIdStudent, email});
   } catch (error) {
     console.log(error);
   }
