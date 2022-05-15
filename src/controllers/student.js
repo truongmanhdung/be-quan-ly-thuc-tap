@@ -19,6 +19,7 @@ export const listStudent = async (req, res) => {
         await Student.find(req.query)
           .populate("campus_id")
           .populate("smester_id")
+          .populate('business')
           .skip(skipNumber)
           .limit(current)
           .sort({ statusCheck: 1 })
@@ -48,7 +49,8 @@ export const listStudent = async (req, res) => {
     } else {
       const listStudent = await Student.find({})
         .populate("campus_id")
-        .populate("smester_id");
+        .populate("smester_id")
+        .populate('business')
       res.status(200).json({
         total: listStudent.length,
         list: listStudent,
@@ -61,6 +63,7 @@ export const listStudent = async (req, res) => {
 
 //updateStudent
 export const updateStudent = async (req, res) => {
+
   try {
     const student = await Student.findOneAndUpdate(
       { id: req.params.id },
@@ -78,13 +81,15 @@ export const removeStudent = async (req, res) => {
     const student = await Student.findOneAndDelete({ id: req.params.id });
     res.json(student);
   } catch (error) {
-    console.log("Lỗi r");
+    res.json("lỗi")
   }
 };
 
 //readOneStudent
 export const readOneStudent = async (req, res) => {
-  const student = await Student.findOne({ mssv: req.params.id }).exec();
+  const student = await Student.findOne({ mssv: req.params.id }).populate("campus_id")
+  .populate("smester_id")
+  .populate('business').exec();
   res.json(student);
 };
 
@@ -161,6 +166,8 @@ export const insertStudent = async (req, res) => {
 
       await Student.find({ smester_id })
         .populate("campus_id")
+        .populate("smester_id")
+        .populate('business')
         .limit(20)
         .sort({ statusCheck: 1 })
         .exec((err, doc) => {
@@ -188,6 +195,7 @@ export const insertStudent = async (req, res) => {
       await Student.find({ smester_id })
         .populate("campus_id")
         .populate("smester_id")
+        .populate('business')
         .limit(20)
         .sort({ statusCheck: 1 })
         .exec((err, doc) => {
@@ -234,7 +242,7 @@ export const updateReviewerStudent = async (req, res) => {
     );
     res.status(200).json({listIdStudent, email});
   } catch (error) {
-    console.log(error);
+    res.json("Lỗi")
   }
 };
 
@@ -491,10 +499,9 @@ export const updateStatusStudent = async (req, res) => {
       `;
       sendMail(dataEmail);
     }
-    // console.log();
     return res.json({ listStudentChangeStatus, status });
   } catch (error) {
-    console.log(error);
+    res.json("Lỗi")
   }
 };
 
@@ -517,7 +524,9 @@ export const listStudentReviewForm = async (req, res) => {
     const listStudentReviewForm = await Student.find({
       CV: { $ne: null },
       statusCheck: 2,
-    });
+    })
+    .populate("smester_id")
+    .populate('business')
     res.status(200).json(listStudentReviewForm);
   } catch (error) {
     res.status(400).json(error);
@@ -532,7 +541,9 @@ export const listStudentReviewCV = async (req, res) => {
       form: null,
       report: null,
       statusCheck: { $in: [0, 1] },
-    });
+    })
+    .populate("smester_id")
+    .populate('business')
     res.status(200).json(listStudentReviewCV);
   } catch (error) {
     res.status(400).json(error);

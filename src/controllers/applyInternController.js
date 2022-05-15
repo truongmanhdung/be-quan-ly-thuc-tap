@@ -19,6 +19,7 @@ export const signUpCVForSupport = async (req, res) => {
     numberEnterprise,
     typeNumber,
     emailEnterprise,
+    business
   } = req.body;
 
   try {
@@ -90,6 +91,7 @@ export const signUpCVForSupport = async (req, res) => {
       position: position,
       phoneNumberCompany: numberEnterprise,
       emailEnterprise: emailEnterprise,
+      business: business
     };
 
     // if (findStudent.statusCheck === 1 && findStudent.support === 0) {
