@@ -41,7 +41,6 @@ setInterval(() => {
       name: `Fall ${y}`,
     }).save()
     time = 0
-    console.log(time, 'dsds');
   }
 }, 86400000)
 

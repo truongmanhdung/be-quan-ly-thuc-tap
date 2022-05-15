@@ -1,133 +1,92 @@
-import business from "../models/business";
-const ObjectId = require("mongodb").ObjectID;
+import business, { insertMany } from "../models/business";
 
 //insertBusiness
 export const insertBusiness = async (req, res) => {
-  console.log(req.body);
-  const { data, smester_id } = req.body;
   try {
-    const checkBusiness = await business.find({}).limit(3);
-
-    if (checkBusiness.length > 0) {
-      const listBusiness = await business.find({ smester_id });
-      if (listBusiness.length === 0) {
-        await business.insertMany(data);
+     await business.insertMany(req.body)
+      await business.find(req.query)
+    .populate("campus_id")
+    .populate("smester_id").sort({createdAt: -1})
+    .exec((err, doc) => {
+      if (err) {
+        res.status(400).json(err);
       } else {
-        const listBS = [];
-        listBusiness.forEach((item) => {
-          listBS.push(item.mssv);
-        });
-        const listNew = [];
-        await data.forEach((item) => {
-          listNew.push(item.mssv);
-        });
-
-        await business.updateMany(
-          { smester_id },
-          {
-            $set: {
-              checkUpdate: false,
-              checkMulti: false,
-            },
-          },
-          { multi: true }
-        );
-
-        await business.updateMany(
-          { $and: [{ mssv: { $in: listNew } }, { smester_id }] },
-          {
-            $set: {
-              checkUpdate: true,
-              checkMulti: true,
-            },
-          },
-          { multi: true }
-        );
-
-        await business.updateMany(
-          { $and: [{ checkUpdate: false }, { smester_id }] },
-          {
-            $set: {
-              checkUpdate: true,
-              checkMulti: true,
-            },
-          },
-          { multi: true }
-        );
-
-        await business.insertMany(data);
-
-        await business.updateMany(
-          { $and: [{ mssv: { $nin: listBS } }, { smester_id }] },
-          {
-            $set: {
-              checkMulti: true,
-            },
-          },
-          { multi: true }
-        );
-
-        await business.deleteMany({
-          $and: [{ checkMulti: false }, { smester_id }],
-        });
+        business.find(req.query)
+          .countDocuments({})
+          .exec((count_error, count) => {
+            if (err) {
+              res.json(count_error);
+              return;
+            } else {
+              res.status(200).json({
+                total: count,
+                list: doc,
+              });
+              return;
+            }
+          });
       }
-
-      await business
-        .find({ smester_id })
-        .limit(20)
-        .exec((err, doc) => {
-          if (err) {
-            res.status(400).json(err);
-          } else {
-            business
-              .find({ smester_id })
-              .countDocuments({})
-              .exec((count_error, count) => {
-                if (err) {
-                  res.json(count_error);
-                  return;
-                } else {
-                  res.status(200).json({
-                    total: count,
-                    list: doc,
-                  });
-                  return;
-                }
-              });
-          }
-        });
-    } else {
-      await business.insertMany(req.body.data);
-      await business
-        .find({ smester_id })
-        .populate("smester_id")
-        .limit(20)
-        .exec((err, doc) => {
-          if (err) {
-            res.status(400).json(err);
-          } else {
-            business
-              .find({ smester_id })
-              .countDocuments({})
-              .exec((count_error, count) => {
-                if (err) {
-                  res.json(count_error);
-                  return;
-                } else {
-                  res.status(200).json({
-                    total: count,
-                    list: doc,
-                  });
-                  return;
-                }
-              });
-          }
-        });
-    }
+    });
   } catch (error) {
     res.status(400).json({
       error: "Create business failed",
     });
     return;
+  }
+};
+
+
+export const listBusiness = async (req, res) => {
+  const { limit, page } = req.query;
+  try {
+    if (page && limit) {
+      //getPage
+      let perPage = parseInt(page);
+      let current = parseInt(limit);
+      if (perPage < 1 || perPage == undefined || current == undefined) {
+        perPage = 1;
+        current = 9;
+      }
+      const skipNumber = (perPage - 1) * current;
+      try {
+        await business.find(req.query)
+          .populate("campus_id")
+          .populate("smester_id")
+          .skip(skipNumber)
+          .limit(current)
+          .exec((err, doc) => {
+            if (err) {
+              res.status(400).json(err);
+            } else {
+              business.find(req.query)
+                .countDocuments({})
+                .exec((count_error, count) => {
+                  if (err) {
+                    res.json(count_error);
+                    return;
+                  } else {
+                    res.status(200).json({
+                      total: count,
+                      list: doc,
+                    });
+                    return;
+                  }
+                });
+            }
+          });
+      } catch (error) {
+        res.status(400).json(error);
+      }
+    } else {
+      const listBusiness = await business.find({})
+        .populate("campus_id")
+        .populate("smester_id");
+      res.status(200).json({
+        total: listBusiness.length,
+        list: listBusiness,
+      });
+    }
+  } catch (error) {
+    res.status(500).json(error);
   }
 };

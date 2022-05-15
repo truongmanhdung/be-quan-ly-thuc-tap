@@ -61,6 +61,11 @@ const studentSchema = mongoose.Schema(
       type: ObjectId,
       ref: "Cumpus",
     },
+    business: {
+      type: ObjectId,
+      ref: "Business",
+      default: null
+    },
     smester_id: {
       type: ObjectId,
       ref: "Semester",

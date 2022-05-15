@@ -32,10 +32,8 @@ export const sendMailUser = async (req, res) => {
     };
     transporter.sendMail(mainOptions, function (err, info) {
       if (err) {
-        console.log(err);
         res.status(500).send({ message: err });
       } else {
-        console.log("Message sent: " + info.response);
         res
           .status(200)
           .send({ message: "Một email đã được gửi đến tài khoản của bạn" }); //Gửi thông báo đến người dùng
@@ -57,10 +55,8 @@ export const sendMail = async (data) => {
     };
     transporter.sendMail(mainOptions, function (err, info) {
       if (err) {
-        console.log(err);
         res.send({ message: err });
       } else {
-        console.log("Message sent: " + info.response);
         res
           .status(200)
           .send({ message: "Một email đã được gửi đến tài khoản của bạn" }); //Gửi thông báo đến người dùng

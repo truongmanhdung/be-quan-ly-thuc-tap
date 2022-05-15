@@ -5,7 +5,6 @@ export const getSemester = async (req, res) => {
         const data = await semester.find().sort({createdAt: -1}).exec()
         res.status(200).json(data)
     } catch (error) {
-        console.log(error);
         res.status(400).json(error)
     }
         
@@ -15,6 +14,6 @@ export const insertSemester = async (req,res) => {
         const data = await new semester(req.body).save()
         res.status(200).json(data)
     } catch (error) {
-        console.log(error);
+        res.json("Loi")
     }
 }
