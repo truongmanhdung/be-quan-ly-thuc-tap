@@ -1,19 +1,53 @@
-import semester from "../models/semester"
-
+import semester from "../models/semester";
 export const getSemester = async (req, res) => {
-    try {
-        const data = await semester.find().sort({createdAt: -1}).exec()
-        res.status(200).json(data)
-    } catch (error) {
-        res.status(400).json(error)
+  try {
+    const data = await semester.find();
+    res.status(200).json(data);
+  } catch (error) {
+    console.log(error);
+    res.status(400).json(error);
+  }
+};
+
+export const updateSemester = async (req, res) => {
+  try {
+    const query = { _id: req.body.id };
+
+    const find = await semester.findOne(query);
+    const reqName = req.body.name.toLowerCase();
+    const findName = await semester.findOne({
+      name: reqName,
+    });
+
+    console.log("findName: ", findName);
+    console.log("reqName: ", reqName);
+    if (findName) {
+      return res.status(500).send({
+        message: "Tên kỳ đã tồn tại, vui lòng đặt tên khác!",
+      });
     }
-        
-}
-export const insertSemester = async (req,res) => {
-    try {
-        const data = await new semester(req.body).save()
-        res.status(200).json(data)
-    } catch (error) {
-        res.json("Loi")
+
+    if (find) {
+      const data = await semester.findOneAndUpdate(query, req.body);
+      res.status(200).json(data);
+    } else {
+      res.status(500).json({
+        message: "Kỳ không tồn tại!",
+      });
     }
-}
+  } catch (error) {
+    res.status(500).json({
+      message: "Có lỗi vui lòng thử lại sau",
+    });
+  }
+};
+
+export const insertSemester = async (req, res) => {
+  try {
+    const data = await new semester(req.body).save();
+    // console.log(req.body);
+    res.status(200).json(data);
+  } catch (error) {
+    console.log(error);
+  }
+};
