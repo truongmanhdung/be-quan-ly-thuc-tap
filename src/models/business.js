@@ -10,6 +10,10 @@ const businessSchema = mongoose.Schema({
     type: String,
     require: true,
   },
+  majors: {
+    type: String,
+    require: true
+  },
   amount: {
     type: Number,
     default: 0,
@@ -20,6 +24,10 @@ const businessSchema = mongoose.Schema({
   smester_id: {
     type: ObjectId,
     ref: "Semester",
+  },
+  campus_id: {
+    type: ObjectId,
+    ref: "Cumpus",
   },
   status: {
     type: Number,

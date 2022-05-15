@@ -34,6 +34,8 @@ export const listReviewer = async (req, res) => {
           ],
         })
           .populate("campus_id")
+          .populate("smester_id")
+          .populate('business')
           .skip(skipNumber)
           .limit(current)
           .sort({ createdAt: -1, CV: -1 })
@@ -99,7 +101,9 @@ export const listReviewer = async (req, res) => {
             support: { $ne: 0 },
           },
         ],
-      }).populate("campus_id");
+      }).populate("campus_id")
+      .populate("smester_id")
+      .populate('business')
       res.status(200).json({
         total: listReview.length,
         list: listReview,
@@ -126,6 +130,8 @@ export const listReviewForm = async (req, res) => {
         $and: [req.query, { statusCheck: { $in: [2, 4, 5] } }],
       })
         .populate("campus_id")
+        .populate("smester_id")
+        .populate('business')
         .skip(skipNumber)
         .limit(current)
         .sort({ createdAt: -1, CV: -1 })
@@ -180,6 +186,8 @@ export const reviewReport = async (req, res) => {
         ],
       })
         .populate("campus_id")
+        .populate("smester_id")
+        .populate('business')
         .skip(skipNumber)
         .limit(current)
         .sort({ createdAt: -1, CV: -1 })

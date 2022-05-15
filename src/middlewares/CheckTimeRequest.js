@@ -10,7 +10,6 @@ export const checkRequestTime = async (req, res, next) => {
     if (dateNow > startTime && dateNow < endTime) {
       next();
     } else {
-      console.log("Chạy vào else");
       return res.status(400).json({
         message: "Hết thời gian nộp form",
       });

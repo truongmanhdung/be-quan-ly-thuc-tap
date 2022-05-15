@@ -9,17 +9,6 @@ export const getSemester = async (req, res) => {
   }
 };
 
-// export const getSemesterById = async (req, res) => {
-//   try {
-//     const id = req.body.id;
-//     const data = await semester.findOne({ _id: id });
-//     res.status(200).json(data);
-//   } catch (error) {
-//     console.log(error);
-//     res.status(400).json(error);
-//   }
-// };
-
 export const updateSemester = async (req, res) => {
   try {
     const query = { _id: req.body.id };
