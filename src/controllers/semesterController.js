@@ -9,6 +9,21 @@ export const getSemester = async (req, res) => {
   }
 };
 
+export const getDefaultSemester = async (req, res) => {
+  try {
+    const data = await semester.findOne({
+      $and: [
+        { start_time: { $lte: new Date() } },
+        { date_time: { $gte: new Date() } },
+      ],
+    });
+    res.status(200).json(data);
+  } catch (error) {
+    console.log(error);
+    res.status(400).json(error);
+  }
+};
+
 export const updateSemester = async (req, res) => {
   try {
     const query = { _id: req.body.id };
