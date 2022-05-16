@@ -93,6 +93,14 @@ export const readOneStudent = async (req, res) => {
   res.json(student);
 };
 
+
+export const readStudentById = async (req, res) => {
+  const student = await Student.findOne({ _id: req.params.id }).populate("campus_id")
+  .populate("smester_id")
+  .populate('business').exec();
+  res.json(student);
+};
+
 //insertStudent
 export const insertStudent = async (req, res) => {
   const { data, smester_id } = req.body;
