@@ -10,12 +10,14 @@ import {
   updateReviewerStudent,
   updateStatusStudent,
   updateStudent,
+  readStudentById
 } from "../controllers/student";
 import { authorizeRoles, isAuthenticateUser } from "../middlewares/CheckAuth";
 import student from "../models/student";
 router.get("/student", isAuthenticateUser, listStudent);
 router.get("/student/reviewcv", isAuthenticateUser, listStudentReviewCV);
 router.get("/student/:id", isAuthenticateUser, readOneStudent);
+router.get('/student/manager/:id', readStudentById)
 router.post(
   "/student",
   isAuthenticateUser,
