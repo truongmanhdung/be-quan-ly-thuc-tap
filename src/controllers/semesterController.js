@@ -27,15 +27,13 @@ export const getDefaultSemester = async (req, res) => {
 export const updateSemester = async (req, res) => {
   try {
     const query = { _id: req.body.id };
-
     const find = await semester.findOne(query);
     const reqName = req.body.name.toLowerCase();
+
     const findName = await semester.findOne({
       name: reqName,
     });
 
-    console.log("findName: ", findName);
-    console.log("reqName: ", reqName);
     if (findName) {
       return res.status(500).send({
         message: "Tên kỳ đã tồn tại, vui lòng đặt tên khác!",
@@ -59,8 +57,17 @@ export const updateSemester = async (req, res) => {
 
 export const insertSemester = async (req, res) => {
   try {
+    const reqName = req.body.name.toLowerCase();
+    const findName = await semester.findOne({
+      name: reqName,
+    });
+
+    if (findName) {
+      return res.status(500).send({
+        message: "Tên kỳ đã tồn tại, vui lòng đặt tên khác!",
+      });
+    }
     const data = await new semester(req.body).save();
-    // console.log(req.body);
     res.status(200).json(data);
   } catch (error) {
     console.log(error);
