@@ -55,7 +55,7 @@ export const sendMail = async (data) => {
     };
     transporter.sendMail(mainOptions, function (err, info) {
       if (err) {
-        res.send({ message: err });
+        res.status(500).send({ message: "Có lỗi" });
       } else {
         res
           .status(200)

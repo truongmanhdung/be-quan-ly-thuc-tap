@@ -19,7 +19,6 @@ export const signUpCVForSupport = async (req, res) => {
     numberEnterprise,
     typeNumber,
     emailEnterprise,
-    business
   } = req.body;
 
   try {
@@ -91,7 +90,6 @@ export const signUpCVForSupport = async (req, res) => {
       position: position,
       phoneNumberCompany: numberEnterprise,
       emailEnterprise: emailEnterprise,
-      business: business
     };
 
     // if (findStudent.statusCheck === 1 && findStudent.support === 0) {
@@ -99,13 +97,15 @@ export const signUpCVForSupport = async (req, res) => {
     //     .status(500)
     //     .send({ message: "Thông tin tự đăng ký người dùng không được sửa" });
     // }
-
+    console.log("findStudent: ", findStudent);
     if (findStudent.statusCheck === 1 && findStudent.support === 1) {
       //Ho tro
       update.note = null;
-      await Student.findOneAndUpdate(filter, update, {
+      const rptest = await Student.findOneAndUpdate(filter, update, {
         new: true,
       });
+
+      console.log("rptest: ", rptest);
 
       dataEmail.mail = email;
       dataEmail.subject = "Sửa thông tin hỗ trợ thực tập thành công";
