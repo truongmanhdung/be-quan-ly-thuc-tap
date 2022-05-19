@@ -97,7 +97,7 @@ export const signUpCVForSupport = async (req, res) => {
     //     .status(500)
     //     .send({ message: "Thông tin tự đăng ký người dùng không được sửa" });
     // }
-
+    console.log("findStudent: ", findStudent);
     if (findStudent.statusCheck === 1 && findStudent.support === 1) {
       //Ho tro
       update.note = null;

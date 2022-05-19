@@ -11,16 +11,18 @@ export const report = async (req, res) => {
     mssv,
     email,
     report,
+    business,
     nameCompany,
     resultScore,
   } = req.body;
   const filter = { mssv: mssv, email: email };
   const findStudent = await Student.findOne(filter);
+  console.log("filter: ", filter);
+  console.log("findStudent: ", findStudent);
 
   const conFigTime = await configTime.findOne({ typeNumber: typeNumber });
   const timeNow = new Date().getTime();
   const check = conFigTime.endTime > timeNow;
-
   const startTimeReport = moment(findStudent.internshipTime).valueOf();
   const endTimeReport = moment(EndInternShipTime).valueOf();
   const checkTimeReport = endTimeReport > startTimeReport;
@@ -48,14 +50,26 @@ export const report = async (req, res) => {
       res.status(404).send(err);
     }
 
-    const nameCompanyD = findStudent.nameCompany === nameCompany;
+    if (nameCompany) {
+      const nameCompanyD = findStudent.nameCompany === nameCompany;
+      if (!nameCompanyD) {
+        const err = {
+          message: "Tên công ty không khớp với biểu mẫu!",
+        };
+        res.status(500).send(err);
+        return;
+      }
+    }
 
-    if (!nameCompanyD) {
-      const err = {
-        message: "Tên công ty không khớp với biểu mẫu!",
-      };
-      res.status(500).send(err);
-      return;
+    if (business) {
+      const nameBusiness = findStudent.business === business;
+      if (!nameBusiness) {
+        const err = {
+          message: "Tên công ty không khớp với biểu mẫu!",
+        };
+        res.status(500).send(err);
+        return;
+      }
     }
 
     const update = {
@@ -219,8 +233,9 @@ export const form = async (req, res) => {
     }
 
     if (findStudent.statusCheck === 5) {
+      console.log("update: ", update);
       update.note = null;
-      const result = await Student.findOneAndUpdate(filter, update, {
+      await Student.findOneAndUpdate(filter, update, {
         new: true,
       });
 
@@ -258,7 +273,7 @@ export const form = async (req, res) => {
       res.status(200).send({ message: "Sửa biên bản thành công" });
     }
     if (findStudent.statusCheck === 2) {
-      const result = await Student.findOneAndUpdate(filter, update, {
+      await Student.findOneAndUpdate(filter, update, {
         new: true,
       });
       dataEmail.mail = email;
