@@ -19,7 +19,7 @@ export const listStudent = async (req, res) => {
         await Student.find(req.query)
           .populate("campus_id")
           .populate("smester_id")
-          .populate('business')
+          .populate("business")
           .skip(skipNumber)
           .limit(current)
           .sort({ statusCheck: 1 })
@@ -50,7 +50,7 @@ export const listStudent = async (req, res) => {
       const listStudent = await Student.find({})
         .populate("campus_id")
         .populate("smester_id")
-        .populate('business')
+        .populate("business");
       res.status(200).json({
         total: listStudent.length,
         list: listStudent,
@@ -63,7 +63,6 @@ export const listStudent = async (req, res) => {
 
 //updateStudent
 export const updateStudent = async (req, res) => {
-
   try {
     const student = await Student.findOneAndUpdate(
       { id: req.params.id },
@@ -81,23 +80,26 @@ export const removeStudent = async (req, res) => {
     const student = await Student.findOneAndDelete({ id: req.params.id });
     res.json(student);
   } catch (error) {
-    res.json("lỗi")
+    res.json("lỗi");
   }
 };
 
 //readOneStudent
 export const readOneStudent = async (req, res) => {
-  const student = await Student.findOne({ mssv: req.params.id }).populate("campus_id")
-  .populate("smester_id")
-  .populate('business').exec();
+  const student = await Student.findOne({ mssv: req.params.id })
+    .populate("campus_id")
+    .populate("smester_id")
+    .populate("business")
+    .exec();
   res.json(student);
 };
 
-
 export const readStudentById = async (req, res) => {
-  const student = await Student.findOne({ _id: req.params.id }).populate("campus_id")
-  .populate("smester_id")
-  .populate('business').exec();
+  const student = await Student.findOne({ _id: req.params.id })
+    .populate("campus_id")
+    .populate("smester_id")
+    .populate("business")
+    .exec();
   res.json(student);
 };
 
@@ -175,7 +177,7 @@ export const insertStudent = async (req, res) => {
       await Student.find({ smester_id })
         .populate("campus_id")
         .populate("smester_id")
-        .populate('business')
+        .populate("business")
         .limit(20)
         .sort({ statusCheck: 1 })
         .exec((err, doc) => {
@@ -203,7 +205,7 @@ export const insertStudent = async (req, res) => {
       await Student.find({ smester_id })
         .populate("campus_id")
         .populate("smester_id")
-        .populate('business')
+        .populate("business")
         .limit(20)
         .sort({ statusCheck: 1 })
         .exec((err, doc) => {
@@ -248,9 +250,9 @@ export const updateReviewerStudent = async (req, res) => {
       },
       { multi: true }
     );
-    res.status(200).json({listIdStudent, email});
+    res.status(200).json({ listIdStudent, email });
   } catch (error) {
-    res.json("Lỗi")
+    res.json("Lỗi");
   }
 };
 
@@ -287,6 +289,7 @@ export const updateStatusStudent = async (req, res) => {
       note: textNote,
     });
     if (status === 1) {
+      console.log("Gửi  ail sửa CV");
       dataEmail.subject = "Thông báo sửa CV thực tập doanh nghiệp";
       dataEmail.content = `
       <div style="margin:auto;background-color:#ffffff;width:500px;padding:10px;border-top:2px solid #e37c41">
@@ -509,7 +512,7 @@ export const updateStatusStudent = async (req, res) => {
     }
     return res.json({ listStudentChangeStatus, status });
   } catch (error) {
-    res.json("Lỗi")
+    res.json("Lỗi");
   }
 };
 
@@ -533,8 +536,8 @@ export const listStudentReviewForm = async (req, res) => {
       CV: { $ne: null },
       statusCheck: 2,
     })
-    .populate("smester_id")
-    .populate('business')
+      .populate("smester_id")
+      .populate("business");
     res.status(200).json(listStudentReviewForm);
   } catch (error) {
     res.status(400).json(error);
@@ -550,8 +553,8 @@ export const listStudentReviewCV = async (req, res) => {
       report: null,
       statusCheck: { $in: [0, 1] },
     })
-    .populate("smester_id")
-    .populate('business')
+      .populate("smester_id")
+      .populate("business");
     res.status(200).json(listStudentReviewCV);
   } catch (error) {
     res.status(400).json(error);
