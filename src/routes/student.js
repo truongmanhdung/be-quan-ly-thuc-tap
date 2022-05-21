@@ -10,7 +10,8 @@ import {
   updateReviewerStudent,
   updateStatusStudent,
   updateStudent,
-  readStudentById
+  readStudentById,
+  updateBusinessStudent
 } from "../controllers/student";
 import { authorizeRoles, isAuthenticateUser } from "../middlewares/CheckAuth";
 import student from "../models/student";
@@ -29,6 +30,13 @@ router.patch(
   isAuthenticateUser,
   authorizeRoles("manager"),
   updateReviewerStudent
+);
+
+router.patch(
+  "/student/business",
+  isAuthenticateUser,
+  authorizeRoles("manager"),
+  updateBusinessStudent
 );
 router.patch(
   "/student/status",

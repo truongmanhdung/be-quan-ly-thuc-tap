@@ -2,7 +2,13 @@ import semester from "../models/semester";
 export const getSemester = async (req, res) => {
   try {
     const data = await semester.find();
-    res.status(200).json(data);
+    const dataDefault = await semester.findOne({
+      $and: [
+        { start_time: { $lte: new Date() } },
+        { date_time: { $gte: new Date() } },
+      ],
+    });
+    res.status(200).json({defaultSemester: dataDefault, listSemesters: data});
   } catch (error) {
     console.log(error);
     res.status(400).json(error);
