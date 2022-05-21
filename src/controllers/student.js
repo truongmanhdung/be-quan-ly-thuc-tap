@@ -256,6 +256,24 @@ export const updateReviewerStudent = async (req, res) => {
   }
 };
 
+export const updateBusinessStudent = async (req, res) => {
+  const { listIdStudent, business } = req.body;
+  try {
+    const data = await Student.updateMany(
+      { _id: { $in: listIdStudent } },
+      {
+        $set: {
+          business: business,
+        },
+      },
+      { multi: true }
+    );
+    res.status(200).json({ listIdStudent, business });
+  } catch (error) {
+    res.json("Lỗi");
+  }
+};
+
 //updateStatusStudent
 export const updateStatusStudent = async (req, res) => {
   console.log(req.body);
