@@ -17,9 +17,6 @@ export const report = async (req, res) => {
   } = req.body;
   const filter = { mssv: mssv, email: email };
   const findStudent = await Student.findOne(filter);
-  console.log("filter: ", filter);
-  console.log("findStudent: ", findStudent);
-
   const conFigTime = await configTime.findOne({ typeNumber: typeNumber });
   const timeNow = new Date().getTime();
   const check = conFigTime.endTime > timeNow;
@@ -233,7 +230,6 @@ export const form = async (req, res) => {
     }
 
     if (findStudent.statusCheck === 5) {
-      console.log("update: ", update);
       update.note = null;
       await Student.findOneAndUpdate(filter, update, {
         new: true,
