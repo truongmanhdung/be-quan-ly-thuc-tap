@@ -64,7 +64,7 @@ const studentSchema = mongoose.Schema(
     business: {
       type: ObjectId,
       ref: "Business",
-      default: null
+      default: null,
     },
     smester_id: {
       type: ObjectId,
@@ -128,9 +128,9 @@ const studentSchema = mongoose.Schema(
       type: Number,
       default: null,
     },
-    note:{
+    note: {
       type: String,
-      default: null
+      default: null,
     },
     resultScore: {
       type: Number,

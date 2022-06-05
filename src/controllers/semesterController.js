@@ -8,7 +8,7 @@ export const getSemester = async (req, res) => {
         { date_time: { $gte: new Date() } },
       ],
     });
-    res.status(200).json({defaultSemester: dataDefault, listSemesters: data});
+    res.status(200).json({ defaultSemester: dataDefault, listSemesters: data });
   } catch (error) {
     console.log(error);
     res.status(400).json(error);
