@@ -1,12 +1,11 @@
 import narrow from "../models/narrow_specialization";
 
 export const getNarrow = async (req, res) => {
-  const data = await narrow.find().populate("majors_id");
-  res.status(200).json({ listNarrow: data });
+  const data = await narrow.find().populate("id_majors");
+  res.status(200).json(data);
 };
 export const insertNarrow = async (req, res) => {
   try {
-    console.log(req);
     const reqName = req.body.name.toLowerCase();
     const findName = await narrow.findOne({
       name: reqName,
@@ -30,7 +29,6 @@ export const updateNarrow = async (req, res) => {
     const find = await narrow.findOne(query);
     const findNarrow = await narrow.find();
     const reqName = req.body.name.toLowerCase();
-    console.log(findNarrow);
     const findName = await narrow.findOne({
       name: reqName,
     });

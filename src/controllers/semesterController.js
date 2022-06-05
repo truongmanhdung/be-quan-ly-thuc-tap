@@ -10,7 +10,6 @@ export const getSemester = async (req, res) => {
     });
     res.status(200).json({ defaultSemester: dataDefault, listSemesters: data });
   } catch (error) {
-    console.log(error);
     res.status(400).json(error);
   }
 };
@@ -25,7 +24,6 @@ export const getDefaultSemester = async (req, res) => {
     });
     res.status(200).json(data);
   } catch (error) {
-    console.log(error);
     res.status(400).json(error);
   }
 };

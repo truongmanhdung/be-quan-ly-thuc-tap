@@ -15,7 +15,8 @@ const studentSchema = mongoose.Schema(
       type: String,
     },
     majors: {
-      type: String,
+      type: ObjectId,
+      ref: 'Major'
     },
     email: {
       type: String,

@@ -41,7 +41,7 @@ export const createMajor = async(req,res) =>{
 
 export const updateMajor = async(req,res) =>{
   try {
-    const major = await Major.findByIdAndUpdate(req.params.id,req.body)
+    const major = await Major.findOneAndUpdate(req.params.id,req.body,{new: true})
     res.status(200).json({
       major,
       message:"Sửa ngành học thành công"
@@ -58,6 +58,7 @@ export const removeMajor = async(req,res) =>{
   try {
     const major = await Major.findByIdAndRemove(req.params.id)
     res.status(200).json({
+      major,
       message:"Xóa ngành học thành công"
     })
   } catch (error) {

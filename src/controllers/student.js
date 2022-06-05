@@ -20,6 +20,7 @@ export const listStudent = async (req, res) => {
           .populate("campus_id")
           .populate("smester_id")
           .populate("business")
+          .populate('majors')
           .skip(skipNumber)
           .limit(current)
           .sort({ statusCheck: 1 })
@@ -276,7 +277,6 @@ export const updateBusinessStudent = async (req, res) => {
 
 //updateStatusStudent
 export const updateStatusStudent = async (req, res) => {
-  console.log(req.body);
   const { listIdStudent, status, listEmailStudent, textNote } = req.body;
   const dataEmail = {};
   const listIdStudents = await listIdStudent.map((id) => ObjectId(id));
@@ -307,10 +307,8 @@ export const updateStatusStudent = async (req, res) => {
       statusCheck: status,
       note: textNote,
     });
-    console.log("Status: ", status);
-    console.log("Status: ", dataEmail);
+
     if (status === 1) {
-      console.log("Gửi  ail sửa CV");
       dataEmail.subject = "Thông báo sửa CV thực tập doanh nghiệp";
       dataEmail.content = `
       <div style="margin:auto;background-color:#ffffff;width:500px;padding:10px;border-top:2px solid #e37c41">
