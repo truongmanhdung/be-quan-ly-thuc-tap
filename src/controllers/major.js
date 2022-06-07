@@ -40,8 +40,10 @@ export const createMajor = async(req,res) =>{
 }
 
 export const updateMajor = async(req,res) =>{
+  console.log(req.body);
   try {
-    const major = await Major.findOneAndUpdate(req.params.id,req.body,{new: true})
+    const major = await Major.findByIdAndUpdate(req.params.id,req.body,{new: true})
+    console.log(major);
     res.status(200).json({
       major,
       message:"Sửa ngành học thành công"
