@@ -22,6 +22,8 @@ export const loginGoogle = async (req, res) => {
       email: email,
       campus_id: campusId,
     });
+    console.log(campusId);
+    console.log(email);
     const student = await Student.findOne({
       email: email,
       campus_id: campusId,

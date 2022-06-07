@@ -18,6 +18,10 @@ const studentSchema = mongoose.Schema(
       type: ObjectId,
       ref: 'Major'
     },
+    narrow:{
+      type: ObjectId,
+      ref: 'NarrowSpecialization'
+    },
     email: {
       type: String,
       require: true,

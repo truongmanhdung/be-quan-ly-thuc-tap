@@ -10,7 +10,7 @@ export const insertNarrow = async (req, res) => {
     const findName = await narrow.findOne({
       name: reqName,
     });
-
+    
     if (findName) {
       return res.status(500).send({
         message: "Tên chuyên ngành hẹp đã tồn tại, vui lòng đặt tên khác!",
