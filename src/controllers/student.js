@@ -103,18 +103,19 @@ export const readStudentById = async (req, res) => {
     .populate("campus_id")
     .populate("smester_id")
     .populate("business")
+    .populate('majors')
     .exec();
   res.json(student);
 };
 
 //insertStudent
 export const insertStudent = async (req, res) => {
-  const { data, smester_id } = req.body;
+  const { data, smester_id, majors } = req.body;
   try {
     const checkStudent = await Student.find({}).limit(3);
 
     if (checkStudent.length > 0) {
-      const listMSSV = await Student.find({ smester_id });
+      const listMSSV = await Student.find({ smester_id, majors });
       if (listMSSV.length === 0) {
         await Student.insertMany(data);
       } else {
@@ -128,7 +129,7 @@ export const insertStudent = async (req, res) => {
         });
 
         await Student.updateMany(
-          { smester_id },
+          { smester_id, majors },
           {
             $set: {
               checkUpdate: false,
@@ -139,7 +140,7 @@ export const insertStudent = async (req, res) => {
         );
 
         await Student.updateMany(
-          { $and: [{ mssv: { $in: listNew } }, { smester_id }] },
+          { $and: [{ mssv: { $in: listNew } }, { smester_id, majors }] },
           {
             $set: {
               checkUpdate: true,
@@ -150,7 +151,7 @@ export const insertStudent = async (req, res) => {
         );
 
         await Student.updateMany(
-          { $and: [{ checkUpdate: false }, { smester_id }] },
+          { $and: [{ checkUpdate: false }, { smester_id, majors }] },
           {
             $set: {
               statusCheck: 3,
@@ -164,7 +165,7 @@ export const insertStudent = async (req, res) => {
         await Student.insertMany(data);
 
         await Student.updateMany(
-          { $and: [{ mssv: { $nin: listMS } }, { smester_id }] },
+          { $and: [{ mssv: { $nin: listMS } }, { smester_id, majors }] },
           {
             $set: {
               checkMulti: true,
@@ -174,7 +175,7 @@ export const insertStudent = async (req, res) => {
         );
 
         await Student.deleteMany({
-          $and: [{ checkMulti: false }, { smester_id }],
+          $and: [{ checkMulti: false }, { smester_id, majors }],
         });
       }
 
@@ -182,13 +183,14 @@ export const insertStudent = async (req, res) => {
         .populate("campus_id")
         .populate("smester_id")
         .populate("business")
+        .populate('majors')
         .limit(20)
         .sort({ statusCheck: 1 })
         .exec((err, doc) => {
           if (err) {
             res.status(400).json(err);
           } else {
-            Student.find({ smester_id })
+            Student.find({ smester_id, majors })
               .countDocuments({})
               .exec((count_error, count) => {
                 if (err) {
@@ -210,13 +212,14 @@ export const insertStudent = async (req, res) => {
         .populate("campus_id")
         .populate("smester_id")
         .populate("business")
+        .populate('majors')
         .limit(20)
         .sort({ statusCheck: 1 })
         .exec((err, doc) => {
           if (err) {
             res.status(400).json(err);
           } else {
-            Student.find({ smester_id })
+            Student.find({ smester_id, majors })
               .countDocuments({})
               .exec((count_error, count) => {
                 if (err) {
