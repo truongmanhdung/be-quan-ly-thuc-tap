@@ -20,7 +20,7 @@ export const listStudent = async (req, res) => {
           .populate("campus_id")
           .populate("smester_id")
           .populate("business")
-          .populate('majors')
+          .populate("majors")
           .skip(skipNumber)
           .limit(current)
           .sort({ statusCheck: 1 })
@@ -52,7 +52,7 @@ export const listStudent = async (req, res) => {
         .populate("campus_id")
         .populate("smester_id")
         .populate("business")
-    .populate('majors')
+        .populate("majors");
 
       res.status(200).json({
         total: listStudent.length,
@@ -93,7 +93,7 @@ export const readOneStudent = async (req, res) => {
     .populate("campus_id")
     .populate("smester_id")
     .populate("business")
-    .populate('majors')
+    .populate("majors")
     .exec();
   res.json(student);
 };
@@ -103,7 +103,7 @@ export const readStudentById = async (req, res) => {
     .populate("campus_id")
     .populate("smester_id")
     .populate("business")
-    .populate('majors')
+    .populate("majors")
     .exec();
   res.json(student);
 };
@@ -183,7 +183,7 @@ export const insertStudent = async (req, res) => {
         .populate("campus_id")
         .populate("smester_id")
         .populate("business")
-        .populate('majors')
+        .populate("majors")
         .limit(20)
         .sort({ statusCheck: 1 })
         .exec((err, doc) => {
@@ -212,7 +212,7 @@ export const insertStudent = async (req, res) => {
         .populate("campus_id")
         .populate("smester_id")
         .populate("business")
-        .populate('majors')
+        .populate("majors")
         .limit(20)
         .sort({ statusCheck: 1 })
         .exec((err, doc) => {
@@ -563,7 +563,7 @@ export const listStudentReviewForm = async (req, res) => {
     })
       .populate("smester_id")
       .populate("business")
-      .populate('majors')
+      .populate("majors");
 
     res.status(200).json(listStudentReviewForm);
   } catch (error) {
@@ -582,7 +582,7 @@ export const listStudentReviewCV = async (req, res) => {
     })
       .populate("smester_id")
       .populate("business")
-    .populate('majors')
+      .populate("majors");
 
     res.status(200).json(listStudentReviewCV);
   } catch (error) {
