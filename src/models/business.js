@@ -11,8 +11,8 @@ const businessSchema = mongoose.Schema({
     require: true,
   },
   majors: {
-    type: String,
-    require: true
+    type: ObjectId,
+    ref: 'Major'
   },
   amount: {
     type: Number,
@@ -29,9 +29,14 @@ const businessSchema = mongoose.Schema({
     type: ObjectId,
     ref: "Cumpus",
   },
-  status: {
-    type: Number,
-    default: 0,
+  code_request:{
+    type: String,
+  },
+  request: {
+    type: String
+  },
+  description:{
+    type: String
   },
   createAt: {
     type: Date,
