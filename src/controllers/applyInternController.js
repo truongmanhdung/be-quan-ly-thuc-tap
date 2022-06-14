@@ -1,6 +1,6 @@
 import configTime from "../models/configTime";
 import { sendMail } from "./emailController";
-import Business from '../models/business'
+import Business from "../models/business";
 const Student = require("../models/student");
 export const signUpCVForSupport = async (req, res) => {
   const {
@@ -19,7 +19,7 @@ export const signUpCVForSupport = async (req, res) => {
     numberEnterprise,
     typeNumber,
     emailEnterprise,
-    business
+    business,
   } = req.body;
 
   try {
@@ -91,7 +91,7 @@ export const signUpCVForSupport = async (req, res) => {
       position: position,
       phoneNumberCompany: numberEnterprise,
       emailEnterprise: emailEnterprise,
-      business: business
+      business: business,
     };
 
     // if (findStudent.statusCheck === 1 && findStudent.support === 0) {
@@ -105,7 +105,6 @@ export const signUpCVForSupport = async (req, res) => {
       const rptest = await Student.findOneAndUpdate(filter, update, {
         new: true,
       });
-
 
       dataEmail.mail = email;
       dataEmail.subject = "Sửa thông tin hỗ trợ thực tập thành công";
