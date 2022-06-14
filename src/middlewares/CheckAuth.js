@@ -39,6 +39,7 @@ export const isAuthenticateUser = async (req, res, next) => {
 
 export const authorizeRoles = (roles) => {
   return (req, res, next) => {
+    console.log("req Check Auth: ", req);
     if (!(roles === req.role)) {
       return res.status(403).json({
         message: `Tài khoản quyền :${req.role} không được phép truy cập quyền giáo viên`,
