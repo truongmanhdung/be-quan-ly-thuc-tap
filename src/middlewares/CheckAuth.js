@@ -26,13 +26,16 @@ export const isAuthenticateUser = async (req, res, next) => {
       req.role = manager.role;
       next();
     }
-    if (student) {
+     if (student) {
       req.role = "student";
       next();
     }
-  } catch (error) {
     res.status(401).json({
-      message: "Unauthorized the server responded with a status of 401",
+      msg: "không có quyền truy cập"
+    })
+  } catch (error) {
+    res.json({
+      message: error,
     });
   }
 };
