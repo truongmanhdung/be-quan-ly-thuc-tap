@@ -25,14 +25,14 @@ export const isAuthenticateUser = async (req, res, next) => {
     if (manager) {
       req.role = manager.role;
       next();
-    }
-     if (student) {
+    } else if (student) {
       req.role = "student";
       next();
+    } else {
+      res.status(401).json({
+        msg: "không có quyền truy cập",
+      });
     }
-    res.status(401).json({
-      msg: "không có quyền truy cập"
-    })
   } catch (error) {
     res.json({
       message: error,
