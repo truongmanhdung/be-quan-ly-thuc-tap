@@ -84,7 +84,7 @@ export const listBusiness = async (req, res) => {
         res.status(400).json(error);
       }
     } else {
-      const listBusiness = await business.find({}).populate('campus_id').populate('smester_id').populate("majors");
+      const listBusiness = await business.find(req.query).populate('campus_id').populate('smester_id').populate("majors");
       res.status(200).json({
         total: listBusiness.length,
         list: listBusiness,
