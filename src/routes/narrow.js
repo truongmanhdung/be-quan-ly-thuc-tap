@@ -3,10 +3,29 @@ const {
   insertNarrow,
   updateNarrow,
 } = require("../controllers/narrowSpecializationController");
+const {
+  isAuthenticateUser,
+  authorizeRoles,
+} = require("../middlewares/CheckAuth");
 
 const router = require("express").Router();
 
-router.get("/narrows", getNarrow);
-router.post("/narrows", insertNarrow);
-router.patch("/narrow", updateNarrow);
+router.get(
+  "/narrows",
+  isAuthenticateUser,
+  authorizeRoles("managet"),
+  getNarrow
+);
+router.post(
+  "/narrows",
+  isAuthenticateUser,
+  authorizeRoles("managet"),
+  insertNarrow
+);
+router.patch(
+  "/narrow",
+  isAuthenticateUser,
+  authorizeRoles("managet"),
+  updateNarrow
+);
 module.exports = router;
