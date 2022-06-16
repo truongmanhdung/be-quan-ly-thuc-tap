@@ -6,7 +6,19 @@ const {
 const { checkRequestTime } = require("../middlewares/CheckTimeRequest");
 const router = require("express").Router();
 
-router.patch("/report", isAuthenticateUser, checkRequestTime, report);
-router.patch("/form", isAuthenticateUser, checkRequestTime, form);
+router.patch(
+  "/report",
+  isAuthenticateUser,
+  authorizeRoles("manager"),
+  checkRequestTime,
+  report
+);
+router.patch(
+  "/form",
+  isAuthenticateUser,
+  authorizeRoles("manager"),
+  checkRequestTime,
+  form
+);
 
 module.exports = router;
