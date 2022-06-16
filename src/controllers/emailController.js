@@ -16,6 +16,7 @@ const transporter = nodemailer.createTransport({
     expires: 1484314697598,
   },
 });
+
 export const sendMailUser = async (req, res) => {
   try {
     //Tiến hành gửi mail, nếu có gì đó bạn có thể xử lý trước khi gửi mail
