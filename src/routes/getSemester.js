@@ -13,8 +13,6 @@ const router = require("express").Router();
 
 router.get(
   "/smester",
-  isAuthenticateUser,
-  authorizeRoles("manager"),
   getSemester
 );
 router.post(
@@ -31,8 +29,6 @@ router.patch(
 );
 router.get(
   "/smester/default",
-  isAuthenticateUser,
-  authorizeRoles("manager"),
   getDefaultSemester
 );
 module.exports = router;
