@@ -9,13 +9,13 @@ const router = express.Router();
 router.post(
   "/specialization",
   isAuthenticateUser,
-  authorizeRoles("manager"),
+  authorizeRoles(1),
   createSpecialization
 );
 router.get(
   "/specialization",
   isAuthenticateUser,
-  authorizeRoles("manager"),
+  authorizeRoles(1),
   getListSpecialization
 );
 

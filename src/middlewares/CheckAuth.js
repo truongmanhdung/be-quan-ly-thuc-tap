@@ -26,11 +26,11 @@ export const isAuthenticateUser = async (req, res, next) => {
       req.role = manager.role;
       next();
     } else if (student) {
-      req.role = "student";
+      req.role = 2;
       next();
     } else {
       res.status(401).json({
-        msg: "không có quyền truy cập",
+        msg: "Không có quyền truy cập",
       });
     }
   } catch (error) {
@@ -44,7 +44,7 @@ export const authorizeRoles = (roles) => {
   return (req, res, next) => {
     if (!(roles === req.role)) {
       return res.status(403).json({
-        message: `Tài khoản quyền :${req.role} không được phép truy cập quyền giáo viên`,
+        message: `Tài khoản quyền :${req.role} không được phép truy cập`,
       });
     }
     next();

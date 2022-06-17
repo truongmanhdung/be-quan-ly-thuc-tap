@@ -14,7 +14,7 @@ const managerSchema = mongoose.Schema({
     require: true,
   },
   role: {
-    type: String,
+    type: Number,
     required: true,
   },
   createdAt: {
