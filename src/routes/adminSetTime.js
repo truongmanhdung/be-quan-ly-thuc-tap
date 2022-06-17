@@ -11,13 +11,13 @@ const router = express.Router();
 router.post(
   "/settime",
   isAuthenticateUser,
-  authorizeRoles("manager"),
+  authorizeRoles(1),
   handleSetTimeRequest
 );
 router.get(
   "/settime",
   isAuthenticateUser,
-  authorizeRoles("manager"),
+  authorizeRoles(1),
   getListTypeSetTime
 );
 router.get("/settime/:type", isAuthenticateUser, getOneTypeSetTime);
