@@ -13,19 +13,19 @@ const router = require("express").Router();
 router.get(
   "/narrows",
   isAuthenticateUser,
-  authorizeRoles("managet"),
+  authorizeRoles(1),
   getNarrow
 );
 router.post(
   "/narrows",
   isAuthenticateUser,
-  authorizeRoles("managet"),
+  authorizeRoles(1),
   insertNarrow
 );
 router.patch(
   "/narrow",
   isAuthenticateUser,
-  authorizeRoles("managet"),
+  authorizeRoles(1),
   updateNarrow
 );
 module.exports = router;

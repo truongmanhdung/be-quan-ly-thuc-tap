@@ -9,19 +9,19 @@ const router = express.Router();
 router.get(
   "/review",
   isAuthenticateUser,
-  authorizeRoles("manager"),
+  authorizeRoles(1),
   listReviewer
 );
 router.get(
   "/reivewForm",
   isAuthenticateUser,
-  authorizeRoles("manager"),
+  authorizeRoles(1),
   listReviewForm
 );
 router.get(
   "/reivewReport",
   isAuthenticateUser,
-  authorizeRoles("manager"),
+  authorizeRoles(1),
   reviewReport
 );
 
