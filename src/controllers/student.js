@@ -110,12 +110,12 @@ export const readStudentById = async (req, res) => {
 
 //insertStudent
 export const insertStudent = async (req, res) => {
-  const { data, smester_id, majors } = req.body;
+  const { data, smester_id, majors, campus_id } = req.body;
   try {
     const checkStudent = await Student.find({}).limit(3);
 
     if (checkStudent.length > 0) {
-      const listMSSV = await Student.find({ smester_id, majors });
+      const listMSSV = await Student.find({ smester_id, majors, campus_id });
       if (listMSSV.length === 0) {
         await Student.insertMany(data);
       } else {
@@ -129,7 +129,7 @@ export const insertStudent = async (req, res) => {
         });
 
         await Student.updateMany(
-          { smester_id, majors },
+          { smester_id, majors, campus_id },
           {
             $set: {
               checkUpdate: false,
@@ -140,7 +140,7 @@ export const insertStudent = async (req, res) => {
         );
 
         await Student.updateMany(
-          { $and: [{ mssv: { $in: listNew } }, { smester_id, majors }] },
+          { $and: [{ mssv: { $in: listNew } }, { smester_id, majors, campus_id }] },
           {
             $set: {
               checkUpdate: true,
@@ -151,7 +151,7 @@ export const insertStudent = async (req, res) => {
         );
 
         await Student.updateMany(
-          { $and: [{ checkUpdate: false }, { smester_id, majors }] },
+          { $and: [{ checkUpdate: false }, { smester_id, majors, campus_id }] },
           {
             $set: {
               statusCheck: 3,
@@ -165,7 +165,7 @@ export const insertStudent = async (req, res) => {
         await Student.insertMany(data);
 
         await Student.updateMany(
-          { $and: [{ mssv: { $nin: listMS } }, { smester_id, majors }] },
+          { $and: [{ mssv: { $nin: listMS } }, { smester_id, majors, campus_id }] },
           {
             $set: {
               checkMulti: true,
@@ -175,7 +175,7 @@ export const insertStudent = async (req, res) => {
         );
 
         await Student.deleteMany({
-          $and: [{ checkMulti: false }, { smester_id, majors }],
+          $and: [{ checkMulti: false }, { smester_id, majors, campus_id }],
         });
       }
 
@@ -190,7 +190,7 @@ export const insertStudent = async (req, res) => {
           if (err) {
             res.status(400).json(err);
           } else {
-            Student.find({ smester_id, majors })
+            Student.find({ smester_id, majors, campus_id })
               .countDocuments({})
               .exec((count_error, count) => {
                 if (err) {
@@ -219,7 +219,7 @@ export const insertStudent = async (req, res) => {
           if (err) {
             res.status(400).json(err);
           } else {
-            Student.find({ smester_id, majors })
+            Student.find({ smester_id, majors, campus_id })
               .countDocuments({})
               .exec((count_error, count) => {
                 if (err) {
