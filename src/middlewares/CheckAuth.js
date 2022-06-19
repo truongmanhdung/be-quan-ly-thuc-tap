@@ -44,7 +44,7 @@ export const authorizeRoles = (roles) => {
   return (req, res, next) => {
     if (!(roles === req.role)) {
       return res.status(403).json({
-        message: `Tài khoản quyền :${req.role} không được phép truy cập`,
+        message: `Tài khoản quyền ${req.role === 0 ? 'sinh viên ' : req.role === 1 ? 'nhân viên thường ' : ''} không được phép truy cập`,
       });
     }
     next();
