@@ -18,13 +18,13 @@ router.get(
 router.post(
   "/add-mester",
   isAuthenticateUser,
-  authorizeRoles(1),
+  authorizeRoles([1,2]),
   insertSemester
 );
 router.patch(
   "/update-mester",
   isAuthenticateUser,
-  authorizeRoles(1),
+  authorizeRoles([1,2]),
   updateSemester
 );
 router.get(
