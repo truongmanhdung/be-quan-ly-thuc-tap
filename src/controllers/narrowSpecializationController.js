@@ -71,11 +71,9 @@ export const updateNarrow = async (req, res) => {
 
 export const deleteNarrow = async (req, res) => {
   try {
-    console.log(req.body);
     const findNarrows = await narrow.findOne({
       _id: req.body.id,
     });
-    console.log(findNarrows);
     const findStudentNarrow = await student.find({
       narrow: req.body.id,
     });
