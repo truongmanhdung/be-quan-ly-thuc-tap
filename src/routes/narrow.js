@@ -2,6 +2,7 @@ const {
   getNarrow,
   insertNarrow,
   updateNarrow,
+  deleteNarrow,
 } = require("../controllers/narrowSpecializationController");
 const {
   isAuthenticateUser,
@@ -10,22 +11,13 @@ const {
 
 const router = require("express").Router();
 
-router.get(
-  "/narrows",
-  isAuthenticateUser,
-  authorizeRoles(1),
-  getNarrow
-);
-router.post(
-  "/narrows",
-  isAuthenticateUser,
-  authorizeRoles(1),
-  insertNarrow
-);
+router.get("/narrows", isAuthenticateUser, authorizeRoles(1), getNarrow);
+router.post("/narrows", isAuthenticateUser, authorizeRoles(1), insertNarrow);
 router.patch(
   "/narrow",
-  isAuthenticateUser,
-  authorizeRoles(1),
+  // isAuthenticateUser,
+  // authorizeRoles(1),
   updateNarrow
 );
+router.delete("/narrow", deleteNarrow);
 module.exports = router;
