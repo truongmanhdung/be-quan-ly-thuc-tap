@@ -14,13 +14,13 @@ router.post("/cumpus", isAuthenticateUser, authorizeRoles(2), createCumpus);
 router.patch(
   "/cumpus/:id",
   isAuthenticateUser,
-  authorizeRoles(2),
+  authorizeRoles([2]),
   updateCumpus
 );
 router.delete(
   "/cumpus/:id",
   isAuthenticateUser,
-  authorizeRoles(2),
+  authorizeRoles([2]),
   removeCumpus
 );
 

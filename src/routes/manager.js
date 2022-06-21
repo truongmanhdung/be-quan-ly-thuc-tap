@@ -9,19 +9,19 @@ router.get("/manager/:id", isAuthenticateUser, getManager);
 router.post(
   "/manager",
   isAuthenticateUser,
-  authorizeRoles(2),
+  authorizeRoles([2]),
   createManager
 );
 router.patch(
   "/manager/:id",
   isAuthenticateUser,
-  authorizeRoles(2),
+  authorizeRoles([2]),
   updateManager
 );
 router.delete(
   "/manager/:id",
   isAuthenticateUser,
-  authorizeRoles(2),
+  authorizeRoles([2]),
   removeManager
 );
 
