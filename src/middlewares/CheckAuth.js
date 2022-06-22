@@ -26,7 +26,7 @@ export const isAuthenticateUser = async (req, res, next) => {
       req.role = manager.role;
       next();
     } else if (student) {
-      req.role = 2;
+      req.role = 0;
       next();
     } else {
       res.status(401).json({
@@ -42,9 +42,9 @@ export const isAuthenticateUser = async (req, res, next) => {
 
 export const authorizeRoles = (roles) => {
   return (req, res, next) => {
-    if (!(roles === req.role)) {
+    if (!(roles.includes(req.role))) {
       return res.status(403).json({
-        message: `Tài khoản quyền ${req.role === 0 ? 'sinh viên ' : req.role === 1 ? 'nhân viên thường ' : ''} không được phép truy cập`,
+        message: `Tài khoản không có quyền truy cập`,
       });
     }
     next();
