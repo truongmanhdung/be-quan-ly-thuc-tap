@@ -47,27 +47,27 @@ export const report = async (req, res) => {
       res.status(404).send(err);
     }
 
-    if (nameCompany) {
-      const nameCompanyD = findStudent.nameCompany === nameCompany;
-      if (!nameCompanyD) {
-        const err = {
-          message: "Tên công ty không khớp với biểu mẫu!",
-        };
-        res.status(500).send(err);
-        return;
-      }
-    }
+    // if (nameCompany) {
+    //   const nameCompanyD = findStudent.nameCompany === nameCompany;
+    //   if (!nameCompanyD) {
+    //     const err = {
+    //       message: "Tên công ty không khớp với biểu mẫu!",
+    //     };
+    //     res.status(500).send(err);
+    //     return;
+    //   }
+    // }
 
-    if (business) {
-      const nameBusiness = findStudent.business === business;
-      if (!nameBusiness) {
-        const err = {
-          message: "Tên công ty không khớp với biểu mẫu!",
-        };
-        res.status(500).send(err);
-        return;
-      }
-    }
+    // if (business) {
+    //   const nameBusiness = findStudent.business === business;
+    //   if (!nameBusiness) {
+    //     const err = {
+    //       message: "Tên công ty không khớp với biểu mẫu!",
+    //     };
+    //     res.status(500).send(err);
+    //     return;
+    //   }
+    // }
 
     const update = {
       attitudePoint: attitudePoint,
