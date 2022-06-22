@@ -1,9 +1,15 @@
 import narrow from "../models/narrow_specialization";
-import student from "../models/student";
-
+import Student from "../models/student";
 export const getNarrow = async (req, res) => {
-  const data = await narrow.find().populate("id_majors");
-  res.status(200).json(data);
+  try {
+    const data = await narrow.find().populate("id_majors").sort({createAt: -1});
+    res.status(200).json(data);
+  } catch (error) {
+    res.status(400).json({
+      msg: "lỗi"
+    })
+  }
+
 };
 export const insertNarrow = async (req, res) => {
   try {
@@ -17,8 +23,7 @@ export const insertNarrow = async (req, res) => {
         message: "Tên chuyên ngành hẹp đã tồn tại, vui lòng đặt tên khác!",
       });
     }
-    const data = await new narrow(req.body).save();
-    res.status(200).json(data);
+    await new narrow(req.body).save().then(res => narrow.findById(res._id).populate("id_majors")).then(data => res.status(200).json(data));
   } catch (error) {
     console.log(error);
   }
@@ -26,42 +31,8 @@ export const insertNarrow = async (req, res) => {
 
 export const updateNarrow = async (req, res) => {
   try {
-    const _findNarrow = await narrow.findOne({ _id: req.body.id });
-    const findNarrowName = await narrow.find({});
-    if (!_findNarrow) {
-      return res.status(200).json({
-        message: "Chuyên ngành hẹp không tồn tại",
-      });
-    }
-    if (req.body.name.toLowerCase() === _findNarrow.name.toLowerCase()) {
-      await narrow.findByIdAndUpdate(
-        {
-          _id: req.body.id,
-        },
-        req.body
-      );
-      return res.status(200).json({
-        message: "Sửa thành công",
-      });
-    }
-    for (let i = 0; i < findNarrowName.length; i++) {
-      if (
-        findNarrowName[i].name.toLowerCase() === req.body.name.toLowerCase()
-      ) {
-        return res.status(500).json({
-          message: "Tên chuyên ngành hẹp đã tồn tại",
-        });
-      }
-    }
-    await narrow.findByIdAndUpdate(
-      {
-        _id: req.body.id,
-      },
-      req.body
-    );
-    return res.status(200).json({
-      message: "Sửa thành công",
-    });
+    const zz = await narrow.findByIdAndUpdate(req.params.id,req.body,{new: true}).populate("id_majors")
+    res.status(200).json(zz)
   } catch (error) {
     res.status(500).json({
       message: "Có lỗi vui lòng thử lại sau",
@@ -71,13 +42,10 @@ export const updateNarrow = async (req, res) => {
 
 export const deleteNarrow = async (req, res) => {
   try {
-    const findNarrows = await narrow.findOne({
-      _id: req.body.id,
-    });
+  
     const findStudentNarrow = await student.find({
       narrow: req.body.id,
     });
-    console.log("findStudentNarrow: ", findStudentNarrow);
     if (!findNarrows) {
       // console.log(true);
       return res.status(404).json({

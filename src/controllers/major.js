@@ -2,7 +2,7 @@ import Major from '../models/major'
 
 export const getListMajor = async(req,res) =>{
   try {
-    const majors = await Major.find()
+    const majors = await Major.find().sort({ createdAt: -1 })
     res.status(200).json({
       majors,
       success:true
@@ -27,10 +27,7 @@ export const getMajor = async(req,res) =>{
 export const createMajor = async(req,res) =>{
   try {
     const major = await Major.create(req.body)
-    res.status(201).json({
-      major,
-      message:"Tạo ngành học thành công"
-    })
+    res.status(201).json(major)
   } catch (error) {
     res.json({
       error
