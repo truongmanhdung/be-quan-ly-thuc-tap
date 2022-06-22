@@ -25,24 +25,26 @@ export const isAuthenticateUser = async (req, res, next) => {
     if (manager) {
       req.role = manager.role;
       next();
-    }
-    if (student) {
-      req.role = "student";
+    } else if (student) {
+      req.role = 0;
       next();
+    } else {
+      res.status(401).json({
+        msg: "Không có quyền truy cập",
+      });
     }
   } catch (error) {
-    res.status(401).json({
-      message: "Unauthorized the server responded with a status of 401",
+    res.json({
+      message: error,
     });
   }
 };
 
 export const authorizeRoles = (roles) => {
   return (req, res, next) => {
-    console.log("req Check Auth: ", req);
-    if (!(roles === req.role)) {
+    if (!roles.includes(req.role)) {
       return res.status(403).json({
-        message: `Tài khoản quyền :${req.role} không được phép truy cập quyền giáo viên`,
+        message: `Tài khoản không có quyền truy cập`,
       });
     }
     next();

@@ -1,9 +1,22 @@
-import express from 'express'
-import { createSpecialization, getListSpecialization } from '../controllers/specialization'
+import express from "express";
+import {
+  createSpecialization,
+  getListSpecialization,
+} from "../controllers/specialization";
+import { authorizeRoles, isAuthenticateUser } from "../middlewares/CheckAuth";
+const router = express.Router();
 
-const router = express.Router()
+router.post(
+  "/specialization",
+  isAuthenticateUser,
+  authorizeRoles([1,2]),
+  createSpecialization
+);
+router.get(
+  "/specialization",
+  isAuthenticateUser,
+  authorizeRoles([1,2]),
+  getListSpecialization
+);
 
-router.post('/specialization', createSpecialization)
-router.get('/specialization', getListSpecialization)
-
-module.exports = router
+module.exports = router;
