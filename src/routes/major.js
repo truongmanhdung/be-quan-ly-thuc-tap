@@ -15,7 +15,7 @@ router.get("/major/:id", isAuthenticateUser, getMajor);
 router.post(
   "/major",
   isAuthenticateUser,
-  authorizeRoles([1,2]),
+  authorizeRoles([1]),
   createMajor
 );
 router.patch(

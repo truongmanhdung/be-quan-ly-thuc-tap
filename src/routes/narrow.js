@@ -24,9 +24,9 @@ router.post(
   insertNarrow
 );
 router.patch(
-  "/narrow",
+  "/narrows/:id",
   isAuthenticateUser,
-  authorizeRoles([1,2]),
+  authorizeRoles([1]),
   updateNarrow
 );
 router.delete("/narrow", deleteNarrow);
