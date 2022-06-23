@@ -42,7 +42,7 @@ export const isAuthenticateUser = async (req, res, next) => {
 
 export const authorizeRoles = (roles) => {
   return (req, res, next) => {
-    if (!(roles.includes(req.role))) {
+    if (!roles.includes(req.role)) {
       return res.status(403).json({
         message: `Tài khoản không có quyền truy cập`,
       });

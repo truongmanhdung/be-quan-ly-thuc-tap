@@ -20,29 +20,28 @@ app.use(cors());
 readdirSync("./src/routes").map((route) =>
   app.use("/api", require(`./src/routes/${route}`))
 );
-let i = 0
-let y = 2021
-let time = 0
+let i = 0;
+let y = 2021;
+let time = 0;
 setInterval(() => {
-
-  time += 1
+  time += 1;
   if (time === 365) {
-    i++
-    y++
+    i++;
+    y++;
     semester({
       name: `Spring ${y}`,
-    }).save()
-    i++
+    }).save();
+    i++;
     semester({
       name: `Summer ${y}`,
-    }).save()
-    i++
+    }).save();
+    i++;
     semester({
       name: `Fall ${y}`,
-    }).save()
-    time = 0
+    }).save();
+    time = 0;
   }
-}, 86400000)
+}, 86400000);
 
 const port = process.env.PORT || 8000;
 

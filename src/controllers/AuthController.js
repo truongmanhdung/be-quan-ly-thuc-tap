@@ -1,4 +1,5 @@
 import Manager from "../models/manager";
+import semester from "../models/semester";
 import Student from "../models/student";
 const jwt = require("jsonwebtoken");
 
@@ -6,17 +7,28 @@ const { OAuth2Client } = require("google-auth-library");
 const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 const ObjectId = require("mongodb").ObjectID;
 
+const generateAccessToken = (user) => {
+  return jwt.sign(
+    { userId: user._id, campusId: user.campus_id },
+    process.env.ACCESS_TOKEN_SECRET
+  );
+};
+
 //login
 export const loginGoogle = async (req, res) => {
+  console.log("req.body: ", req.body);
   const { token, cumpusId: campusId, smester_id } = req.body;
+  console.log("token AuthController: ", token);
   try {
     if (!token) {
       return res.status(401).json({ message: "Vui lòng đăng nhập tài khoản" });
     }
+
     const ticket = await client.verifyIdToken({
       idToken: token,
       audience: process.env.GOOGLE_CLIENT_ID,
     });
+
     const { email, name, picture } = ticket.getPayload();
     const manager = await Manager.findOne({
       email: email,
@@ -26,16 +38,13 @@ export const loginGoogle = async (req, res) => {
     const student = await Student.findOne({
       email: email,
       campus_id: campusId,
-      smester_id: smester_id
+      smester_id: smester_id,
     });
+    console.log("token AuthController: ", token);
 
     if (manager) {
-      const accessToken = jwt.sign(
-        { userId: manager._id, campusId: manager.campus_id },
-        process.env.ACCESS_TOKEN_SECRET
-      );
-
-      res.status(200).json({
+      const accessToken = generateAccessToken(manager);
+      const data = {
         manager,
         token,
         name,
@@ -43,13 +52,11 @@ export const loginGoogle = async (req, res) => {
         isAdmin: true,
         message: "Đăng nhập thành công",
         accessToken: accessToken,
-      });
+      };
+      console.log("data: ", data);
+      res.status(200).json(data);
     } else if (student) {
-      const accessToken = jwt.sign(
-        { userId: student._id, campusId: student.campus_id },
-        process.env.ACCESS_TOKEN_SECRET
-      );
-
+      const accessToken = generateAccessToken(student);
       res.status(200).json({
         student,
         token,

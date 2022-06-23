@@ -9,14 +9,14 @@ const router = require("express").Router();
 router.patch(
   "/report",
   isAuthenticateUser,
-  authorizeRoles([1,2]),
+  // authorizeRoles([1, 2]),
   checkRequestTime,
   report
 );
 router.patch(
   "/form",
   isAuthenticateUser,
-  authorizeRoles([1,2]),
+  authorizeRoles([1, 2]),
   checkRequestTime,
   form
 );

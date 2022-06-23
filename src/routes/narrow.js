@@ -11,16 +11,11 @@ const {
 
 const router = require("express").Router();
 
-router.get(
-  "/narrows",
-  isAuthenticateUser,
-  authorizeRoles([1,2]),
-  getNarrow
-);
+router.get("/narrows", isAuthenticateUser, authorizeRoles([1, 2]), getNarrow);
 router.post(
   "/narrows",
   isAuthenticateUser,
-  authorizeRoles([1,2]),
+  authorizeRoles([1, 2]),
   insertNarrow
 );
 router.patch(
