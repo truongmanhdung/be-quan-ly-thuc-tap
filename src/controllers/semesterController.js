@@ -1,7 +1,7 @@
 import semester from "../models/semester";
 export const getSemester = async (req, res) => {
   try {
-    const data = await semester.find();
+    const data = await semester.find().sort({createdAt: -1});
     const dataDefault = await semester.findOne({
       $and: [
         { start_time: { $lte: new Date() } },
@@ -30,7 +30,7 @@ export const getDefaultSemester = async (req, res) => {
 
 export const updateSemester = async (req, res) => {
   try {
-    const query = { _id: req.body.id };
+    const query = { _id: req.params.id };
     const find = await semester.findOne(query);
     const reqName = req.body.name.toLowerCase();
 

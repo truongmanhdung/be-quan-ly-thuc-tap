@@ -22,9 +22,9 @@ router.post(
   insertSemester
 );
 router.patch(
-  "/update-mester",
+  "/update-mester/:id",
   isAuthenticateUser,
-  authorizeRoles([1,2]),
+  authorizeRoles([1]),
   updateSemester
 );
 router.get(
