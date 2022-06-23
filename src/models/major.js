@@ -1,12 +1,17 @@
 const mongoose = require("mongoose");
+const { ObjectId } = mongoose.Schema;
 const majorSchema = mongoose.Schema({
   name: {
     type: String,
     required: true,
   },
-  majorCode:{
-    type:String,
-    require:true
+  majorCode: {
+    type: String,
+    require: true,
+  },
+  campus_id: {
+    type: ObjectId,
+    ref: "Cumpus",
   },
   createdAt: {
     type: Date,

@@ -11,7 +11,7 @@ const {
 
 const router = require("express").Router();
 
-router.get("/narrows", isAuthenticateUser, authorizeRoles([1, 2]), getNarrow);
+router.get("/narrows", getNarrow);
 router.post(
   "/narrows",
   isAuthenticateUser,
