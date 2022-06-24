@@ -5,19 +5,20 @@ import {
   getOneTypeSetTime,
 } from "../controllers/adminSetTime";
 import { isAuthenticateUser, authorizeRoles } from "../middlewares/CheckAuth";
+import { role } from "../utils/role";
 
 const router = express.Router();
 
 router.post(
   "/settime",
   isAuthenticateUser,
-  authorizeRoles([1,2]),
+  authorizeRoles([role.manager]),
   handleSetTimeRequest
 );
 router.get(
   "/settime",
   isAuthenticateUser,
-  authorizeRoles([1,2]),
+  authorizeRoles([role.manager]),
   getListTypeSetTime
 );
 router.get("/settime/:type", isAuthenticateUser, getOneTypeSetTime);

@@ -5,23 +5,24 @@ import {
   reviewReport,
 } from "../controllers/reviewer";
 import { authorizeRoles, isAuthenticateUser } from "../middlewares/CheckAuth";
+import { role } from "../utils/role";
 const router = express.Router();
 router.get(
   "/review",
   isAuthenticateUser,
-  authorizeRoles([1,2]),
+  authorizeRoles([role.manager]),
   listReviewer
 );
 router.get(
   "/reivewForm",
   isAuthenticateUser,
-  authorizeRoles([1,2]),
+  authorizeRoles([role.manager]),
   listReviewForm
 );
 router.get(
   "/reivewReport",
   isAuthenticateUser,
-  authorizeRoles([1,2]),
+  authorizeRoles([role.manager]),
   reviewReport
 );
 

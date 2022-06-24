@@ -15,45 +15,46 @@ import {
 } from "../controllers/student";
 import { authorizeRoles, isAuthenticateUser } from "../middlewares/CheckAuth";
 import student from "../models/student";
-router.get("/student", isAuthenticateUser, listStudent);
-router.get("/student/reviewcv", isAuthenticateUser, listStudentReviewCV);
+import { role } from "../utils/role";
+router.get("/student", isAuthenticateUser,authorizeRoles([role.manager,]), listStudent);
+router.get("/student/reviewcv", isAuthenticateUser,authorizeRoles([role.manager,]), listStudentReviewCV);
 router.get("/student/:id", isAuthenticateUser, readOneStudent);
 router.get('/student/manager/:id', readStudentById)
 router.post(
   "/student",
   isAuthenticateUser,
-  authorizeRoles([1,2]),
+  authorizeRoles([role.manager]),
   insertStudent
 );
 router.patch(
   "/student",
   isAuthenticateUser,
-  authorizeRoles([1,2]),
+  authorizeRoles([role.manager]),
   updateReviewerStudent
 );
 
 router.patch(
   "/student/business",
   isAuthenticateUser,
-  authorizeRoles([1,2]),
+  authorizeRoles([role.manager]),
   updateBusinessStudent
 );
 router.patch(
   "/student/status",
   isAuthenticateUser,
-  authorizeRoles([1,2]),
+  authorizeRoles([role.manager]),
   updateStatusStudent
 );
 router.patch(
   "/student/:id",
   isAuthenticateUser,
-  authorizeRoles([1,2]),
+  authorizeRoles([role.manager]),
   updateStudent
 );
 router.delete(
   "/student/:id",
   isAuthenticateUser,
-  authorizeRoles([1,2]),
+  authorizeRoles(role.manager),
   removeStudent
 );
 router.post("/generate-fake-data", () => {
