@@ -68,9 +68,11 @@ export const listStudent = async (req, res) => {
 export const updateStudent = async (req, res) => {
   try {
     const student = await Student.findOneAndUpdate(
-      { id: req.params.id },
+      { _id: req.params.id },
+      res.body,
       { new: true }
     );
+    console.log(student);
     return res.status(200).json(student);
   } catch (error) {
     return res.status(400).json(error);
