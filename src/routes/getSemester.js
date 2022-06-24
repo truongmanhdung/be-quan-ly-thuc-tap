@@ -8,6 +8,7 @@ const {
   isAuthenticateUser,
   authorizeRoles,
 } = require("../middlewares/CheckAuth");
+const { role } = require("../utils/role");
 
 const router = require("express").Router();
 
@@ -18,13 +19,13 @@ router.get(
 router.post(
   "/add-mester",
   isAuthenticateUser,
-  authorizeRoles([1,2]),
+  authorizeRoles([role.manager]),
   insertSemester
 );
 router.patch(
   "/update-mester/:id",
   isAuthenticateUser,
-  authorizeRoles([1]),
+  authorizeRoles([role.manager]),
   updateSemester
 );
 router.get(

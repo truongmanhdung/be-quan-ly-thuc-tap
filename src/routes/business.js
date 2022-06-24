@@ -3,10 +3,11 @@ import {
   insertBusiness,
   listBusiness,
 } from "../controllers/businessController";
-import { isAuthenticateUser } from "../middlewares/CheckAuth";
+import { authorizeRoles, isAuthenticateUser } from "../middlewares/CheckAuth";
+import { role } from "../utils/role";
 const router = express.Router();
 
-router.post("/business", isAuthenticateUser, insertBusiness);
+router.post("/business", isAuthenticateUser, authorizeRoles([role.manager]), insertBusiness);
 router.get("/business", isAuthenticateUser, listBusiness);
 
 module.exports = router;

@@ -6,21 +6,22 @@ import {
   updateCumpus,
 } from "../controllers/cumpus";
 import { authorizeRoles, isAuthenticateUser } from "../middlewares/CheckAuth";
+import { role } from "../utils/role";
 
 const router = express.Router();
 
 router.get("/cumpus", getListCumpus);
-router.post("/cumpus", isAuthenticateUser, authorizeRoles(2), createCumpus);
+router.post("/cumpus", isAuthenticateUser, authorizeRoles([role.dev]), createCumpus);
 router.patch(
   "/cumpus/:id",
   isAuthenticateUser,
-  authorizeRoles([2]),
+  authorizeRoles([role.dev]),
   updateCumpus
 );
 router.delete(
   "/cumpus/:id",
   isAuthenticateUser,
-  authorizeRoles([2]),
+  authorizeRoles([role.dev]),
   removeCumpus
 );
 

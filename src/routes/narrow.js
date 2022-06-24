@@ -8,20 +8,21 @@ const {
   isAuthenticateUser,
   authorizeRoles,
 } = require("../middlewares/CheckAuth");
+const { role } = require("../utils/role");
 
 const router = require("express").Router();
 
-router.get("/narrows", getNarrow);
+router.get("/narrows",isAuthenticateUser, getNarrow);
 router.post(
   "/narrows",
   isAuthenticateUser,
-  authorizeRoles([1, 2]),
+  authorizeRoles([role.manager]),
   insertNarrow
 );
 router.patch(
   "/narrows/:id",
   isAuthenticateUser,
-  authorizeRoles([1]),
+  authorizeRoles([role.manager]),
   updateNarrow
 );
 router.delete("/narrow", deleteNarrow);
