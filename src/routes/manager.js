@@ -6,7 +6,7 @@ import { role } from "../utils/role";
 const router = express.Router();
 
   
-  router.get("/manager",authorizeRoles([role.dev]), getListManager);
+  router.get("/manager",authorizeRoles([role.dev, role.manager]), getListManager);
 router.get("/manager/:id", isAuthenticateUser, getManager);
 router.post(
   "/manager",
