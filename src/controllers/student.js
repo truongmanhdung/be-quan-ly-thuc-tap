@@ -16,41 +16,34 @@ export const listStudent = async (req, res) => {
       }
       const skipNumber = (perPage - 1) * current;
       try {
-        const count = await Student.find()
-        const listStudent = await Student.find(req.query)
+        await Student.find(req.query)
           .populate("campus_id")
           .populate("smester_id")
           .populate("business")
           .populate("majors")
           .skip(skipNumber)
           .limit(current)
-          .sort({ statusCheck: 1 });
-        res.status(200).json({
-          total: count.length,
-          list: listStudent,
-        });
-        // .exec((err, doc) => {
-        //   if (err) {
-        //     res.status(400).json(err);
-        //   } else {
-        //     const data =  Student.find(req.query)
-        //       .countDocuments({})
-        //       .exec((count_error, count) => {
-        //         if (err) {
-        //           res.json(count_error);
-        //           return;
-        //         } else {
-        //           res.status(200).json({
-        //             total: count,
-        //             list: doc,
-        //           });
-        //           return;
-        //         }
-        //       });
-        //   }
-        // });
+          .sort({ statusCheck: 1 }).exec((err, doc) => {
+            if (err) {
+              res.status(400).json(err);
+            } else {
+              Student.find(req.query)
+                .countDocuments({})
+                .exec((count_error, count) => {
+                  if (err) {
+                    return res.json(count_error);
+                  } else {
+                    return res.status(200).json({
+                      total: count,
+                      list: doc,
+                    });
+                    ;
+                  }
+                });
+            }
+          });
       } catch (error) {
-        res.status(400).json(error);
+        return res.status(400).json(error);
       }
     } else {
       const listStudent = await Student.find({})
@@ -59,13 +52,13 @@ export const listStudent = async (req, res) => {
         .populate("business")
         .populate("majors");
 
-      res.status(200).json({
+        return res.status(200).json({
         total: listStudent.length,
         list: listStudent,
       });
     }
   } catch (error) {
-    res.status(500).json(error);
+    return res.status(500).json(error);
   }
 };
 
@@ -308,11 +301,11 @@ export const updateStatusStudent = async (req, res) => {
       newArr.push(value.email);
     });
   }
-
+  console.log("newArr", newArr);
   dataEmail.mail = newArr;
 
   try {
-    const data = await Student.updateMany(
+    await Student.updateMany(
       {
         _id: { $in: listIdStudents },
       },
@@ -577,9 +570,10 @@ export const listStudentReviewForm = async (req, res) => {
       CV: { $ne: null },
       statusCheck: 2,
     })
-      .populate("smester_id")
-      .populate("business")
-      .populate("majors");
+    .populate("campus_id")
+    .populate("smester_id")
+    .populate("business")
+    .populate("majors")
 
     res.status(200).json(listStudentReviewForm);
   } catch (error) {
@@ -596,9 +590,10 @@ export const listStudentReviewCV = async (req, res) => {
       report: null,
       statusCheck: { $in: [0, 1] },
     })
-      .populate("smester_id")
-      .populate("business")
-      .populate("majors");
+    .populate("campus_id")
+    .populate("smester_id")
+    .populate("business")
+    .populate("majors")
 
     res.status(200).json(listStudentReviewCV);
   } catch (error) {
