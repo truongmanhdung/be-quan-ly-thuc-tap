@@ -16,6 +16,7 @@ export const listStudent = async (req, res) => {
       }
       const skipNumber = (perPage - 1) * current;
       try {
+        const count = await Student.find()
         const listStudent = await Student.find(req.query)
           .populate("campus_id")
           .populate("smester_id")
@@ -25,7 +26,7 @@ export const listStudent = async (req, res) => {
           .limit(current)
           .sort({ statusCheck: 1 });
         res.status(200).json({
-          total: listStudent.length,
+          total: count.length,
           list: listStudent,
         });
         // .exec((err, doc) => {
