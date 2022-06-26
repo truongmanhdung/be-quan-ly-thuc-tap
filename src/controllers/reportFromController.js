@@ -100,9 +100,12 @@ export const report = async (req, res) => {
       </div>
       <img src="https://i.imgur.com/q7xM8RP.png" width="120" alt="logo" class="CToWUd">
       <p>
-          Xin chào <b>${findStudent.name}</b>,<br>
-          Bạn vừa <b style="color:green"><span><span class="il">chỉnh</span></span> <span><span class="il">sửa</span></span> <span>thành</span> <span>công</span></b> thông tin <b><span>Báo</span> <span>cáo</span></b> <br>
-          Trạng thái hiện tại của dịch vụ là <b style="color:orange">Đã nộp báo cáo </b><br>
+          Xin chào <b>${findStudent.name}</b>,
+          <br>
+          Bạn vừa <b style="color:green"><span><span class="il">chỉnh</span></span> <span><span class="il">sửa</span></span> <span>thành</span> <span>công</span></b> thông tin <b><span>Báo</span> <span>cáo</span></b>
+          <br>
+          Trạng thái hiện tại của dịch vụ là <b style="color:orange">Đã nộp báo cáo </b>
+          <br>
           Nội dung(nếu có): Lưu ý mỗi sinh viên sẽ giới hạn 3 lần được hỗ trợ tìm nơi thực tập từ phòng quan hệ doanh nghiệp
       </p>
       <hr style="border-top:1px solid">
@@ -121,8 +124,8 @@ export const report = async (req, res) => {
       </div>
       </div>
       `;
-      sendMail(dataEmail);
-      res.status(200).send({ message: "Sửa báo cáo thành công" });
+      await sendMail(dataEmail);
+      return res.status(200).send({ message: "Sửa báo cáo thành công" });
     }
 
     if (findStudent.statusCheck === 6) {
@@ -137,9 +140,12 @@ export const report = async (req, res) => {
       </div>
       <img src="https://i.imgur.com/q7xM8RP.png" width="120" alt="logo" class="CToWUd">
       <p>
-          Xin chào <b>${findStudent.name}</b>,<br>
-          Bạn vừa <b style="color:green"><span><span class="il">đăng</span></span> <span><span class="il">ký</span></span> <span>thành</span> <span>công</span></b> thông tin <b><span>Báo</span> <span>cáo</span></b> <br>
-          Trạng thái hiện tại của dịch vụ là <b style="color:orange">Đã nộp báo cáo </b><br>
+          Xin chào <b>${findStudent.name}</b>,
+          <br>
+          Bạn vừa <b style="color:green"><span><span class="il">đăng</span></span> <span><span class="il">ký</span></span> <span>thành</span> <span>công</span></b> thông tin <b><span>Báo</span> <span>cáo</span></b>
+          <br>
+          Trạng thái hiện tại của dịch vụ là <b style="color:orange">Đã nộp báo cáo </b>
+          <br>
           Nội dung(nếu có): Lưu ý mỗi sinh viên sẽ giới hạn 3 lần được hỗ trợ tìm nơi thực tập từ phòng quan hệ doanh nghiệp
       </p>
       <hr style="border-top:1px solid">
@@ -158,8 +164,8 @@ export const report = async (req, res) => {
       </div>
       </div>
       `;
-      sendMail(dataEmail);
-      res.status(200).send({ message: "Nộp báo cáo thành công" });
+      await sendMail(dataEmail);
+      return res.status(200).send({ message: "Nộp báo cáo thành công" });
     }
   } catch (error) {
     res.status(500).send({
@@ -243,9 +249,12 @@ export const form = async (req, res) => {
       </div>
       <img src="https://i.imgur.com/q7xM8RP.png" width="120" alt="logo" class="CToWUd">
       <p>
-          Xin chào <b>${findStudent.name}</b>,<br>
-          Bạn vừa <b style="color:green"><span><span class="il">chỉnh</span></span> <span><span class="il">sửa</span></span> <span>thành</span> <span>công</span></b> thông tin <b><span>Biên</span> <span>bản</span></b> <br>
-          Trạng thái hiện tại của dịch vụ là <b style="color:orange">Đã nộp biên bản </b><br>
+          Xin chào <b>${findStudent.name}</b>,
+          <br>
+          Bạn vừa <b style="color:green"><span><span class="il">chỉnh</span></span> <span><span class="il">sửa</span></span> <span>thành</span> <span>công</span></b> thông tin <b><span>Biên</span> <span>bản</span></b>
+          <br>
+          Trạng thái hiện tại của dịch vụ là <b style="color:orange">Đã nộp biên bản </b>
+          <br>
           Nội dung(nếu có): Lưu ý mỗi sinh viên sẽ giới hạn 3 lần được hỗ trợ tìm nơi thực tập từ phòng quan hệ doanh nghiệp
       </p>
       <hr style="border-top:1px solid">
@@ -264,9 +273,9 @@ export const form = async (req, res) => {
       </div>
       </div>
       `;
-      sendMail(dataEmail);
+      await sendMail(dataEmail);
 
-      res.status(200).send({ message: "Sửa biên bản thành công" });
+      return res.status(200).send({ message: "Sửa biên bản thành công" });
     }
     if (findStudent.statusCheck === 2) {
       await Student.findOneAndUpdate(filter, update, {
@@ -280,9 +289,12 @@ export const form = async (req, res) => {
       </div>
       <img src="https://i.imgur.com/q7xM8RP.png" width="120" alt="logo" class="CToWUd">
       <p>
-          Xin chào <b>${findStudent.name}</b>,<br>
-          Bạn vừa <b style="color:green"><span><span class="il">đăng</span></span> <span><span class="il">ký</span></span> <span>thành</span> <span>công</span></b> thông tin <b><span>Biên</span> <span>bản</span></b> <br>
-          Trạng thái hiện tại của dịch vụ là <b style="color:orange">Đã nộp biên bản </b><br>
+          Xin chào <b>${findStudent.name}</b>,
+          <br>
+          Bạn vừa <b style="color:green"><span><span class="il">đăng</span></span> <span><span class="il">ký</span></span> <span>thành</span> <span>công</span></b> thông tin <b><span>Biên</span> <span>bản</span></b>
+          <br>
+          Trạng thái hiện tại của dịch vụ là <b style="color:orange">Đã nộp biên bản </b>
+          <br>
           Nội dung(nếu có): Lưu ý mỗi sinh viên sẽ giới hạn 3 lần được hỗ trợ tìm nơi thực tập từ phòng quan hệ doanh nghiệp
       </p>
       <hr style="border-top:1px solid">
@@ -301,11 +313,11 @@ export const form = async (req, res) => {
       </div>
       </div>
       `;
-      sendMail(dataEmail);
-      res.status(200).send({ message: "Nộp biên bản thành công" });
+      await sendMail(dataEmail);
+      return res.status(200).send({ message: "Nộp biên bản thành công" });
     }
   } catch (error) {
-    res
+    return res
       .status(500)
       .send({ message: "Có lỗi xảy ra! Vui lòng quay lại sau ít phút" });
   }

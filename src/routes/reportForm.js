@@ -16,7 +16,7 @@ router.patch(
 router.patch(
   "/form",
   isAuthenticateUser,
-  authorizeRoles([1, 2]),
+  // authorizeRoles([1, 2]),
   checkRequestTime,
   form
 );

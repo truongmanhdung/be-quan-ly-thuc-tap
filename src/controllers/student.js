@@ -298,8 +298,9 @@ export const updateBusinessStudent = async (req, res) => {
 
 //updateStatusStudent
 export const updateStatusStudent = async (req, res) => {
-  const { listIdStudent, status, listEmailStudent, textNote } = await req.body;
+  const { listIdStudent, status, listEmailStudent, textNote } = req.body;
   const dataEmail = {};
+  const hostname = req.get("host");
   const listIdStudents = await listIdStudent.map((id) => ObjectId(id));
   const newArr = [];
   if (listEmailStudent) {
@@ -341,7 +342,7 @@ export const updateStatusStudent = async (req, res) => {
         Lý do SV phải sửa CV: ${textNote} <br>
         Trạng thái hiện tại của dịch vụ là <b style="color:orange">Sửa CV </b>
         <br>
-        Sinh vi&ecirc;n vui l&ograve;ng đăng nhập v&agrave;o trang web <a href="http://apartment-client.xyz">apartment-system</a>&nbsp;sửa CV
+        Sinh vi&ecirc;n vui l&ograve;ng đăng nhập v&agrave;o trang web <a href="http://${hostname}">${hostname}</a>&nbsp;sửa CV
         <br>
         Nội dung(nếu có): Lưu ý mỗi sinh viên sẽ giới hạn 3 lần được hỗ trợ tìm nơi thực tập từ phòng quan hệ doanh nghiệp
       </p>
@@ -375,7 +376,7 @@ export const updateStatusStudent = async (req, res) => {
           CV của bạn đã được phòng QHDN <b><span>Xác</span> <span>Nhận</span></b>
           <br>
           Trạng thái hiện tại của dịch vụ là <b style="color:orange">Nhận CV </b><br>
-          Sinh vi&ecirc;n vui l&ograve;ng đăng nhập v&agrave;o trang web <a href="http://apartment-client.xyz">apartment-system</a>&nbsp;xem trạng thái CV
+          Sinh vi&ecirc;n vui l&ograve;ng đăng nhập v&agrave;o trang web <a href="http://${hostname}">${hostname}</a>&nbsp;xem trạng thái CV
           <br>
           Nội dung(nếu có): Lưu ý mỗi sinh viên sẽ giới hạn 3 lần được hỗ trợ tìm nơi thực tập từ phòng quan hệ doanh nghiệp
       </p>
@@ -404,12 +405,15 @@ export const updateStatusStudent = async (req, res) => {
       <div class="adM">
       </div>
       <img src="https://i.imgur.com/q7xM8RP.png" width="120" alt="logo" class="CToWUd">
-      <p>
+      <>
           Xin chào Sinh viên,<br>
-          Bạn đã trượt thực tập. Phòng QHDN <b><span>Xác</span> <span>Nhận</span></b> <br> <br>
+          Bạn đã trượt thực tập. Phòng QHDN <b><span>Xác</span> <span>Nhận</span></b>
+          <br>
           Lý do SV trượt: ${textNote}<br>
-          Trạng thái hiện tại của dịch vụ là <b style="color:orange">Trượt thực tập </b><br>
-          <p>Sinh vi&ecirc;n vui l&ograve;ng đăng k&yacute; thực tập lại v&agrave;o kỳ sau tr&ecirc;n hệ thống <a href="https://ap.poly.edu.vn/">ap.poly.edu.vn</a></p><br>
+          Trạng thái hiện tại của dịch vụ là <b style="color:orange">Trượt thực tập </b>
+          <br>
+          Sinh vi&ecirc;n vui l&ograve;ng đăng k&yacute; thực tập lại v&agrave;o kỳ sau tr&ecirc;n hệ thống <a href="https://ap.poly.edu.vn/">ap.poly.edu.vn</a>
+          <br>
           Nội dung(nếu có): Lưu ý mỗi sinh viên sẽ giới hạn 3 lần được hỗ trợ tìm nơi thực tập từ phòng quan hệ doanh nghiệp
       </p>
       <hr style="border-top:1px solid">
@@ -445,7 +449,7 @@ export const updateStatusStudent = async (req, res) => {
           <br>
           Trạng thái hiện tại của dịch vụ là <b style="color:orange">Sửa biên bản </b>
           <br>
-          Sinh vi&ecirc;n vui l&ograve;ng đăng nhập v&agrave;o trang web <a href="http://apartment-client.xyz">apartment-system</a>&nbsp;sửa biên bản
+          Sinh vi&ecirc;n vui l&ograve;ng đăng nhập v&agrave;o trang web <a href="http://${hostname}">${hostname}</a>&nbsp;sửa biên bản
       </p>
       <hr style="border-top:1px solid">
       <div style="font-style:italic">
@@ -472,11 +476,13 @@ export const updateStatusStudent = async (req, res) => {
       <div class="adM">
       </div>
       <img src="https://i.imgur.com/q7xM8RP.png" width="120" alt="logo" class="CToWUd">
-      <p>
+      <>
           Xin chào Sinh viên,<br>
-          Biên bản của bạn đã được phòng QHDN <b><span>Xác</span> <span>Nhận</span></b><br>
-          Trạng thái hiện tại của dịch vụ là <b style="color:orange">Đang thực tập </b><br>
-          <p>Sinh vi&ecirc;n vui l&ograve;ng đăng nhập v&agrave;o trang web <a href="http://apartment-client.xyz">apartment-system</a>&nbsp;xem trạng thái báo cáo</p><br>
+          Biên bản của bạn đã được phòng QHDN <b><span>Xác</span> <span>Nhận</span></b>
+          <br>
+          Trạng thái hiện tại của dịch vụ là <b style="color:orange">Đang thực tập </b>
+          <br>
+          Sinh vi&ecirc;n vui l&ograve;ng đăng nhập v&agrave;o trang web <a href="http://${hostname}">${hostname}</a>&nbsp;xem trạng thái báo cáo
       </p>
       <hr style="border-top:1px solid">
       <div style="font-style:italic">
@@ -504,12 +510,14 @@ export const updateStatusStudent = async (req, res) => {
       <div class="adM">
       </div>
       <img src="https://i.imgur.com/q7xM8RP.png" width="120" alt="logo" class="CToWUd">
-      <p>
+      <>
           Xin chào Sinh viên,<br>
-          Phòng QHDN yêu cầu bạn sửa lại thông tin <b style="color:green"><span><span class="il">Báo</span></span> <span><span class="il">cáo</span></span></b><br> <br>
+          Phòng QHDN yêu cầu bạn sửa lại thông tin <b style="color:green"><span><span class="il">Báo</span></span> <span><span class="il">cáo</span></span></b>
+          <br>
           Lý do SV phải sửa báo cáo: ${textNote}<br>
           Trạng thái hiện tại của dịch vụ là <b style="color:orange">Sửa báo cáo </b><br>
-          <p>Sinh vi&ecirc;n vui l&ograve;ng đăng nhập v&agrave;o trang web <a href="http://apartment-client.xyz">apartment-system</a>&nbsp;sửa báo cáo</p><br>
+          Sinh vi&ecirc;n vui l&ograve;ng đăng nhập v&agrave;o trang web <a href="http://${hostname}">${hostname}</a>&nbsp;sửa báo cáo
+          <br>
           Nội dung(nếu có): Lưu ý mỗi sinh viên sẽ giới hạn 3 lần được hỗ trợ tìm nơi thực tập từ phòng quan hệ doanh nghiệp
       </p>
       <hr style="border-top:1px solid">
@@ -538,12 +546,15 @@ export const updateStatusStudent = async (req, res) => {
       <div class="adM">
       </div>
       <img src="https://i.imgur.com/q7xM8RP.png" width="120" alt="logo" class="CToWUd">
-      <p>
+      <>
           Xin chào Sinh viên,<br>
-          Bạn đã hoành thành thông tin thực tập. Phòng QHDN <b><span>Xác</span> <span>Nhận</span></b> <br> <br>
-          Trạng thái hiện tại của dịch vụ là <b style="color:orange">Hoàn thành báo cáo thực tập </b><br>
-          Điểm của bạn sẽ được phòng QHDN cập nhật sau 1-2 ngày trên hệ thống  <a href="https://ap.poly.edu.vn/">ap.poly.edu.vn</a> <br>
-          <p>Sinh vi&ecirc;n vui l&ograve;ng đăng nhập v&agrave;o trang web <a href="http://apartment-client.xyz">apartment-system</a>&nbsp;xem trạng thái báo cáo</p>
+          Bạn đã hoành thành thông tin thực tập. Phòng QHDN <b><span>Xác</span> <span>Nhận</span></b>
+          <br>
+          Trạng thái hiện tại của dịch vụ là <b style="color:orange">Hoàn thành báo cáo thực tập </b>
+          <br>
+          Điểm của bạn sẽ được phòng QHDN cập nhật sau 1-2 ngày trên hệ thống  <a href="https://ap.poly.edu.vn/">ap.poly.edu.vn</a>
+          <br>
+          Sinh vi&ecirc;n vui l&ograve;ng đăng nhập v&agrave;o trang web <a href="http://${hostname}">${hostname}</a>&nbsp;xem trạng thái báo cáo
       </p>
       <hr style="border-top:1px solid">
       <div style="font-style:italic">
