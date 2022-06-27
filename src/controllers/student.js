@@ -23,8 +23,7 @@ export const listStudent = async (req, res) => {
           .populate("majors")
           .skip(skipNumber)
           .limit(current)
-          .sort({ statusCheck: 1 })
-          .exec((err, doc) => {
+          .sort({ statusCheck: 1 }).exec((err, doc) => {
             if (err) {
               res.status(400).json(err);
             } else {
@@ -32,20 +31,19 @@ export const listStudent = async (req, res) => {
                 .countDocuments({})
                 .exec((count_error, count) => {
                   if (err) {
-                    res.json(count_error);
-                    return;
+                    return res.json(count_error);
                   } else {
-                    res.status(200).json({
+                    return res.status(200).json({
                       total: count,
                       list: doc,
                     });
-                    return;
+                    ;
                   }
                 });
             }
           });
       } catch (error) {
-        res.status(400).json(error);
+        return res.status(400).json(error);
       }
     } else {
       const listStudent = await Student.find({})
@@ -54,13 +52,13 @@ export const listStudent = async (req, res) => {
         .populate("business")
         .populate("majors");
 
-      res.status(200).json({
+        return res.status(200).json({
         total: listStudent.length,
         list: listStudent,
       });
     }
   } catch (error) {
-    res.status(500).json(error);
+    return res.status(500).json(error);
   }
 };
 
@@ -68,7 +66,8 @@ export const listStudent = async (req, res) => {
 export const updateStudent = async (req, res) => {
   try {
     const student = await Student.findOneAndUpdate(
-      { id: req.params.id },
+      { _id: req.params.id },
+      req.body,
       { new: true }
     );
     return res.status(200).json(student);
@@ -140,7 +139,12 @@ export const insertStudent = async (req, res) => {
         );
 
         await Student.updateMany(
-          { $and: [{ mssv: { $in: listNew } }, { smester_id, majors, campus_id }] },
+          {
+            $and: [
+              { mssv: { $in: listNew } },
+              { smester_id, majors, campus_id },
+            ],
+          },
           {
             $set: {
               checkUpdate: true,
@@ -165,7 +169,12 @@ export const insertStudent = async (req, res) => {
         await Student.insertMany(data);
 
         await Student.updateMany(
-          { $and: [{ mssv: { $nin: listMS } }, { smester_id, majors, campus_id }] },
+          {
+            $and: [
+              { mssv: { $nin: listMS } },
+              { smester_id, majors, campus_id },
+            ],
+          },
           {
             $set: {
               checkMulti: true,
@@ -283,7 +292,7 @@ export const updateBusinessStudent = async (req, res) => {
 
 //updateStatusStudent
 export const updateStatusStudent = async (req, res) => {
-  const { listIdStudent, status, listEmailStudent, textNote } = req.body;
+  const { listIdStudent, status, listEmailStudent, textNote } = await req.body;
   const dataEmail = {};
   const listIdStudents = await listIdStudent.map((id) => ObjectId(id));
   const newArr = [];
@@ -292,11 +301,11 @@ export const updateStatusStudent = async (req, res) => {
       newArr.push(value.email);
     });
   }
-
+  console.log("newArr", newArr);
   dataEmail.mail = newArr;
 
   try {
-    const data = await Student.updateMany(
+    await Student.updateMany(
       {
         _id: { $in: listIdStudents },
       },
@@ -322,15 +331,18 @@ export const updateStatusStudent = async (req, res) => {
       </div>
       <img src="https://i.imgur.com/q7xM8RP.png" width="120" alt="logo" class="CToWUd">
       <p>
-        Phòng QHDN yêu cầu bạn sửa lại thông tin <b style="color:green"><span><span class="il">CV</span></span> <span></span></b><br> <br>
+        Phòng QHDN yêu cầu bạn sửa lại thông tin <b style="color:green"><span><span class="il">CV</span></span> <span></span></b><br>
         Lý do SV phải sửa CV: ${textNote} <br>
-        Trạng thái hiện tại của dịch vụ là <b style="color:orange">Sửa CV </b><br>
-        <p>Sinh vi&ecirc;n vui l&ograve;ng đăng nhập v&agrave;o trang web <a href="http://apartment-client.xyz">apartment-system</a>&nbsp;sửa CV</p><br>
+        Trạng thái hiện tại của dịch vụ là <b style="color:orange">Sửa CV </b>
+        <br>
+        Sinh vi&ecirc;n vui l&ograve;ng đăng nhập v&agrave;o trang web <a href="http://apartment-client.xyz">apartment-system</a>&nbsp;sửa CV
+        <br>
         Nội dung(nếu có): Lưu ý mỗi sinh viên sẽ giới hạn 3 lần được hỗ trợ tìm nơi thực tập từ phòng quan hệ doanh nghiệp
       </p>
       <hr style="border-top:1px solid">
       <div style="font-style:italic">
-          <span>Lưu ý: đây là email tự động vui lòng không phản hồi lại email này, mọi thắc mắc xin liên hệ phòng QHDN qua số điện thoại bên dưới</span>
+      <span>Lưu ý: đây là email tự động vui lòng không phản hồi lại email này, mọi thắc mắc xin liên hệ phòng QHDN qua số điện thoại: </span>
+      <a face="arial, sans-serif" href="tel:0246264713">024 6264713</a>
           <div class="yj6qo"></div>
           <div class="adL"></div>
           <div class="adL"><br>
@@ -344,7 +356,7 @@ export const updateStatusStudent = async (req, res) => {
       </div>
       </div>
       `;
-      sendMail(dataEmail);
+      await sendMail(dataEmail);
     } else if (status === 2) {
       dataEmail.subject = "Thông báo nhận CV sinh viên thành công";
       dataEmail.content = `
@@ -355,13 +367,16 @@ export const updateStatusStudent = async (req, res) => {
       <p>
           Xin chào sinh viên,<br>
           CV của bạn đã được phòng QHDN <b><span>Xác</span> <span>Nhận</span></b>
+          <br>
           Trạng thái hiện tại của dịch vụ là <b style="color:orange">Nhận CV </b><br>
-          <p>Sinh vi&ecirc;n vui l&ograve;ng đăng nhập v&agrave;o trang web <a href="http://apartment-client.xyz">apartment-system</a>&nbsp;xem trạng thái CV</p>
+          Sinh vi&ecirc;n vui l&ograve;ng đăng nhập v&agrave;o trang web <a href="http://apartment-client.xyz">apartment-system</a>&nbsp;xem trạng thái CV
+          <br>
           Nội dung(nếu có): Lưu ý mỗi sinh viên sẽ giới hạn 3 lần được hỗ trợ tìm nơi thực tập từ phòng quan hệ doanh nghiệp
       </p>
       <hr style="border-top:1px solid">
       <div style="font-style:italic">
-          <span>Lưu ý: đây là email tự động vui lòng không phản hồi lại email này, mọi thắc mắc xin liên hệ phòng QHDN qua số điện thoại bên dưới</span>
+      <span>Lưu ý: đây là email tự động vui lòng không phản hồi lại email này, mọi thắc mắc xin liên hệ phòng QHDN qua số điện thoại: </span>
+      <a face="arial, sans-serif" href="tel:0246264713">024 6264713</a>
           <div class="yj6qo"></div>
           <div class="adL"></div>
           <div class="adL"><br>
@@ -375,7 +390,7 @@ export const updateStatusStudent = async (req, res) => {
       </div>
       </div>
       `;
-      sendMail(dataEmail);
+      await sendMail(dataEmail);
     } else if (status === 3) {
       dataEmail.subject = "Thông báo sinh viên trượt thực tập doanh nghiệp";
       dataEmail.content = `
@@ -393,7 +408,8 @@ export const updateStatusStudent = async (req, res) => {
       </p>
       <hr style="border-top:1px solid">
       <div style="font-style:italic">
-          <span>Lưu ý: đây là email tự động vui lòng không phản hồi lại email này, mọi thắc mắc xin liên hệ phòng QHDN qua số điện thoại bên dưới</span>
+           <span>Lưu ý: đây là email tự động vui lòng không phản hồi lại email này, mọi thắc mắc xin liên hệ phòng QHDN qua số điện thoại: </span>
+      <a face="arial, sans-serif" href="tel:0246264713">024 6264713</a>
           <div class="yj6qo"></div>
           <div class="adL"></div>
           <div class="adL"><br>
@@ -407,7 +423,7 @@ export const updateStatusStudent = async (req, res) => {
       </div>
       </div>
       `;
-      sendMail(dataEmail);
+      await sendMail(dataEmail);
     } else if (status === 5) {
       dataEmail.subject = "Thông báo sửa biên bản thực tập doanh nghiệp";
       dataEmail.content = `
@@ -417,14 +433,18 @@ export const updateStatusStudent = async (req, res) => {
       <img src="https://i.imgur.com/q7xM8RP.png" width="120" alt="logo" class="CToWUd">
       <p>
           Xin chào Sinh viên,<br>
-          Phòng QHDN yêu cầu bạn sửa lại thông tin <b style="color:green"><span><span class="il">Biên</span></span> <span><span class="il">bản</span></span></b><br> <br>
-          Lý do SV phải sửa báo cáo: ${textNote}<br>
-          <p>Sinh vi&ecirc;n vui l&ograve;ng đăng nhập v&agrave;o trang web <a href="http://apartment-client.xyz">apartment-system</a>&nbsp;sửa biên bản</p><br>
-          Trạng thái hiện tại của dịch vụ là <b style="color:orange">Sửa biên bản </b><br>
+          Phòng QHDN yêu cầu bạn sửa lại thông tin <b style="color:green"><span><span class="il">Biên</span></span> <span><span class="il">bản</span></span></b>
+          <br>
+          Lý do SV phải sửa báo cáo: ${textNote}
+          <br>
+          Trạng thái hiện tại của dịch vụ là <b style="color:orange">Sửa biên bản </b>
+          <br>
+          Sinh vi&ecirc;n vui l&ograve;ng đăng nhập v&agrave;o trang web <a href="http://apartment-client.xyz">apartment-system</a>&nbsp;sửa biên bản
       </p>
       <hr style="border-top:1px solid">
       <div style="font-style:italic">
-          <span>Lưu ý: đây là email tự động vui lòng không phản hồi lại email này, mọi thắc mắc xin liên hệ phòng QHDN qua số điện thoại bên dưới</span>
+           <span>Lưu ý: đây là email tự động vui lòng không phản hồi lại email này, mọi thắc mắc xin liên hệ phòng QHDN qua số điện thoại: </span>
+      <a face="arial, sans-serif" href="tel:0246264713">024 6264713</a>
           <div class="yj6qo"></div>
           <div class="adL"></div>
           <div class="adL"><br>
@@ -438,7 +458,7 @@ export const updateStatusStudent = async (req, res) => {
       </div>
       </div>
       `;
-      sendMail(dataEmail);
+      await sendMail(dataEmail);
     } else if (status === 6) {
       dataEmail.subject = "Thông báo nhận biên bản sinh viên thành công";
       dataEmail.content = `
@@ -449,12 +469,13 @@ export const updateStatusStudent = async (req, res) => {
       <p>
           Xin chào Sinh viên,<br>
           Biên bản của bạn đã được phòng QHDN <b><span>Xác</span> <span>Nhận</span></b><br>
-          <p>Sinh vi&ecirc;n vui l&ograve;ng đăng nhập v&agrave;o trang web <a href="http://apartment-client.xyz">apartment-system</a>&nbsp;xem trạng thái báo cáo</p><br>
           Trạng thái hiện tại của dịch vụ là <b style="color:orange">Đang thực tập </b><br>
+          <p>Sinh vi&ecirc;n vui l&ograve;ng đăng nhập v&agrave;o trang web <a href="http://apartment-client.xyz">apartment-system</a>&nbsp;xem trạng thái báo cáo</p><br>
       </p>
       <hr style="border-top:1px solid">
       <div style="font-style:italic">
-          <span>Lưu ý: đây là email tự động vui lòng không phản hồi lại email này, mọi thắc mắc xin liên hệ phòng QHDN qua số điện thoại bên dưới</span>
+           <span>Lưu ý: đây là email tự động vui lòng không phản hồi lại email này, mọi thắc mắc xin liên hệ phòng QHDN qua số điện thoại: </span>
+      <a face="arial, sans-serif" href="tel:0246264713">024 6264713</a>
           <div class="yj6qo"></div>
           <div class="adL"></div>
           <div class="adL"><br>
@@ -468,7 +489,7 @@ export const updateStatusStudent = async (req, res) => {
       </div>
       </div>
       `;
-      sendMail(dataEmail);
+      await sendMail(dataEmail);
     } else if (status === 8) {
       dataEmail.subject =
         "Thông báo sinh viên sửa báo cáo thực tập doanh nghiệp";
@@ -487,7 +508,8 @@ export const updateStatusStudent = async (req, res) => {
       </p>
       <hr style="border-top:1px solid">
       <div style="font-style:italic">
-          <span>Lưu ý: đây là email tự động vui lòng không phản hồi lại email này, mọi thắc mắc xin liên hệ phòng QHDN qua số điện thoại bên dưới</span>
+           <span>Lưu ý: đây là email tự động vui lòng không phản hồi lại email này, mọi thắc mắc xin liên hệ phòng QHDN qua số điện thoại: </span>
+      <a face="arial, sans-serif" href="tel:0246264713">024 6264713</a>
           <div class="yj6qo"></div>
           <div class="adL"></div>
           <div class="adL"><br>
@@ -501,7 +523,7 @@ export const updateStatusStudent = async (req, res) => {
       </div>
       </div>
       `;
-      sendMail(dataEmail);
+      await sendMail(dataEmail);
     } else if (status === 9) {
       dataEmail.subject =
         "Thông báo Hoàn thành thông tin thực tập sinh viên thành công";
@@ -519,7 +541,8 @@ export const updateStatusStudent = async (req, res) => {
       </p>
       <hr style="border-top:1px solid">
       <div style="font-style:italic">
-          <span>Lưu ý: đây là email tự động vui lòng không phản hồi lại email này, mọi thắc mắc xin liên hệ phòng QHDN qua số điện thoại bên dưới</span>
+           <span>Lưu ý: đây là email tự động vui lòng không phản hồi lại email này, mọi thắc mắc xin liên hệ phòng QHDN qua số điện thoại: </span>
+      <a face="arial, sans-serif" href="tel:0246264713">024 6264713</a>
           <div class="yj6qo"></div>
           <div class="adL"></div>
           <div class="adL"><br>
@@ -533,7 +556,7 @@ export const updateStatusStudent = async (req, res) => {
       </div>
       </div>
       `;
-      sendMail(dataEmail);
+      await sendMail(dataEmail);
     }
     return res.json({ listStudentChangeStatus, status });
   } catch (error) {
@@ -561,9 +584,10 @@ export const listStudentReviewForm = async (req, res) => {
       CV: { $ne: null },
       statusCheck: 2,
     })
-      .populate("smester_id")
-      .populate("business")
-      .populate("majors");
+    .populate("campus_id")
+    .populate("smester_id")
+    .populate("business")
+    .populate("majors")
 
     res.status(200).json(listStudentReviewForm);
   } catch (error) {
@@ -580,9 +604,10 @@ export const listStudentReviewCV = async (req, res) => {
       report: null,
       statusCheck: { $in: [0, 1] },
     })
-      .populate("smester_id")
-      .populate("business")
-      .populate("majors");
+    .populate("campus_id")
+    .populate("smester_id")
+    .populate("business")
+    .populate("majors")
 
     res.status(200).json(listStudentReviewCV);
   } catch (error) {

@@ -16,11 +16,11 @@ const studentSchema = mongoose.Schema(
     },
     majors: {
       type: ObjectId,
-      ref: 'Major'
+      ref: "Major",
     },
-    narrow:{
+    narrow: {
       type: ObjectId,
-      ref: 'NarrowSpecialization'
+      ref: "NarrowSpecialization",
     },
     email: {
       type: String,
@@ -141,6 +141,23 @@ const studentSchema = mongoose.Schema(
       type: Number,
       default: null,
     },
+    listTimeForm: [
+      {
+        typeNumber: {
+          type: Number,
+        },
+        typeName: {
+          type: String,
+          default: "",
+        },
+        startTime: {
+          type: Number,
+        },
+        endTime: {
+          type: Number,
+        },
+      },
+    ],
     createdAt: {
       type: Date,
       default: Date.now,

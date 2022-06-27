@@ -1,7 +1,7 @@
 import ConfigTime from "../models/configTime";
 
 export const checkRequestTime = async (req, res, next) => {
-  const { typeNumber } = req.body;
+  const { typeNumber, _id } = req.body;
   try {
     const dateNow = Date.now();
     const { startTime, endTime } = await ConfigTime.findOne({
