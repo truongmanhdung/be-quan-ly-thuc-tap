@@ -115,8 +115,10 @@ export const signUpCVForSupport = async (req, res) => {
       <img src="https://i.imgur.com/q7xM8RP.png" width="120" alt="logo" class="CToWUd">
       <p>
           Xin chào <b>${name}</b>,<br>
-          Bạn vừa <b style="color:green"><span><span class="il">chỉnh</span></span> <span><span class="il">sửa</span></span> <span>thành</span> <span>công</span></b> thông tin <b><span>Hỗ</span> <span>trợ</span> tìm nơi thực tập</b> <br>
-          Trạng thái hiện tại của dịch vụ là <b style="color:orange">Chờ kiểm tra </b><br>
+          Bạn vừa <b style="color:green"><span><span class="il">chỉnh</span></span> <span><span class="il">sửa</span></span> <span>thành</span> <span>công</span></b> thông tin <b><span>Hỗ</span> <span>trợ</span> tìm nơi thực tập</b>
+          <br>
+          Trạng thái hiện tại của dịch vụ là <b style="color:orange">Chờ kiểm tra </b>
+          <br>
           Nội dung(nếu có): Lưu ý mỗi sinh viên sẽ giới hạn 3 lần được hỗ trợ tìm nơi thực tập từ phòng quan hệ doanh nghiệp
       </p>
       <hr style="border-top:1px solid">
@@ -135,9 +137,9 @@ export const signUpCVForSupport = async (req, res) => {
       </div>
       </div>
       `;
-      sendMail(dataEmail);
+      await sendMail(dataEmail);
 
-      res
+      return res
         .status(200)
         .send({ message: "Sửa thông tin CV thành công!", support: support });
     }
@@ -155,9 +157,12 @@ export const signUpCVForSupport = async (req, res) => {
       </div>
       <img src="https://i.imgur.com/q7xM8RP.png" width="120" alt="logo" class="CToWUd">
       <p>
-          Xin chào <b>${name}</b>,<br>
-          Bạn vừa <b style="color:green"><span><span class="il">đăng</span></span> <span><span class="il">ký</span></span> <span>thành</span> <span>công</span></b> thông tin <b><span>Hỗ</span> <span>trợ</span> tìm nơi thực tập</b> <br>
-          Trạng thái hiện tại của dịch vụ là <b style="color:orange">Chờ kiểm tra </b><br>
+          Xin chào <b>${name}</b>,
+          <br>
+          Bạn vừa <b style="color:green"><span><span class="il">đăng</span></span> <span><span class="il">ký</span></span> <span>thành</span> <span>công</span></b> thông tin <b><span>Hỗ</span> <span>trợ</span> tìm nơi thực tập</b>
+          <br>
+          Trạng thái hiện tại của dịch vụ là <b style="color:orange">Chờ kiểm tra </b>
+          <br>
           Nội dung(nếu có): Lưu ý mỗi sinh viên sẽ giới hạn 3 lần được hỗ trợ tìm nơi thực tập từ phòng quan hệ doanh nghiệp
       </p>
       <hr style="border-top:1px solid">
@@ -176,8 +181,8 @@ export const signUpCVForSupport = async (req, res) => {
       </div>
       </div>
       `;
-      sendMail(dataEmail);
-      res
+      await sendMail(dataEmail);
+      return res
         .status(200)
         .send({ message: "Đăng ký thông tin thành công!", support: support });
     }
@@ -205,9 +210,12 @@ export const signUpCVForSupport = async (req, res) => {
       </div>
       <img src="https://i.imgur.com/q7xM8RP.png" width="120" alt="logo" class="CToWUd">
       <p>
-          Xin chào <b>${name}</b>,<br>
-          Bạn vừa <b style="color:green"><span><span class="il">chỉnh</span></span> <span><span class="il">sửa</span></span> <span>thành</span> <span>công</span></b> thông tin <b><span>Hỗ</span> <span>trợ</span> tự tìm nơi thực tập</b> <br>
-          Trạng thái hiện tại của dịch vụ là <b style="color:orange">Chờ kiểm tra </b><br>
+          Xin chào <b>${name}</b>,
+          <br>
+          Bạn vừa <b style="color:green"><span><span class="il">chỉnh</span></span> <span><span class="il">sửa</span></span> <span>thành</span> <span>công</span></b> thông tin <b><span>Hỗ</span> <span>trợ</span> tự tìm nơi thực tập</b>
+          <br>
+          Trạng thái hiện tại của dịch vụ là <b style="color:orange">Chờ kiểm tra </b>
+          <br>
           Nội dung(nếu có): Lưu ý mỗi sinh viên sẽ giới hạn 3 lần được hỗ trợ tìm nơi thực tập từ phòng quan hệ doanh nghiệp
       </p>
       <hr style="border-top:1px solid">
@@ -226,9 +234,9 @@ export const signUpCVForSupport = async (req, res) => {
       </div>
       </div>
       `;
-      sendMail(dataEmail);
+      await sendMail(dataEmail);
 
-      res
+      return res
         .status(200)
         .send({ message: "Sửa thông tin CV thành công!", support: support });
     }
@@ -246,9 +254,12 @@ export const signUpCVForSupport = async (req, res) => {
       </div>
       <img src="https://i.imgur.com/q7xM8RP.png" width="120" alt="logo" class="CToWUd">
       <p>
-          Xin chào <b>${name}</b>,<br>
-          Bạn vừa <b style="color:green"><span><span class="il">đăng</span></span> <span><span class="il">ký</span></span> <span>thành</span> <span>công</span></b> thông tin <b><span>Tự</span> <span>tìm</span> nơi thực tập</b> <br>
-          Trạng thái hiện tại của dịch vụ là <b style="color:orange">Chờ kiểm tra </b><br>
+          Xin chào <b>${name}</b>,
+          <br>
+          Bạn vừa <b style="color:green"><span><span class="il">đăng</span></span> <span><span class="il">ký</span></span> <span>thành</span> <span>công</span></b> thông tin <b><span>Tự</span> <span>tìm</span> nơi thực tập</b>
+          <br>
+          Trạng thái hiện tại của dịch vụ là <b style="color:orange">Chờ kiểm tra </b>
+          <br>
           Nội dung(nếu có): Lưu ý mỗi sinh viên sẽ giới hạn 3 lần được hỗ trợ tìm nơi thực tập từ phòng quan hệ doanh nghiệp
       </p>
       <hr style="border-top:1px solid">
@@ -267,13 +278,13 @@ export const signUpCVForSupport = async (req, res) => {
       </div>
       </div>
       `;
-      sendMail(dataEmail);
-      res
+      await sendMail(dataEmail);
+      return res
         .status(200)
         .send({ message: "Đăng ký thông tin thành công!", support: support });
     }
   } catch (error) {
-    res.status(500).send({
+    return res.status(500).send({
       message: "Đã xảy ra lỗi! Đăng ký lại sau ít phút!",
     });
   }
