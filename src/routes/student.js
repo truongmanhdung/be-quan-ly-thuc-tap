@@ -45,7 +45,7 @@ router.patch(
   authorizeRoles([role.manager]),
   updateStatusStudent
 );
-router.put(
+router.patch(
   "/student/:id",
   isAuthenticateUser,
   authorizeRoles([role.manager]),

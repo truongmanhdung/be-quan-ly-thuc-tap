@@ -110,6 +110,7 @@ export const readStudentById = async (req, res) => {
 //insertStudent
 export const insertStudent = async (req, res) => {
   const { data, smester_id, majors, campus_id } = req.body;
+  console.log("majors", majors);
   try {
     const checkStudent = await Student.find({}).limit(3);
 
