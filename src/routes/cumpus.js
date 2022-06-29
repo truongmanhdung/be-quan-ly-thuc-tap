@@ -1,6 +1,7 @@
 import express from "express";
 import {
   createCumpus,
+  getCumpus,
   getListCumpus,
   removeCumpus,
   updateCumpus,
@@ -11,6 +12,7 @@ import { role } from "../utils/role";
 const router = express.Router();
 
 router.get("/cumpus", getListCumpus);
+router.get("/cumpus/:id", getCumpus);
 router.post("/cumpus", isAuthenticateUser, authorizeRoles([role.dev]), createCumpus);
 router.patch(
   "/cumpus/:id",
