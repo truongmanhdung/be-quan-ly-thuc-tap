@@ -21,6 +21,6 @@ router.get(
   authorizeRoles([role.manager]),
   getListTypeSetTime
 );
-router.get("/settime/:type", isAuthenticateUser, getOneTypeSetTime);
+router.get("/settime/find-one", isAuthenticateUser, getOneTypeSetTime);
 
 module.exports = router;
