@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const { ObjectId } = mongoose.Schema;
 const configTimeSchema = mongoose.Schema(
   {
     typeNumber: {
@@ -16,6 +17,10 @@ const configTimeSchema = mongoose.Schema(
     endTime: {
       type: Number,
       required: true,
+    },
+    semester_id: {
+      type: ObjectId,
+      ref: "Semester",
     },
   },
   {
