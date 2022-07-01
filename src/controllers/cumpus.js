@@ -24,6 +24,18 @@ export const getListCumpus = async (req, res) => {
   }
 };
 
+export const getCumpus = async (req, res) => {
+  try {
+    const cumpus = await Cumpus.findById(req.params.id);
+    return res.status(200).json({
+      cumpus,
+      message: "Get cumpus successfully",
+    });
+  } catch (error) {
+    return res.status(400).json(error);
+  }
+};
+
 export const updateCumpus = async(req,res) =>{
   try {
     const cumpus = await Cumpus.findByIdAndUpdate(req.params.id,req.body,{new: true})
