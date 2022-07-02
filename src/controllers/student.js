@@ -34,8 +34,8 @@ export const listStudent = async (req, res) => {
                     return res.json(count_error);
                   } else {
                     return res.status(200).json({
-                      total: count,
-                      list: doc,
+                      total: count ? count : 0,
+                      list: doc ? doc : [],
                     });
                     ;
                   }
