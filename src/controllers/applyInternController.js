@@ -20,10 +20,11 @@ export const signUpCVForSupport = async (req, res) => {
     typeNumber,
     emailEnterprise,
     business,
+    semester_id
   } = req.body;
 
   try {
-    const conFigTime = await configTime.findOne({ typeNumber: typeNumber });
+    const conFigTime = await configTime.findOne({ typeNumber: typeNumber, semester_id });
     const timeNow = new Date().getTime();
     const check = conFigTime.endTime > timeNow;
     const ms = req.body.user_code.toLowerCase();

@@ -1,11 +1,12 @@
 import ConfigTime from "../models/configTime";
 
 export const checkRequestTime = async (req, res, next) => {
-  const { typeNumber, _id } = req.body;
+  const { typeNumber, semester_id } = req.body;
   try {
     const dateNow = Date.now();
     const { startTime, endTime } = await ConfigTime.findOne({
       typeNumber,
+      semester_id
     });
     if (dateNow > startTime && dateNow < endTime) {
       next();
