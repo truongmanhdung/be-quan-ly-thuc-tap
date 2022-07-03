@@ -1,6 +1,4 @@
-import configTime from "../models/configTime";
 import { sendMail } from "./emailController";
-import Business from "../models/business";
 const Student = require("../models/student");
 export const signUpCVForSupport = async (req, res) => {
   const {
@@ -17,16 +15,11 @@ export const signUpCVForSupport = async (req, res) => {
     taxCode,
     position,
     numberEnterprise,
-    typeNumber,
     emailEnterprise,
     business,
-    semester_id
   } = req.body;
 
   try {
-    const conFigTime = await configTime.findOne({ typeNumber: typeNumber, semester_id });
-    const timeNow = new Date().getTime();
-    const check = conFigTime.endTime > timeNow;
     const ms = req.body.user_code.toLowerCase();
     const dataEmail = {};
 
@@ -39,15 +32,6 @@ export const signUpCVForSupport = async (req, res) => {
       mssv: ms,
       email: email,
     };
-
-    if (!check) {
-      {
-        res.status(500).send({
-          message: "Thời gian đăng ký đã hết!",
-        });
-      }
-    }
-
     if (!findStudent) {
       res.status(500).send({
         message: "Thông tin của bạn không tồn tại trên hệ thống!",

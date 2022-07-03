@@ -2,7 +2,6 @@ import ConfigTime from "../models/configTime";
 
 export const handleSetTimeRequest = async (req, res) => {
   const { startTime, endTime, typeNumber, semester_id } = req.body;
-  console.log("req.body",req.body);
   try {
     const timeRequest = await ConfigTime.findOne({
       typeNumber: typeNumber,
@@ -32,7 +31,6 @@ export const handleSetTimeRequest = async (req, res) => {
 export const getListTypeSetTime = async (req, res) => {
   try {
     const { semester_id } = req.query;
-    console.log('semester_id', semester_id);
     const time = await ConfigTime.find({ semester_id });
     res.status(200).json({
       message: "time success",

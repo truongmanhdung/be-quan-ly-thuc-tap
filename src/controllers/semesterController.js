@@ -1,7 +1,7 @@
 import semester from "../models/semester";
 export const getSemester = async (req, res) => {
   try {
-    const data = await semester.find().sort({createdAt: -1});
+    const data = await semester.find().sort({ createdAt: -1 });
     const dataDefault = await semester.findOne({
       $and: [
         { start_time: { $lte: new Date() } },
@@ -31,27 +31,17 @@ export const getDefaultSemester = async (req, res) => {
 export const updateSemester = async (req, res) => {
   try {
     const query = { _id: req.params.id };
-    const find = await semester.findOne(query);
     const reqName = req.body.name.toLowerCase();
 
-    const findName = await semester.findOne({
-      name: reqName,
+    if (!reqName) {
+      return res.status(400).send({
+        message: "Bạn phải nhập tên kỳ",
+      });
+    }
+    const data = await semester.findOneAndUpdate(query, req.body, {
+      new: true,
     });
-
-    if (findName) {
-      return res.status(500).send({
-        message: "Tên kỳ đã tồn tại, vui lòng đặt tên khác!",
-      });
-    }
-
-    if (find) {
-      const data = await semester.findOneAndUpdate(query, req.body);
-      res.status(200).json(data);
-    } else {
-      res.status(500).json({
-        message: "Kỳ không tồn tại!",
-      });
-    }
+    res.status(200).json(data);
   } catch (error) {
     res.status(500).json({
       message: "Có lỗi vui lòng thử lại sau",
@@ -67,7 +57,8 @@ export const insertSemester = async (req, res) => {
     });
 
     if (findName) {
-      return res.status(500).send({
+      return res.status(400).json({
+        code: 400,
         message: "Tên kỳ đã tồn tại, vui lòng đặt tên khác!",
       });
     }

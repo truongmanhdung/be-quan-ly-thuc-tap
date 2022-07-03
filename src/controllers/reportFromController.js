@@ -7,33 +7,19 @@ export const report = async (req, res) => {
   const {
     attitudePoint,
     EndInternShipTime,
-    typeNumber,
     mssv,
     email,
     report,
-    business,
-    semester_id,
     nameCompany,
     resultScore,
   } = req.body;
   const filter = { mssv: mssv, email: email };
   const findStudent = await Student.findOne(filter);
-  const conFigTime = await configTime.findOne({ typeNumber: typeNumber, semester_id });
-  const timeNow = new Date().getTime();
-  const check = conFigTime.endTime > timeNow;
   const startTimeReport = moment(findStudent.internshipTime).valueOf();
   const endTimeReport = moment(EndInternShipTime).valueOf();
   const checkTimeReport = endTimeReport > startTimeReport;
   try {
     const dataEmail = {};
-    if (!check) {
-      {
-        res.status(500).send({
-          message: "Thời gian đăng ký đã hết!",
-        });
-      }
-    }
-
     if (!checkTimeReport) {
       return res.status(500).send({
         message: "Thời gian kết thúc thực tập phải lớn hơn thời gian bắt đầu!",
