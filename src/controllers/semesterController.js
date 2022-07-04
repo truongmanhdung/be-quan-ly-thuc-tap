@@ -32,16 +32,23 @@ export const updateSemester = async (req, res) => {
   try {
     const query = { _id: req.params.id };
     const reqName = req.body.name.toLowerCase();
-
+    const check = await semester.findOne({
+      $and: [{ _id: { $ne: req.params.id, $exists: true } }, { name: reqName }],
+    });
     if (!reqName) {
-      return res.status(400).send({
+      return res.status(400).json({
         message: "Bạn phải nhập tên kỳ",
+      });
+    }
+    if (check) {
+      return res.status(400).json({
+        message: "Tên kì đã tồn tại, vui lòng thử lại",
       });
     }
     const data = await semester.findOneAndUpdate(query, req.body, {
       new: true,
     });
-    res.status(200).json(data);
+    return res.status(200).json(data);
   } catch (error) {
     res.status(500).json({
       message: "Có lỗi vui lòng thử lại sau",
