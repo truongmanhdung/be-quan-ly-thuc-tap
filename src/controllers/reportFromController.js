@@ -164,22 +164,10 @@ export const report = async (req, res) => {
 export const form = async (req, res) => {
   try {
     const dataEmail = {};
-    const { nameCompany, internshipTime, typeNumber, form, mssv, email, semester_id } =
+    const { nameCompany, internshipTime, form, mssv, email, semester_id } =
       req.body;
     const filter = { mssv: mssv, email: email };
     const findStudent = await Student.findOne(filter);
-    const conFigTime = await configTime.findOne({ typeNumber: typeNumber, semester_id });
-    const timeNow = new Date().getTime();
-    const check = conFigTime.endTime > timeNow;
-    
-    if (!check) {
-      {
-        res.status(500).send({
-          message: "Thời gian đăng ký đã hết!",
-        });
-      }
-    }
-
     if (!findStudent) {
       const err = {
         status: false,
