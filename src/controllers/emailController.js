@@ -1,18 +1,15 @@
 const nodemailer = require("nodemailer");
 const transporter = nodemailer.createTransport({
-  host: "smtp.gmail.com",
-  port: 465,
+  host: process.env.HOST_EMAIL,
+  port: process.env.PORT_EMAIL,
   secure: true,
   auth: {
     type: "OAuth2",
-    user: "hantvnodemailer@gmail.com",
-    clientId:
-      "240562429887-mek2d73li2ol168fdduahep87m6rpumv.apps.googleusercontent.com",
-    clientSecret: "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",
-    refreshToken:
-      "1//04QGsomQkoD5zCgYIARAAGAQSNwF-L9Ir_JVDaMHndu9f2pYwsRqKIU0NTn_xvEgWp7JPXH8sOG0gzHmv4q3m1_OMoQ1l57czHw0",
-    accessToken:
-      "ya29.a0ARrdaM94VtgdHuDQshgkO6Gu4c3vh8ii-foohgilmevR7IcO222OPkW1NUZ3UynW54vEDSSNNxP9zYHl_bqfnakJcOV7eKC05UrbIOkVXfqX7dihLpoBckND2Kxu3BLAR2MT8ui-r64x420HUv0GTG12GnR9",
+    user: process.env.USER_EMAIL,
+    clientId: process.env.MAIL_CLIENT_ID,
+    clientSecret: process.env.MAIL_CLIENT_SECRET,
+    refreshToken: process.env.MAIL_REFESH_TOKEN,
+    accessToken: process.env.MAIL_ACCESS_TOKEN,
   },
 });
 
