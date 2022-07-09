@@ -23,7 +23,8 @@ export const listStudent = async (req, res) => {
           .populate("majors")
           .skip(skipNumber)
           .limit(current)
-          .sort({ statusCheck: 1 }).exec((err, doc) => {
+          .sort({ statusCheck: 1 })
+          .exec((err, doc) => {
             if (err) {
               res.status(400).json(err);
             } else {
@@ -37,7 +38,6 @@ export const listStudent = async (req, res) => {
                       total: count ? count : 0,
                       list: doc ? doc : [],
                     });
-                    ;
                   }
                 });
             }
@@ -52,7 +52,7 @@ export const listStudent = async (req, res) => {
         .populate("business")
         .populate("majors");
 
-        return res.status(200).json({
+      return res.status(200).json({
         total: listStudent.length,
         list: listStudent,
       });
@@ -294,6 +294,7 @@ export const updateBusinessStudent = async (req, res) => {
 //updateStatusStudent
 export const updateStatusStudent = async (req, res) => {
   const { listIdStudent, status, listEmailStudent, textNote } = req.body;
+  console.log(listEmailStudent);
   const dataEmail = {};
   const hostname = req.get("host");
   const listIdStudents = await listIdStudent.map((id) => ObjectId(id));
@@ -596,10 +597,10 @@ export const listStudentReviewForm = async (req, res) => {
       CV: { $ne: null },
       statusCheck: 2,
     })
-    .populate("campus_id")
-    .populate("smester_id")
-    .populate("business")
-    .populate("majors")
+      .populate("campus_id")
+      .populate("smester_id")
+      .populate("business")
+      .populate("majors");
 
     res.status(200).json(listStudentReviewForm);
   } catch (error) {
@@ -616,10 +617,10 @@ export const listStudentReviewCV = async (req, res) => {
       report: null,
       statusCheck: { $in: [0, 1] },
     })
-    .populate("campus_id")
-    .populate("smester_id")
-    .populate("business")
-    .populate("majors")
+      .populate("campus_id")
+      .populate("smester_id")
+      .populate("business")
+      .populate("majors");
 
     res.status(200).json(listStudentReviewCV);
   } catch (error) {
