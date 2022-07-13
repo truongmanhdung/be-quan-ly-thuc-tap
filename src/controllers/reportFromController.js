@@ -1,5 +1,4 @@
 import moment from "moment";
-import configTime from "../models/configTime";
 import { sendMail } from "./emailController";
 
 const Student = require("../models/student");
@@ -12,8 +11,9 @@ export const report = async (req, res) => {
     report,
     nameCompany,
     resultScore,
+    _id
   } = req.body;
-  const filter = { mssv: mssv, email: email };
+  const filter = { mssv: mssv, email: email, _id };
   const findStudent = await Student.findOne(filter);
   const startTimeReport = moment(findStudent.internshipTime).valueOf();
   const endTimeReport = moment(EndInternShipTime).valueOf();
@@ -164,9 +164,9 @@ export const report = async (req, res) => {
 export const form = async (req, res) => {
   try {
     const dataEmail = {};
-    const { nameCompany, internshipTime, form, mssv, email, semester_id } =
+    const { nameCompany, internshipTime, form, mssv, email, _id } =
       req.body;
-    const filter = { mssv: mssv, email: email };
+    const filter = { mssv: mssv, email: email, _id };
     const findStudent = await Student.findOne(filter);
     if (!findStudent) {
       const err = {
