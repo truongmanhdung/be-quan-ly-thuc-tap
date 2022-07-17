@@ -1,12 +1,21 @@
 import express from "express";
-import { createManager, getListManager, getManager, removeManager, updateManager } from "../controllers/manager";
+import {
+  createManager,
+  getListManager,
+  removeManager,
+  updateManager,
+} from "../controllers/manager";
 import { authorizeRoles, isAuthenticateUser } from "../middlewares/CheckAuth";
 import { role } from "../utils/role";
 
 const router = express.Router();
 
-
-  router.get("/manager",authorizeRoles([role.dev, role.manager]), getListManager);
+router.get(
+  "/manager",
+  isAuthenticateUser,
+  authorizeRoles([role.dev, role.manager]),
+  getListManager
+);
 
 router.post(
   "/manager",
