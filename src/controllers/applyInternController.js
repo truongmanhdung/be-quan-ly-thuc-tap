@@ -17,6 +17,7 @@ export const signUpCVForSupport = async (req, res) => {
     numberEnterprise,
     emailEnterprise,
     business,
+    _id
   } = req.body;
 
   try {
@@ -26,8 +27,10 @@ export const signUpCVForSupport = async (req, res) => {
     const findStudent = await Student.findOne({
       mssv: ms,
       email: email,
+      _id
     });
     const filter = {
+      _id,
       mssv: ms,
       email: email,
     };

@@ -88,7 +88,7 @@ export const removeStudent = async (req, res) => {
 
 //readOneStudent
 export const readOneStudent = async (req, res) => {
-  const student = await Student.findOne({ mssv: req.params.id })
+  const student = await Student.findOne({ _id: req.params.id })
     .populate("campus_id")
     .populate("smester_id")
     .populate("business")
