@@ -110,7 +110,6 @@ export const readStudentById = async (req, res) => {
 //insertStudent
 export const insertStudent = async (req, res) => {
   const { data, smester_id, majors, campus_id } = req.body;
-  console.log("majors", majors);
   try {
     const checkStudent = await Student.find({}).limit(3);
 
@@ -294,7 +293,6 @@ export const updateBusinessStudent = async (req, res) => {
 //updateStatusStudent
 export const updateStatusStudent = async (req, res) => {
   const { listIdStudent, status, listEmailStudent, textNote } = req.body;
-  console.log(listEmailStudent);
   const dataEmail = {};
   const hostname = req.get("host");
   const listIdStudents = await listIdStudent.map((id) => ObjectId(id));
@@ -304,7 +302,6 @@ export const updateStatusStudent = async (req, res) => {
       newArr.push(value.email);
     });
   }
-  console.log("newArr", newArr);
   dataEmail.mail = newArr;
 
   try {

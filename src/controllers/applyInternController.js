@@ -29,7 +29,6 @@ export const signUpCVForSupport = async (req, res) => {
       email: email,
       _id
     });
-    // console.log()
     const filter = {
       _id,
       mssv: ms,

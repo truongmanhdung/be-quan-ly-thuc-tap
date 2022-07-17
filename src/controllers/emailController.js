@@ -1,26 +1,11 @@
 require("dotenv").config();
 const nodemailer = require("nodemailer");
 const transporter = nodemailer.createTransport({
-  host: process.env.HOST_EMAIL,
-  port: process.env.PORT_EMAIL,
-  secure: true,
+  service: "gmail",
   auth: {
-    type: "OAuth2",
     user: process.env.USER_EMAIL,
-    clientId: process.env.MAIL_CLIENT_ID,
-    clientSecret: process.env.MAIL_CLIENT_SECRET,
-    refreshToken: process.env.MAIL_REFESH_TOKEN,
-    accessToken: process.env.MAIL_ACCESS_TOKEN,
+    pass: process.env.PASS_EMAIL,
   },
-});
-
-console.log({
-  type: "OAuth2",
-  user: process.env.USER_EMAIL,
-  clientId: process.env.MAIL_CLIENT_ID,
-  clientSecret: process.env.MAIL_CLIENT_SECRET,
-  refreshToken: process.env.MAIL_REFESH_TOKEN,
-  accessToken: process.env.MAIL_ACCESS_TOKEN,
 });
 
 export const sendMailUser = async (req, res) => {
@@ -48,7 +33,6 @@ export const sendMailUser = async (req, res) => {
 };
 
 export const sendMail = async (req, res) => {
-  console.log("req.body: ", req);
   try {
     let mainOptions = {
       from: '"Phòng QHDN" <foo@example.com>',
@@ -58,12 +42,10 @@ export const sendMail = async (req, res) => {
     };
     transporter.sendMail(mainOptions, function (error, succes) {
       if (error) {
-        console.log("Wrong", error);
         return res
           .status(500)
           .send({ message: "Có lỗi xảy ra, không gửi được email" });
       } else {
-        console.log("Success", succes);
         return res.status(200).send({ message: "Gửi email thành công" });
       }
     });

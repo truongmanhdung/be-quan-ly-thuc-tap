@@ -16,9 +16,7 @@ const generateAccessToken = (user) => {
 
 //login
 export const loginGoogle = async (req, res) => {
-  console.log("req.body: ", req.body);
   const { token, cumpusId: campusId, smester_id } = req.body;
-  console.log("token AuthController: ", token);
   try {
     if (!token) {
       return res.status(401).json({ message: "Vui lòng đăng nhập tài khoản" });
@@ -40,7 +38,6 @@ export const loginGoogle = async (req, res) => {
       campus_id: campusId,
       smester_id: smester_id,
     });
-    console.log("token AuthController: ", token);
 
     if (manager) {
       const accessToken = generateAccessToken(manager);
@@ -53,7 +50,6 @@ export const loginGoogle = async (req, res) => {
         message: "Đăng nhập thành công",
         accessToken: accessToken,
       };
-      console.log("data: ", data);
       res.status(200).json(data);
     } else if (student) {
       const accessToken = generateAccessToken(student);
