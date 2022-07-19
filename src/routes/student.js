@@ -36,7 +36,7 @@ router.get(
   "/student/reset/:id",
   isAuthenticateUser,
   authorizeRoles([role.manager]),
-  checkRequestTime,
+  // checkRequestTime,
   resetStatusStudent
 );
 router.post(
