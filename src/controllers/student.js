@@ -1,4 +1,5 @@
 import Student from "../models/student";
+import { defaultValueStudent } from "../utils/defaultValueStudent";
 import { sendMail } from "./emailController";
 const ObjectId = require("mongodb").ObjectID;
 
@@ -620,6 +621,33 @@ export const listStudentReviewCV = async (req, res) => {
       .populate("majors");
 
     res.status(200).json(listStudentReviewCV);
+  } catch (error) {
+    res.status(400).json(error);
+  }
+};
+
+//resetStatusStudent
+
+export const resetStatusStudent = async (req, res) => {
+  console.log(req.params.id)
+  try {
+    const isStudent = await Student.findOne({ _id: req.params.id });
+    if (isStudent) {
+      try {
+        await Student.findOneAndUpdate({ _id: req.params.id },defaultValueStudent,{ new: true });
+        res.status(200).json({
+          message:'Reset thông tin và trạng thái thực tập của sinh viên thành công'
+        })
+      } catch (error) {
+        res.status(400).json({
+          message:'Reset không thành công'
+        });
+      }
+    } else {
+      res.status(400).json({
+        message: "Sinh viên không tồn tại",
+      });
+    }
   } catch (error) {
     res.status(400).json(error);
   }

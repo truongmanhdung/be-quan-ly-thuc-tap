@@ -11,15 +11,34 @@ import {
   updateStatusStudent,
   updateStudent,
   readStudentById,
-  updateBusinessStudent
+  updateBusinessStudent,
+  resetStatusStudent,
 } from "../controllers/student";
 import { authorizeRoles, isAuthenticateUser } from "../middlewares/CheckAuth";
+import { checkRequestTime } from "../middlewares/CheckTimeRequest";
 import student from "../models/student";
 import { role } from "../utils/role";
-router.get("/student", isAuthenticateUser,authorizeRoles([role.manager,]), listStudent);
-router.get("/student/reviewcv", isAuthenticateUser,authorizeRoles([role.manager,]), listStudentReviewCV);
+router.get(
+  "/student",
+  isAuthenticateUser,
+  authorizeRoles([role.manager]),
+  listStudent
+);
+router.get(
+  "/student/reviewcv",
+  isAuthenticateUser,
+  authorizeRoles([role.manager]),
+  listStudentReviewCV
+);
 router.get("/student/:id", isAuthenticateUser, readOneStudent);
-router.get('/student/manager/:id', readStudentById)
+router.get("/student/manager/:id", readStudentById);
+router.get(
+  "/student/reset/:id",
+  isAuthenticateUser,
+  authorizeRoles([role.manager]),
+  checkRequestTime,
+  resetStatusStudent
+);
 router.post(
   "/student",
   isAuthenticateUser,
