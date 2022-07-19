@@ -1,0 +1,23 @@
+export const defaultValueStudent = {
+  checkUpdate:true,
+  checkMulti:false,
+  supplement:null,
+  statusCheck:10,
+  support:null,
+  default:null,
+  reviewer:null,
+  form:null,
+  report:null,
+  note:null,
+  numberOfTime:0,
+  nameCompany:null,
+  addressCompany:null,
+  taxCode:null,
+  position:null,
+  phoneNumberCompany:null,
+  emailEnterprise:null,
+  internshipTime:null,
+  endInternShipTime:null,
+  attitudePoint:null,
+  resultScore:null
+}
