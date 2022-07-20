@@ -11,7 +11,6 @@ export const getNarrow = async (req, res) => {
   }
 };
 export const insertNarrow = async (req, res) => {
-  console.log(req.body);
   const findName = await narrow.findOne({
     "name": req.body.name,
   });
@@ -78,7 +77,6 @@ export const deleteNarrow = async (req, res) => {
       narrow: req.body.id,
     });
     if (!findNarrows) {
-      // console.log(true);
       return res.status(404).json({
         message: 'Ngành hẹp không tồn tại!',
       });

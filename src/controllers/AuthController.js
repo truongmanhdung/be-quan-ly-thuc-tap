@@ -16,9 +16,7 @@ const generateAccessToken = (user) => {
 
 //login
 export const loginGoogle = async (req, res) => {
-  console.log("req.body: ", req.body);
   const { token, cumpusId: campusId, smester_id } = req.body;
-  console.log("token AuthController: ", token);
   try {
     if (!token) {
       return res.status(401).json({ message: "Vui lòng đăng nhập tài khoản" });
@@ -34,14 +32,12 @@ export const loginGoogle = async (req, res) => {
       email: email,
       campus_id: campusId,
     });
-
     const student = await Student.findOne({
       email: email,
       campus_id: campusId,
       smester_id: smester_id,
     });
-    console.log("token AuthController: ", token);
-
+ 
     if (manager) {
       const accessToken = generateAccessToken(manager);
       const data = {
@@ -52,8 +48,8 @@ export const loginGoogle = async (req, res) => {
         isAdmin: true,
         message: "Đăng nhập thành công",
         accessToken: accessToken,
+        success:true
       };
-      console.log("data: ", data);
       res.status(200).json(data);
     } else if (student) {
       const accessToken = generateAccessToken(student);
@@ -65,9 +61,10 @@ export const loginGoogle = async (req, res) => {
         isAdmin: false,
         message: "Đăng nhập thành công",
         accessToken: accessToken,
+        success:true
       });
     } else {
-      res.status(400).json({ token: "", message: "Dang nhap that bai" });
+      res.status(400).json({ token: "", message: "Dang nhap that bai", success:false });
     }
   } catch (error) {
     res.status(500).json({ token: "", message: "Lỗi server" });
