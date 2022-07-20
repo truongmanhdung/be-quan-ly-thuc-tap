@@ -37,7 +37,6 @@ export const loginGoogle = async (req, res) => {
       campus_id: campusId,
       smester_id: smester_id,
     });
- 
     if (manager) {
       const accessToken = generateAccessToken(manager);
       const data = {

@@ -1,5 +1,8 @@
 import Student from "../models/student";
+import { defaultValueStudent } from "../utils/defaultValueStudent";
 import { sendMail } from "./emailController";
+import semester from "../models/semester";
+
 const ObjectId = require("mongodb").ObjectID;
 
 //listStudent
@@ -88,7 +91,7 @@ export const removeStudent = async (req, res) => {
 
 //readOneStudent
 export const readOneStudent = async (req, res) => {
-  const student = await Student.findOne({ mssv: req.params.id })
+  const student = await Student.findOne({ _id: req.params.id })
     .populate("campus_id")
     .populate("smester_id")
     .populate("business")
@@ -622,5 +625,52 @@ export const listStudentReviewCV = async (req, res) => {
     res.status(200).json(listStudentReviewCV);
   } catch (error) {
     res.status(400).json(error);
+  }
+};
+
+//resetStatusStudent
+
+export const resetStatusStudent = async (req, res) => {
+  try {
+    const isStudent = await Student.findOne({ _id: req.params.id });
+    const defaultSemester = await semester.findOne({
+      $and: [
+        { start_time: { $lte: new Date() } },
+        { date_time: { $gte: new Date() } },
+      ],
+    });
+    if (!defaultSemester) {
+      return res.status(200).json({
+        message: "Reset thất bại , không nằm trong kỳ hiện tại",
+      });
+    }
+    if(isStudent.smester_id !== defaultSemester._id){
+      return res.status(200).json({
+        message: "Reset thất bại , không nằm trong kỳ hiện tại",
+      });
+    }
+    if (isStudent) {
+      try {
+        await Student.findOneAndUpdate(
+          { _id: req.params.id },
+          defaultValueStudent,
+          { new: true }
+        );
+        return res.status(200).json({
+          message:
+            "Reset thông tin và trạng thái thực tập của sinh viên thành công",
+        });
+      } catch (error) {
+        return res.status(402).json({
+          message: "Reset không thành công",
+        });
+      }
+    } else {
+      return res.status(402).json({
+        message: "Sinh viên không tồn tại",
+      });
+    }
+  } catch (error) {
+    return res.status(402).json(error);
   }
 };
