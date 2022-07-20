@@ -32,13 +32,11 @@ export const loginGoogle = async (req, res) => {
       email: email,
       campus_id: campusId,
     });
-
     const student = await Student.findOne({
       email: email,
       campus_id: campusId,
       smester_id: smester_id,
     });
-
     if (manager) {
       const accessToken = generateAccessToken(manager);
       const data = {
@@ -49,6 +47,7 @@ export const loginGoogle = async (req, res) => {
         isAdmin: true,
         message: "Đăng nhập thành công",
         accessToken: accessToken,
+        success:true
       };
       res.status(200).json(data);
     } else if (student) {
@@ -61,9 +60,10 @@ export const loginGoogle = async (req, res) => {
         isAdmin: false,
         message: "Đăng nhập thành công",
         accessToken: accessToken,
+        success:true
       });
     } else {
-      res.status(400).json({ token: "", message: "Dang nhap that bai" });
+      res.status(400).json({ token: "", message: "Dang nhap that bai", success:false });
     }
   } catch (error) {
     res.status(500).json({ token: "", message: "Lỗi server" });
