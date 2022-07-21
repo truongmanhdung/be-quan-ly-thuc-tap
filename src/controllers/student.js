@@ -644,7 +644,7 @@ export const resetStatusStudent = async (req, res) => {
         message: "Reset thất bại , không nằm trong kỳ hiện tại",
       });
     }
-    if(isStudent.smester_id !== defaultSemester._id){
+    if(isStudent.smester_id.toString() !== defaultSemester._id.toString()){
       return res.status(200).json({
         message: "Reset thất bại , không nằm trong kỳ hiện tại",
       });
