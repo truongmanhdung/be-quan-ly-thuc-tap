@@ -26,7 +26,7 @@ export const getMajor = async (req, res) => {
 
 export const createMajor = async (req, res) => {
   const duplicate = await Major.findOne({
-    $or: [
+    $and: [
       {
         "name": req.body.name,
       },
