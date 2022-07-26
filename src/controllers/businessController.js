@@ -1,4 +1,5 @@
-import business, { insertMany } from '../models/business';
+import business, { findByIdAndUpdate, insertMany } from "../models/business";
+import Student from "../models/student";
 
 //insertBusiness
 export const insertBusiness = async (req, res) => {
@@ -6,9 +7,9 @@ export const insertBusiness = async (req, res) => {
     await business.insertMany(req.body);
     await business
       .find(req.query)
-      .populate('campus_id')
-      .populate('smester_id')
-      .populate('majors')
+      .populate("campus_id")
+      .populate("smester_id")
+      .populate("majors")
       .sort({ createdAt: -1 })
       .exec((err, doc) => {
         if (err) {
@@ -33,7 +34,7 @@ export const insertBusiness = async (req, res) => {
       });
   } catch (error) {
     res.status(400).json({
-      error: 'Create business failed',
+      error: "Create business failed",
     });
     return;
   }
@@ -54,9 +55,9 @@ export const listBusiness = async (req, res) => {
       try {
         await business
           .find(req.query)
-          .populate('campus_id')
-          .populate('smester_id')
-          .populate('majors')
+          .populate("campus_id")
+          .populate("smester_id")
+          .populate("majors")
           .skip(skipNumber)
           .limit(current)
           .exec((err, doc) => {
@@ -84,7 +85,11 @@ export const listBusiness = async (req, res) => {
         res.status(400).json(error);
       }
     } else {
-      const listBusiness = await business.find(req.query).populate('campus_id').populate('smester_id').populate("majors");
+      const listBusiness = await business
+        .find(req.query)
+        .populate("campus_id")
+        .populate("smester_id")
+        .populate("majors");
       res.status(200).json({
         total: listBusiness.length,
         list: listBusiness,
@@ -92,5 +97,94 @@ export const listBusiness = async (req, res) => {
     }
   } catch (error) {
     res.status(500).json(error);
+  }
+};
+
+//delete business
+export const removeBusiness = async (req, res) => {
+  try {
+    const isStudentOfBusiness = await Student.findOne({
+      business: req.params.id,
+    });
+    if (isStudentOfBusiness) {
+      return res.status(200).json({
+        message: "Doanh nghiệp đang được sinh viên đăng ký không thể xóa.",
+        success: false,
+      });
+    } else {
+      const itemDelete = await business.findByIdAndRemove(req.params.id);
+      return res.status(200).json({
+        itemDelete,
+        message: "Xóa doanh nghiệp thành công",
+        success: true,
+      });
+    }
+  } catch (error) {
+    return res.json({
+      error,
+      success: false,
+    });
+  }
+};
+
+//create business
+
+export const createbusiness = async (req, res) => {
+  const { code_request } = req.body;
+  try {
+    const isCodeRequest = await business.findOne({
+      code_request: code_request,
+    });
+    if (isCodeRequest) {
+      return res.status(200).json({
+        message: "Mã doanh nghiệp đã tồn tại không thể tạo mới",
+        success: false,
+      });
+    } else {
+      const newBusiness = await business.create(req.body);
+      return res.status(200).json({
+        newBusiness,
+        message: "Tạo doanh nghiệp thành công",
+        success: true,
+      });
+    }
+  } catch (error) {
+    return res.json({
+      error,
+      success: false,
+    });
+  }
+};
+
+//update Business
+
+export const updateBusiness = async (req, res) => {
+  const { code_request } = req.body;
+  try {
+    const isBusiness = await business.findOne({
+      code_request: code_request,
+      _id: req.params.id,
+    });
+    if (isBusiness) {
+      const itemBusinessUpdate = await findByIdAndUpdate(
+        req.params.id,
+        req.body
+      );
+      return res.status(200).json({
+        itemBusinessUpdate,
+        message: "Sửa doanh nghiệp thành công",
+        success: true,
+      });
+    } else {
+      return res.status(200).json({
+        message: "Doanh nghiệp không tồn tại",
+        success: false,
+      });
+    }
+  } catch (error) {
+    return res.json({
+      error,
+      success: false,
+    });
   }
 };
