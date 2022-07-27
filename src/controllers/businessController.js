@@ -1,5 +1,6 @@
 import business, { findByIdAndUpdate, insertMany } from "../models/business";
 import Student from "../models/student";
+import semester from "../models/semester";
 
 //insertBusiness
 export const insertBusiness = async (req, res) => {
@@ -130,12 +131,32 @@ export const removeBusiness = async (req, res) => {
 //create business
 
 export const createbusiness = async (req, res) => {
-  const { code_request } = req.body;
+  const { code_request, smester_id, campus_id } = req.body;
   try {
-    const isCodeRequest = await business.findOne({
-      code_request: code_request,
+    const defaultSemester = await semester.findOne({
+      $and: [
+        { start_time: { $lte: new Date() } },
+        { date_time: { $gte: new Date() } },
+      ],
     });
-    if (isCodeRequest) {
+
+    if (defaultSemester._id.toString() !== smester_id.toString()) {
+      return res.status(200).json({
+        message: "Không thể tạo mới doanh nghiệp do không ở kỳ hiện tại",
+        success: false,
+      });
+    }
+
+    const Business = await business.find({
+      smester_id: smester_id,
+      campus_id: campus_id,
+    });
+
+    const isBusinessCodeRequest = Business.some((item) => {
+      return item.code_request.includes(code_request);
+    });
+
+    if (isBusinessCodeRequest) {
       return res.status(200).json({
         message: "Mã doanh nghiệp đã tồn tại không thể tạo mới",
         success: false,
@@ -159,13 +180,41 @@ export const createbusiness = async (req, res) => {
 //update Business
 
 export const updateBusiness = async (req, res) => {
-  const { code_request } = req.body;
+  const { code_request, smester_id, campus_id } = req.body;
   try {
-    const isBusiness = await business.findOne({
-      code_request: code_request,
-      _id: req.params.id,
+    const defaultSemester = await semester.findOne({
+      $and: [
+        { start_time: { $lte: new Date() } },
+        { date_time: { $gte: new Date() } },
+      ],
     });
-    if (isBusiness._id.toString() === req.params.id.toString()) {
+
+    if (defaultSemester._id.toString() !== smester_id.toString()) {
+      return res.status(200).json({
+        message: "Không thể sửa doanh nghiệp do không ở kỳ hiện tại",
+        success: false,
+      });
+    }
+
+    const Business = await business.find({
+      smester_id: smester_id,
+      campus_id: campus_id,
+    });
+
+    const listBusiness = Business.filter((item) => {
+      return item._id.toString() !== req.params.id.toString();
+    });
+
+    const isBusinessCodeRequest = listBusiness.some((item) => {
+      return item.code_request.includes(code_request);
+    });
+
+    if (isBusinessCodeRequest) {
+      return res.status(200).json({
+        message: "Mã doanh nghiệp đã tồn tại không thể tạo sửa",
+        success: false,
+      });
+    } else {
       const itemBusinessUpdate = await business.findByIdAndUpdate(
         req.params.id,
         req.body,
@@ -175,11 +224,6 @@ export const updateBusiness = async (req, res) => {
         itemBusinessUpdate,
         message: "Sửa doanh nghiệp thành công",
         success: true,
-      });
-    } else {
-      return res.status(200).json({
-        message: "Doanh nghiệp không tồn tại",
-        success: false,
       });
     }
   } catch (error) {
