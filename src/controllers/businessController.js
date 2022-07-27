@@ -165,10 +165,11 @@ export const updateBusiness = async (req, res) => {
       code_request: code_request,
       _id: req.params.id,
     });
-    if (isBusiness) {
-      const itemBusinessUpdate = await findByIdAndUpdate(
+    if (isBusiness._id.toString() === req.params.id.toString()) {
+      const itemBusinessUpdate = await business.findByIdAndUpdate(
         req.params.id,
-        req.body
+        req.body,
+        { new: true }
       );
       return res.status(200).json({
         itemBusinessUpdate,
@@ -183,6 +184,21 @@ export const updateBusiness = async (req, res) => {
     }
   } catch (error) {
     return res.json({
+      error,
+      success: false,
+    });
+  }
+};
+
+export const getBusiness = async (req, res) => {
+  try {
+    const itemBusiness = await business.findById(req.params.id);
+    return res.status(200).json({
+      itemBusiness,
+      success: true,
+    });
+  } catch (error) {
+    return res.status(200).json({
       error,
       success: false,
     });
