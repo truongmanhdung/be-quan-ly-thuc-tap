@@ -107,6 +107,7 @@ export const removeBusiness = async (req, res) => {
     const isStudentOfBusiness = await Student.findOne({
       business: req.params.id,
     });
+
     if (isStudentOfBusiness) {
       return res.status(200).json({
         message: "Doanh nghiệp đang được sinh viên đăng ký không thể xóa.",
@@ -140,13 +141,6 @@ export const createbusiness = async (req, res) => {
       ],
     });
 
-    if (defaultSemester._id.toString() !== smester_id.toString()) {
-      return res.status(200).json({
-        message: "Không thể tạo mới doanh nghiệp do không ở kỳ hiện tại",
-        success: false,
-      });
-    }
-
     const Business = await business.find({
       smester_id: smester_id,
       campus_id: campus_id,
@@ -162,7 +156,10 @@ export const createbusiness = async (req, res) => {
         success: false,
       });
     } else {
-      const newBusiness = await business.create(req.body);
+      const newBusiness = await business.create({
+        ...req.body,
+        smester_id: defaultSemester._id,
+      });
       return res.status(200).json({
         newBusiness,
         message: "Tạo doanh nghiệp thành công",
@@ -189,7 +186,7 @@ export const updateBusiness = async (req, res) => {
       ],
     });
 
-    if (defaultSemester._id.toString() !== smester_id.toString()) {
+    if (defaultSemester._id.toString() !== smester_id) {
       return res.status(200).json({
         message: "Không thể sửa doanh nghiệp do không ở kỳ hiện tại",
         success: false,
@@ -202,7 +199,7 @@ export const updateBusiness = async (req, res) => {
     });
 
     const listBusiness = Business.filter((item) => {
-      return item._id.toString() !== req.params.id.toString();
+      return item.code_request !== code_request;
     });
 
     const isBusinessCodeRequest = listBusiness.some((item) => {
