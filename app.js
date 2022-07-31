@@ -5,6 +5,8 @@ import cors from "cors";
 import { readdirSync } from "fs";
 import semester from "./src/models/semester";
 require("dotenv").config();
+const swaggerUI = require("swagger-ui-express");
+const YAML = require("yamljs");
 const app = express();
 // database
 mongoose
@@ -20,6 +22,16 @@ app.use(cors());
 readdirSync("./src/routes").map((route) =>
   app.use("/api", require(`./src/routes/${route}`))
 );
+
+app.use(express.json());
+const swaggerDocument = YAML.load("./src/docs/swagger_datn.yaml");
+
+app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(swaggerDocument));
+
+app.use("*", (req, res) => {
+  res.redirect("/api-docs");
+});
+
 let i = 0;
 let y = 2021;
 let time = 0;
