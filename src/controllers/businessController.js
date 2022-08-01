@@ -104,10 +104,12 @@ export const listBusiness = async (req, res) => {
 //delete business
 export const removeBusiness = async (req, res) => {
   try {
+    const Business = await business.findById(req.params.id)
     const isStudentOfBusiness = await Student.findOne({
       business: req.params.id,
+      campus_id:Business.campus_id,
+      smester_id:Business.smester_id
     });
-console.log(isStudentOfBusiness)
     if (isStudentOfBusiness) {
       return res.status(200).json({
         message: "Doanh nghiệp đang được sinh viên đăng ký không thể xóa.",
@@ -147,7 +149,7 @@ export const createbusiness = async (req, res) => {
     });
 
     const isBusinessCodeRequest = Business.some((item) => {
-      return item.code_request.includes(code_request);
+      return item.code_requesttoUpperCase() === code_request.toUpperCase();
     });
 
     if (isBusinessCodeRequest) {
@@ -178,7 +180,6 @@ export const createbusiness = async (req, res) => {
 
 export const updateBusiness = async (req, res) => {
   const { code_request, smester_id, campus_id } = req.body;
-
   try {
 
     const defaultSemester = await semester.findOne({
@@ -201,15 +202,15 @@ export const updateBusiness = async (req, res) => {
     }
     
     const listBusiness =  Business.filter((item) => {
-      return item.code_request !== code_request;
-    });
-    
-    const isBusinessCodeRequest =  listBusiness.some((item) => {
-      if(item.code_request){
-        return item.code_request.includes(code_request);
-      }
+        return (item._id.toString() !== req.params.id);
     });
 
+    const isBusinessCodeRequest =  listBusiness.some((item) => {
+      if(item.code_request){
+        return item.code_request.toUpperCase() === code_request.toUpperCase();
+      }
+    });
+    
     if (isBusinessCodeRequest) {
       return res.status(200).json({
         message: "Mã doanh nghiệp đã tồn tại không thể tạo sửa",
