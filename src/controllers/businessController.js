@@ -134,7 +134,7 @@ export const removeBusiness = async (req, res) => {
 //create business
 
 export const createbusiness = async (req, res) => {
-  const { code_request, smester_id, campus_id } = req.body;
+  const { code_request, campus_id } = req.body;
   try {
     const defaultSemester = await semester.findOne({
       $and: [
@@ -142,14 +142,15 @@ export const createbusiness = async (req, res) => {
         { date_time: { $gte: new Date() } },
       ],
     });
-
     const Business = await business.find({
-      smester_id: smester_id,
+      smester_id: defaultSemester._id,
       campus_id: campus_id,
     });
 
     const isBusinessCodeRequest = Business.some((item) => {
-      return item.code_requesttoUpperCase() === code_request.toUpperCase();
+      if(item.code_request){
+        return item.code_request.toUpperCase() === code_request.toUpperCase();
+      }
     });
 
     if (isBusinessCodeRequest) {
