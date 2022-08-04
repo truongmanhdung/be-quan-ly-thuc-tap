@@ -22,6 +22,10 @@ const configTimeSchema = mongoose.Schema(
       type: ObjectId,
       ref: "Semester",
     },
+    campus_id: {
+      type: ObjectId,
+      ref: "Cumpus",
+    },
   },
   {
     timestamp: true,

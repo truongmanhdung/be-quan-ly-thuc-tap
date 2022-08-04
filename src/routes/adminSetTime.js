@@ -17,10 +17,8 @@ router.post(
 );
 router.get(
   "/settime",
-  isAuthenticateUser,
-  authorizeRoles([role.manager]),
   getListTypeSetTime
 );
-router.get("/settime/find-one", isAuthenticateUser, getOneTypeSetTime);
+router.get("/settime/find-one", getOneTypeSetTime);
 
 module.exports = router;
