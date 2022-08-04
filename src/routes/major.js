@@ -11,8 +11,8 @@ import { role } from "../utils/role";
 
 const router = express.Router();
 
-router.get("/major", isAuthenticateUser, getListMajor);
-router.get("/major/:id", isAuthenticateUser, getMajor);
+router.get("/major", getListMajor);
+router.get("/major/:id", getMajor);
 router.post(
   "/major",
   isAuthenticateUser,

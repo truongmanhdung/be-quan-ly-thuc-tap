@@ -13,7 +13,7 @@ const router = express.Router();
 
 router.post("/business", isAuthenticateUser, authorizeRoles([role.manager]), insertBusiness);
 router.post("/business/new", isAuthenticateUser, authorizeRoles([role.manager]), createbusiness);
-router.get("/business", isAuthenticateUser, listBusiness);
+router.get("/business", listBusiness);
 router.delete("/business/:id",isAuthenticateUser, authorizeRoles([role.manager]),removeBusiness)
 router.get("/business/:id",isAuthenticateUser, authorizeRoles([role.manager]),getBusiness)
 router.patch("/business/:id",isAuthenticateUser, authorizeRoles([role.manager]),updateBusiness)

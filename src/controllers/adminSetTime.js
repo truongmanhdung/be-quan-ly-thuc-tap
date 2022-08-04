@@ -1,11 +1,12 @@
 import ConfigTime from "../models/configTime";
 
 export const handleSetTimeRequest = async (req, res) => {
-  const { startTime, endTime, typeNumber, semester_id } = req.body;
+  const { startTime, endTime, typeNumber, semester_id, campus_id } = req.body;
   try {
     const timeRequest = await ConfigTime.findOne({
       typeNumber: typeNumber,
       semester_id,
+      campus_id
     });
     if (!timeRequest) {
       const time = await ConfigTime.create(req.body);
@@ -15,7 +16,7 @@ export const handleSetTimeRequest = async (req, res) => {
       });
     } else {
       const time = await ConfigTime.findOneAndUpdate(
-        { typeNumber: typeNumber, semester_id },
+        { typeNumber: typeNumber, semester_id, campus_id },
         { startTime: startTime, endTime: endTime }
       );
       res.status(200).json({
@@ -30,8 +31,8 @@ export const handleSetTimeRequest = async (req, res) => {
 
 export const getListTypeSetTime = async (req, res) => {
   try {
-    const { semester_id } = req.query;
-    const time = await ConfigTime.find({ semester_id });
+    const { semester_id,campus_id } = req.query;
+    const time = await ConfigTime.find({ semester_id, campus_id });
     res.status(200).json({
       message: "time success",
       time: time,
@@ -42,9 +43,9 @@ export const getListTypeSetTime = async (req, res) => {
 };
 
 export const getOneTypeSetTime = async (req, res) => {
-  const { typeNumber, semester_id } = req.query;
+  const { typeNumber, semester_id, campus_id } = req.query;
   try {
-    const time = await ConfigTime.findOne({ typeNumber, semester_id });
+    const time = await ConfigTime.findOne({ typeNumber, semester_id, campus_id });
     res.status(200).json({
       message: "time success",
       time: time,

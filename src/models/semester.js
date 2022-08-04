@@ -1,5 +1,6 @@
 const { isLowercase } = require("class-validator");
 const mongoose = require("mongoose");
+const { ObjectId } = mongoose.Schema;
 const semesterSchema = mongoose.Schema({
   name: {
     type: String,
@@ -16,6 +17,11 @@ const semesterSchema = mongoose.Schema({
     type: Date,
     default: Date.now,
   },
+  campus_id: {
+    type: ObjectId,
+    ref: "Cumpus",
+  },
+
 });
 
 module.exports = mongoose.model("Semester", semesterSchema);
