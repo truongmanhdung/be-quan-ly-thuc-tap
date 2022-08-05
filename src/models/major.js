@@ -9,10 +9,6 @@ const majorSchema = mongoose.Schema({
     type: String,
     require: true,
   },
-  campus_id: {
-    type: ObjectId,
-    ref: "Cumpus",
-  },
   createdAt: {
     type: Date,
     default: Date.now,
