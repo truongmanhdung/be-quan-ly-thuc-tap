@@ -16,19 +16,19 @@ router.get("/major/:id", getMajor);
 router.post(
   "/major",
   isAuthenticateUser,
-  authorizeRoles([role.manager]),
+  authorizeRoles([role.dev]),
   createMajor
 );
 router.patch(
   "/major/:id",
   isAuthenticateUser,
-  authorizeRoles([role.manager]),
+  authorizeRoles([role.dev]),
   updateMajor
 );
 router.delete(
   "/major/:id",
   isAuthenticateUser,
-  authorizeRoles([role.manager]),
+  authorizeRoles([role.dev]),
   removeMajor
 );
 
