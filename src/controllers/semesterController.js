@@ -26,9 +26,18 @@ export const getDefaultSemester = async (req, res) => {
       ],
       campus_id
     });
-    res.status(200).json(data);
+    res.status(200).json({
+      result: data,
+      success: true,
+      status: 'ok'
+    });
   } catch (error) {
-    res.status(400).json(error);
+    res.status(400).json({
+      result:{},
+      message: error,
+      success: false,
+      status: 'failed'
+    });
   }
 };
 
