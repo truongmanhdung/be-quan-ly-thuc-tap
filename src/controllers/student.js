@@ -1,9 +1,9 @@
-import Student from "../models/student";
-import { defaultValueStudent } from "../utils/defaultValueStudent";
-import { sendMail } from "./emailController";
-import semester from "../models/semester";
+import Student from '../models/student';
+import { defaultValueStudent } from '../utils/defaultValueStudent';
+import { sendMail } from './emailController';
+import semester from '../models/semester';
 
-const ObjectId = require("mongodb").ObjectID;
+const ObjectId = require('mongodb').ObjectID;
 
 //listStudent
 export const listStudent = async (req, res) => {
@@ -17,16 +17,16 @@ export const listStudent = async (req, res) => {
         perPage = 1;
         current = 9;
       }
-      const skipNumber = (perPage - 1) * current;
+      const skipNumber = page * current - current;
       try {
         await Student.find(req.query)
-          .populate("campus_id")
-          .populate("smester_id")
-          .populate("business")
-          .populate("majors")
+          // .sort({ statusCheck: 1 })
+          .populate('campus_id')
+          .populate('smester_id')
+          .populate('business')
+          .populate('majors')
           .skip(skipNumber)
           .limit(current)
-          .sort({ statusCheck: 1 })
           .exec((err, doc) => {
             if (err) {
               res.status(400).json(err);
@@ -50,10 +50,10 @@ export const listStudent = async (req, res) => {
       }
     } else {
       const listStudent = await Student.find({})
-        .populate("campus_id")
-        .populate("smester_id")
-        .populate("business")
-        .populate("majors");
+        .populate('campus_id')
+        .populate('smester_id')
+        .populate('business')
+        .populate('majors');
 
       return res.status(200).json({
         total: listStudent.length,
@@ -68,11 +68,7 @@ export const listStudent = async (req, res) => {
 //updateStudent
 export const updateStudent = async (req, res) => {
   try {
-    const student = await Student.findOneAndUpdate(
-      { _id: req.params.id },
-      req.body,
-      { new: true }
-    );
+    const student = await Student.findOneAndUpdate({ _id: req.params.id }, req.body, { new: true });
     return res.status(200).json(student);
   } catch (error) {
     return res.status(400).json(error);
@@ -85,27 +81,27 @@ export const removeStudent = async (req, res) => {
     const student = await Student.findOneAndDelete({ id: req.params.id });
     res.json(student);
   } catch (error) {
-    res.json("lỗi");
+    res.json('lỗi');
   }
 };
 
 //readOneStudent
 export const readOneStudent = async (req, res) => {
   const student = await Student.findOne({ _id: req.params.id })
-    .populate("campus_id")
-    .populate("smester_id")
-    .populate("business")
-    .populate("majors")
+    .populate('campus_id')
+    .populate('smester_id')
+    .populate('business')
+    .populate('majors')
     .exec();
   res.json(student);
 };
 
 export const readStudentById = async (req, res) => {
   const student = await Student.findOne({ _id: req.params.id })
-    .populate("campus_id")
-    .populate("smester_id")
-    .populate("business")
-    .populate("majors")
+    .populate('campus_id')
+    .populate('smester_id')
+    .populate('business')
+    .populate('majors')
     .exec();
   res.json(student);
 };
@@ -138,15 +134,12 @@ export const insertStudent = async (req, res) => {
               checkMulti: false,
             },
           },
-          { multi: true }
+          { multi: true },
         );
 
         await Student.updateMany(
           {
-            $and: [
-              { mssv: { $in: listNew } },
-              { smester_id, majors, campus_id },
-            ],
+            $and: [{ mssv: { $in: listNew } }, { smester_id, majors, campus_id }],
           },
           {
             $set: {
@@ -154,7 +147,7 @@ export const insertStudent = async (req, res) => {
               checkMulti: true,
             },
           },
-          { multi: true }
+          { multi: true },
         );
 
         await Student.updateMany(
@@ -166,24 +159,21 @@ export const insertStudent = async (req, res) => {
               checkMulti: true,
             },
           },
-          { multi: true }
+          { multi: true },
         );
 
         await Student.insertMany(data);
 
         await Student.updateMany(
           {
-            $and: [
-              { mssv: { $nin: listMS } },
-              { smester_id, majors, campus_id },
-            ],
+            $and: [{ mssv: { $nin: listMS } }, { smester_id, majors, campus_id }],
           },
           {
             $set: {
               checkMulti: true,
             },
           },
-          { multi: true }
+          { multi: true },
         );
 
         await Student.deleteMany({
@@ -192,10 +182,10 @@ export const insertStudent = async (req, res) => {
       }
 
       await Student.find({ smester_id })
-        .populate("campus_id")
-        .populate("smester_id")
-        .populate("business")
-        .populate("majors")
+        .populate('campus_id')
+        .populate('smester_id')
+        .populate('business')
+        .populate('majors')
         .limit(20)
         .sort({ statusCheck: 1 })
         .exec((err, doc) => {
@@ -221,10 +211,10 @@ export const insertStudent = async (req, res) => {
     } else {
       await Student.insertMany(req.body.data);
       await Student.find({ smester_id })
-        .populate("campus_id")
-        .populate("smester_id")
-        .populate("business")
-        .populate("majors")
+        .populate('campus_id')
+        .populate('smester_id')
+        .populate('business')
+        .populate('majors')
         .limit(20)
         .sort({ statusCheck: 1 })
         .exec((err, doc) => {
@@ -250,7 +240,7 @@ export const insertStudent = async (req, res) => {
     }
   } catch (error) {
     res.status(400).json({
-      error: "Create Student failed",
+      error: 'Create Student failed',
     });
     return;
   }
@@ -267,11 +257,11 @@ export const updateReviewerStudent = async (req, res) => {
           reviewer: email,
         },
       },
-      { multi: true }
+      { multi: true },
     );
     res.status(200).json({ listIdStudent, email });
   } catch (error) {
-    res.json("Lỗi");
+    res.json('Lỗi');
   }
 };
 
@@ -285,11 +275,11 @@ export const updateBusinessStudent = async (req, res) => {
           business: business,
         },
       },
-      { multi: true }
+      { multi: true },
     );
     res.status(200).json({ listIdStudent, business });
   } catch (error) {
-    res.json("Lỗi");
+    res.json('Lỗi');
   }
 };
 
@@ -297,7 +287,7 @@ export const updateBusinessStudent = async (req, res) => {
 export const updateStatusStudent = async (req, res) => {
   const { listIdStudent, status, listEmailStudent, textNote } = req.body;
   const dataEmail = {};
-  const hostname = req.get("host");
+  const hostname = req.get('host');
   const listIdStudents = await listIdStudent.map((id) => ObjectId(id));
   const newArr = [];
   if (listEmailStudent) {
@@ -318,7 +308,7 @@ export const updateStatusStudent = async (req, res) => {
           note: textNote,
         },
       },
-      { multi: true, new: true }
+      { multi: true, new: true },
     );
     const listStudentChangeStatus = await Student.find({
       _id: { $in: listIdStudent },
@@ -327,7 +317,7 @@ export const updateStatusStudent = async (req, res) => {
     });
 
     if (status === 1) {
-      dataEmail.subject = "Thông báo sửa CV thực tập doanh nghiệp";
+      dataEmail.subject = 'Thông báo sửa CV thực tập doanh nghiệp';
       dataEmail.content = `
       <div style="margin:auto;background-color:#ffffff;width:500px;padding:10px;border-top:2px solid #e37c41">
       <div class="adM">
@@ -361,7 +351,7 @@ export const updateStatusStudent = async (req, res) => {
       `;
       await sendMail(dataEmail);
     } else if (status === 2) {
-      dataEmail.subject = "Thông báo nhận CV sinh viên thành công";
+      dataEmail.subject = 'Thông báo nhận CV sinh viên thành công';
       dataEmail.content = `
       <div style="margin:auto;background-color:#ffffff;width:500px;padding:10px;border-top:2px solid #e37c41">
       <div class="adM">
@@ -395,7 +385,7 @@ export const updateStatusStudent = async (req, res) => {
       `;
       await sendMail(dataEmail);
     } else if (status === 3) {
-      dataEmail.subject = "Thông báo sinh viên trượt thực tập doanh nghiệp";
+      dataEmail.subject = 'Thông báo sinh viên trượt thực tập doanh nghiệp';
       dataEmail.content = `
       <div style="margin:auto;background-color:#ffffff;width:500px;padding:10px;border-top:2px solid #e37c41">
       <div class="adM">
@@ -431,7 +421,7 @@ export const updateStatusStudent = async (req, res) => {
       `;
       await sendMail(dataEmail);
     } else if (status === 5) {
-      dataEmail.subject = "Thông báo sửa biên bản thực tập doanh nghiệp";
+      dataEmail.subject = 'Thông báo sửa biên bản thực tập doanh nghiệp';
       dataEmail.content = `
       <div style="margin:auto;background-color:#ffffff;width:500px;padding:10px;border-top:2px solid #e37c41">
       <div class="adM">
@@ -466,7 +456,7 @@ export const updateStatusStudent = async (req, res) => {
       `;
       await sendMail(dataEmail);
     } else if (status === 6) {
-      dataEmail.subject = "Thông báo nhận biên bản sinh viên thành công";
+      dataEmail.subject = 'Thông báo nhận biên bản sinh viên thành công';
       dataEmail.content = `
       <div style="margin:auto;background-color:#ffffff;width:500px;padding:10px;border-top:2px solid #e37c41">
       <div class="adM">
@@ -499,8 +489,7 @@ export const updateStatusStudent = async (req, res) => {
       `;
       await sendMail(dataEmail);
     } else if (status === 8) {
-      dataEmail.subject =
-        "Thông báo sinh viên sửa báo cáo thực tập doanh nghiệp";
+      dataEmail.subject = 'Thông báo sinh viên sửa báo cáo thực tập doanh nghiệp';
       dataEmail.content = `
       <div style="margin:auto;background-color:#ffffff;width:500px;padding:10px;border-top:2px solid #e37c41">
       <div class="adM">
@@ -535,8 +524,7 @@ export const updateStatusStudent = async (req, res) => {
       `;
       await sendMail(dataEmail);
     } else if (status === 9) {
-      dataEmail.subject =
-        "Thông báo Hoàn thành thông tin thực tập sinh viên thành công";
+      dataEmail.subject = 'Thông báo Hoàn thành thông tin thực tập sinh viên thành công';
       dataEmail.content = `
       <div style="margin:auto;background-color:#ffffff;width:500px;padding:10px;border-top:2px solid #e37c41">
       <div class="adM">
@@ -573,7 +561,7 @@ export const updateStatusStudent = async (req, res) => {
     }
     return res.json({ listStudentChangeStatus, status });
   } catch (error) {
-    res.json("Lỗi");
+    res.json('Lỗi');
   }
 };
 
@@ -597,10 +585,10 @@ export const listStudentReviewForm = async (req, res) => {
       CV: { $ne: null },
       statusCheck: 2,
     })
-      .populate("campus_id")
-      .populate("smester_id")
-      .populate("business")
-      .populate("majors");
+      .populate('campus_id')
+      .populate('smester_id')
+      .populate('business')
+      .populate('majors');
 
     res.status(200).json(listStudentReviewForm);
   } catch (error) {
@@ -617,10 +605,10 @@ export const listStudentReviewCV = async (req, res) => {
       report: null,
       statusCheck: { $in: [0, 1] },
     })
-      .populate("campus_id")
-      .populate("smester_id")
-      .populate("business")
-      .populate("majors");
+      .populate('campus_id')
+      .populate('smester_id')
+      .populate('business')
+      .populate('majors');
 
     res.status(200).json(listStudentReviewCV);
   } catch (error) {
@@ -634,40 +622,32 @@ export const resetStatusStudent = async (req, res) => {
   try {
     const isStudent = await Student.findOne({ _id: req.params.id });
     const defaultSemester = await semester.findOne({
-      $and: [
-        { start_time: { $lte: new Date() } },
-        { date_time: { $gte: new Date() } },
-      ],
+      $and: [{ start_time: { $lte: new Date() } }, { date_time: { $gte: new Date() } }],
     });
     if (!defaultSemester) {
       return res.status(200).json({
-        message: "Reset thất bại , không nằm trong kỳ hiện tại",
+        message: 'Reset thất bại , không nằm trong kỳ hiện tại',
       });
     }
-    if(isStudent.smester_id.toString() !== defaultSemester._id.toString()){
+    if (isStudent.smester_id.toString() !== defaultSemester._id.toString()) {
       return res.status(200).json({
-        message: "Reset thất bại , không nằm trong kỳ hiện tại",
+        message: 'Reset thất bại , không nằm trong kỳ hiện tại',
       });
     }
     if (isStudent) {
       try {
-        await Student.findOneAndUpdate(
-          { _id: req.params.id },
-          defaultValueStudent,
-          { new: true }
-        );
+        await Student.findOneAndUpdate({ _id: req.params.id }, defaultValueStudent, { new: true });
         return res.status(200).json({
-          message:
-            "Reset thông tin và trạng thái thực tập của sinh viên thành công",
+          message: 'Reset thông tin và trạng thái thực tập của sinh viên thành công',
         });
       } catch (error) {
         return res.status(402).json({
-          message: "Reset không thành công",
+          message: 'Reset không thành công',
         });
       }
     } else {
       return res.status(402).json({
-        message: "Sinh viên không tồn tại",
+        message: 'Sinh viên không tồn tại',
       });
     }
   } catch (error) {
