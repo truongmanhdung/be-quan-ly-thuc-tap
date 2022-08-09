@@ -28,11 +28,11 @@ export const createManager = async (req, res) => {
   const emailVali = await Manager.findOne({
     $and: [
       {
-        "email": req.body.email,
+        email: req.body.email,
       },
       {
-        "campus_id": req.body.campus_id
-      }
+        campus_id: req.body.campus_id,
+      },
     ],
   });
 
@@ -58,33 +58,14 @@ export const createManager = async (req, res) => {
 };
 
 export const updateManager = async (req, res) => {
-  const emailVali = await Manager.findOne({
-    $and: [
-      {
-        "email": req.body.email,
-      },
-      {
-        "campus_id": req.body.campus_id
-      }
-    ],
-  });
-
   try {
-    if (emailVali !== null) {
-      res.status(202).json({
-        message: 'Nhân viên đã tồn tại vui lòng xem lại email hoặc cơ sở',
-        success: false,
-      });
-      return;
-    } else {
-      const manager = await Manager.findByIdAndUpdate(req.params.id, req.body, { new: true });
-      res.status(200).json({
-        manager,
-        success: true,
-        message: 'Sửa thông tin nhân viên quản lý sinh viên thực tập thành công',
-      });
-      return;
-    }
+    const manager = await Manager.findByIdAndUpdate(req.params.id, req.body, { new: true });
+    res.status(200).json({
+      manager,
+      success: true,
+      message: 'Sửa thông tin nhân viên quản lý sinh viên thực tập thành công',
+    });
+    return;
   } catch (error) {
     res.json({
       error,
