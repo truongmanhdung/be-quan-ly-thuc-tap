@@ -17,45 +17,39 @@ export const listStudent = async (req, res) => {
       ],
       campus_id: req.query.campus_id,
     });
-    if(dataDefault){
+    if (dataDefault) {
       req.query.smester_id = dataDefault._id;
-    }else{
-      delete  req.query["smester_id"]
+    } else {
+      delete req.query["smester_id"];
     }
   }
 
   try {
     if (page && limit) {
       //getPage
-      let perPage = parseInt(page);
       let current = parseInt(limit);
-      if (perPage < 1 || perPage == undefined || current == undefined) {
-        perPage = 1;
-        current = 9;
-      }
-      const skipNumber = page * current - current;
       try {
         await Student.find(req.query)
-          // .sort({ statusCheck: 1 })
           .populate("campus_id")
           .populate("smester_id")
           .populate("business")
           .populate("majors")
-          .skip(skipNumber)
-          .limit(current)
+          .sort({ statusCheck: 1 })
           .exec((err, doc) => {
             if (err) {
               res.status(400).json(err);
             } else {
+              console.log(page);
               Student.find(req.query)
                 .countDocuments({})
                 .exec((count_error, count) => {
                   if (err) {
                     return res.json(count_error);
                   } else {
+                    const data = doc && doc.length > 0 ?  doc.slice(current * (page - 1), current * page) : []
                     return res.status(200).json({
                       total: count ? count : 0,
-                      list: doc ? doc : [],
+                      list: data
                     });
                   }
                 });
