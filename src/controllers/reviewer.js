@@ -163,6 +163,24 @@ export const listReviewForm = async (req, res) => {
     } catch (error) {
       res.status(400).json(error);
     }
+  }else{
+    try {
+     const data = await Student.find({
+        $and: [req.query, { statusCheck: { $in: [2, 4, 5] } }],
+      })
+        .populate("campus_id")
+        .populate("smester_id")
+        .populate('business')
+        .populate("majors")
+        .sort({ createdAt: -1, CV: -1 })
+       return res.status(200).json({
+        success: true,
+        status: 'ok',
+        result: data
+       })
+    } catch (error) {
+      res.status(400).json(error);
+    }
   }
 };
 export const reviewReport = async (req, res) => {
