@@ -20,6 +20,9 @@ export const listReviewer = async (req, res) => {
               CV: { $ne: null },
             },
             {
+              reviewer: req.query.reviewer
+            },
+            {
               form: null,
             },
             {
@@ -49,6 +52,9 @@ export const listReviewer = async (req, res) => {
                   req.query,
                   {
                     CV: { $ne: null },
+                  },
+                  {
+                    reviewer: req.query.reviewer
                   },
                   {
                     form: null,
@@ -91,6 +97,9 @@ export const listReviewer = async (req, res) => {
           },
           {
             form: null,
+          },
+          {
+            reviewer: req.query.reviewer
           },
           {
             report: null,
