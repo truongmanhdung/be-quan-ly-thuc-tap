@@ -11,7 +11,7 @@ mongoose
   .connect(process.env.DATABASE)
   .then(() => console.log("DB Connected"))
   .catch((error) => console.log("DB not connected ", error));
-// Configure auth client
+// // Configure auth client
 const authClient = new google.auth.JWT(
   credentials.client_email,
   null,
@@ -20,7 +20,7 @@ const authClient = new google.auth.JWT(
 );
 
 const task = cron.schedule(
-  "10 * * * * *",
+  "59 * * * * *",
   async () => {
     try {
       // Authorize the client
@@ -33,7 +33,7 @@ const task = cron.schedule(
       const res = await service.spreadsheets.values.get({
         auth: authClient,
         spreadsheetId: "1Zgipf32ZOjbWAlvjNbQ81mYlAyIZiRB5acsUBRQANEk",
-        range: "A2:I",
+        range: "A2:M",
       });
 
       const lastSemester = await semester.find({}).sort({ _id: -1 }).limit(1);
@@ -49,20 +49,25 @@ const task = cron.schedule(
 
         // For each row
         for (const row of rows) {
+          if (row[11] !== 'FALSE' && row[10] !== 'FALSE')
           answers.push({
-            name: row[1],
-            internshipPosition: row[4],
-            amount: row[5],
-            address: row[3],
-            majors: "62fc6e7b1f6b3105b21b1ba7",
-            description: row[6],
-            request: row[7],
-            code_request: "TD1",
-            campus_id: "6247da5ee56ba5e634559901",
+            majors: row[11],
+            name: row[2],
+            email: row[3],
+            internshipPosition: row[5],
+            amount: row[6],
+            address: row[4],
+            description: row[7],
+            request: row[8],
+            code_request: row[1],
+            campus_id: row[10],
             smester_id: lastSemester[0]._id,
           });
         }
+
+      console.log({ answers });
         await business.insertMany(answers);
+        console.log('Auto insert Doanh nghiep success');
       } else {
         console.log("No data found.");
       }

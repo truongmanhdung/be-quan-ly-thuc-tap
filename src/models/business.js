@@ -42,6 +42,9 @@ const businessSchema = mongoose.Schema({
     type: Number,
     default: 0,
   },
+  email: {
+    type: String
+  },
   createAt: {
     type: Date,
     default: Date.now,
