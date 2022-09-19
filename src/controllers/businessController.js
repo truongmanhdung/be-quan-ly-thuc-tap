@@ -43,6 +43,7 @@ export const insertBusiness = async (req, res) => {
 
 export const listBusiness = async (req, res) => {
   const { limit, page } = req.query;
+  console.log(req.query)
   try {
     if (page && limit) {
       //getPage
@@ -251,3 +252,27 @@ export const getBusiness = async (req, res) => {
     });
   }
 };
+
+export const updateMany = async (req, res) => {
+  try {
+    const { listIdBusiness, smester_id } = req.body;
+    console.log(req.body)
+    const data = await business.updateMany(
+      { _id: { $in: listIdBusiness } },
+      {
+        $set: {
+          smester_id: smester_id,
+          status: 0
+        }
+      },
+      { multi: true }
+    )
+
+    res.status(200).json({ listIdStudent, smester_id });
+  } catch (error) {
+    return res.status(200).json({
+      error,
+      success: false
+    })
+  }
+}
