@@ -40,10 +40,7 @@ const businessSchema = mongoose.Schema({
   },
   status: {
     type: Number,
-    default: 0,
-  },
-  email: {
-    type: String
+    default: 1,
   },
   createAt: {
     type: Date,

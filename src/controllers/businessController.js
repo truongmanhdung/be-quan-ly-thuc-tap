@@ -43,7 +43,7 @@ export const insertBusiness = async (req, res) => {
 
 export const listBusiness = async (req, res) => {
   const { limit, page } = req.query;
-  console.log(req.query)
+  console.log(req.query);
   try {
     if (page && limit) {
       //getPage
@@ -58,7 +58,6 @@ export const listBusiness = async (req, res) => {
         await business
           .find(req.query)
           .populate("campus_id")
-          .populate("smester_id")
           .populate("majors")
           .skip(skipNumber)
           .limit(current)
@@ -90,7 +89,6 @@ export const listBusiness = async (req, res) => {
       const listBusiness = await business
         .find(req.query)
         .populate("campus_id")
-        .populate("smester_id")
         .populate("majors");
       res.status(200).json({
         total: listBusiness.length,
@@ -105,11 +103,11 @@ export const listBusiness = async (req, res) => {
 //delete business
 export const removeBusiness = async (req, res) => {
   try {
-    const Business = await business.findById(req.params.id)
+    const Business = await business.findById(req.params.id);
     const isStudentOfBusiness = await Student.findOne({
       business: req.params.id,
-      campus_id:Business.campus_id,
-      smester_id:Business.smester_id
+      campus_id: Business.campus_id,
+      smester_id: Business.smester_id,
     });
     if (isStudentOfBusiness) {
       return res.status(200).json({
@@ -149,7 +147,7 @@ export const createbusiness = async (req, res) => {
     });
 
     const isBusinessCodeRequest = Business.some((item) => {
-      if(item.code_request){
+      if (item.code_request) {
         return item.code_request.toUpperCase() === code_request.toUpperCase();
       }
     });
@@ -183,7 +181,6 @@ export const createbusiness = async (req, res) => {
 export const updateBusiness = async (req, res) => {
   const { code_request, smester_id, campus_id } = req.body;
   try {
-
     const defaultSemester = await semester.findOne({
       $and: [
         { start_time: { $lte: new Date() } },
@@ -195,24 +192,24 @@ export const updateBusiness = async (req, res) => {
       smester_id: smester_id,
       campus_id: campus_id,
     });
-    
+
     if (defaultSemester._id.toString() !== smester_id) {
       return res.status(200).json({
         message: "Không thể sửa doanh nghiệp do không ở kỳ hiện tại",
         success: false,
       });
     }
-    
-    const listBusiness =  Business.filter((item) => {
-        return (item._id.toString() !== req.params.id);
+
+    const listBusiness = Business.filter((item) => {
+      return item._id.toString() !== req.params.id;
     });
 
-    const isBusinessCodeRequest =  listBusiness.some((item) => {
-      if(item.code_request){
+    const isBusinessCodeRequest = listBusiness.some((item) => {
+      if (item.code_request) {
         return item.code_request.toUpperCase() === code_request.toUpperCase();
       }
     });
-    
+
     if (isBusinessCodeRequest) {
       return res.status(200).json({
         message: "Mã doanh nghiệp đã tồn tại không thể tạo sửa",
@@ -255,24 +252,24 @@ export const getBusiness = async (req, res) => {
 
 export const updateMany = async (req, res) => {
   try {
-    const { listIdBusiness, smester_id } = req.body;
-    console.log(req.body)
-    const data = await business.updateMany(
+    const { listIdBusiness } = req.body;
+    const { smester_id } = req.body.smester_id;
+    await business.updateMany(
       { _id: { $in: listIdBusiness } },
       {
         $set: {
           smester_id: smester_id,
-          status: 0
-        }
+          status: 1,
+        },
       },
       { multi: true }
-    )
+    );
 
     res.status(200).json({ listIdStudent, smester_id });
   } catch (error) {
     return res.status(200).json({
       error,
-      success: false
-    })
+      success: false,
+    });
   }
-}
+};

@@ -20,7 +20,7 @@ const authClient = new google.auth.JWT(
 );
 
 const task = cron.schedule(
-  "59 * * * * *",
+  "20 * * * * *",
   async () => {
     try {
       // Authorize the client
@@ -39,35 +39,35 @@ const task = cron.schedule(
       const lastSemester = await semester.find({}).sort({ _id: -1 }).limit(1);
       // All of the answers
       const answers = [];
-
       // Set rows to equal the rows
       const rows = res.data.values;
       // Check if we have any data and if we do add it to our answers array
+      console.log(rows);
       if (rows.length) {
         // Remove the headers
         rows.shift();
 
         // For each row
         for (const row of rows) {
-          if (row[11] !== 'FALSE' && row[10] !== 'FALSE')
-          answers.push({
-            majors: row[11],
-            name: row[2],
-            email: row[3],
-            internshipPosition: row[5],
-            amount: row[6],
-            address: row[4],
-            description: row[7],
-            request: row[8],
-            code_request: row[1],
-            campus_id: row[10],
-            smester_id: lastSemester[0]._id,
-          });
+          if (row[11] !== "FALSE" && row[10] !== "FALSE")
+            answers.push({
+              name: row[1],
+              internshipPosition: row[3],
+              amount: row[4],
+              address: row[2],
+              description: row[5],
+              request: row[6],
+              code_request: row[7],
+              majors: row[10],
+              campus_id: row[9],
+              smester_id: lastSemester[0]._id,
+              status: 0,
+            });
         }
 
-      console.log({ answers });
+        console.log({ answers });
         await business.insertMany(answers);
-        console.log('Auto insert Doanh nghiep success');
+        console.log("Auto insert Doanh nghiep success");
       } else {
         console.log("No data found.");
       }
