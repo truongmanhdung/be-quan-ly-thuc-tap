@@ -270,6 +270,7 @@ export const insertStudent = async (req, res) => {
 //updateReviewerStudent
 export const updateReviewerStudent = async (req, res) => {
   const { listIdStudent, email } = req.body;
+  console.log(req.body);
   try {
     const data = await Student.updateMany(
       { _id: { $in: listIdStudent } },
