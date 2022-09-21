@@ -31,13 +31,6 @@ router.get(
 );
 router.get("/student/:id", isAuthenticateUser, readOneStudent);
 router.get("/student/manager/:id", readStudentById);
-router.get(
-  "/student/reset/:id",
-  isAuthenticateUser,
-  authorizeRoles([role.manager]),
-  // checkRequestTime,
-  resetStatusStudent
-);
 router.post(
   "/student",
   isAuthenticateUser,
