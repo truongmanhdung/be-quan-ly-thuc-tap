@@ -641,47 +641,4 @@ export const listStudentReviewCV = async (req, res) => {
 
 //resetStatusStudent
 
-export const resetStatusStudent = async (req, res) => {
-  try {
-    const isStudent = await Student.findOne({ _id: req.params.id });
-    const defaultSemester = await semester.findOne({
-      $and: [
-        { start_time: { $lte: new Date() } },
-        { date_time: { $gte: new Date() } },
-      ],
-    });
-    if (!defaultSemester) {
-      return res.status(200).json({
-        message: "Reset thất bại , không nằm trong kỳ hiện tại",
-      });
-    }
-    if (isStudent.smester_id.toString() !== defaultSemester._id.toString()) {
-      return res.status(200).json({
-        message: "Reset thất bại , không nằm trong kỳ hiện tại",
-      });
-    }
-    if (isStudent) {
-      try {
-        await Student.findOneAndUpdate(
-          { _id: req.params.id },
-          defaultValueStudent,
-          { new: true }
-        );
-        return res.status(200).json({
-          message:
-            "Reset thông tin và trạng thái thực tập của sinh viên thành công",
-        });
-      } catch (error) {
-        return res.status(402).json({
-          message: "Reset không thành công",
-        });
-      }
-    } else {
-      return res.status(402).json({
-        message: "Sinh viên không tồn tại",
-      });
-    }
-  } catch (error) {
-    return res.status(402).json(error);
-  }
-};
+
