@@ -14,7 +14,7 @@ export const getListToken = async (req, res) => {
 
 export const getTokenByStudentId = async (req, res) => {
   try {
-    const tokenDevice = await TokenDevice.findById({
+    const tokenDevice = await TokenDevice.findOne({
       student_id: req.params.student_id,
     });
     res.status(200).json({
