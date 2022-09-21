@@ -11,9 +11,9 @@ const notificationSchema = mongoose.Schema({
   title: {
     type: String
   },
-  tokenDeviceId: {
-    type: ObjectId,
-    ref: 'tokenDevices'
+  status: {
+    type: Boolean,
+    default: false
   },
   icon: {
     type: String,
