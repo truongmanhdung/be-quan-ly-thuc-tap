@@ -4,7 +4,7 @@ export const getListNotificationByStudentId = async (req, res) => {
   try {
     const notifictions = await Notification.find({
       student_id: req.params.student_id,
-    });
+    }).sort({"createdAt": -1});
     res.status(200).json({
       notifictions,
       success: true,
@@ -17,6 +17,22 @@ export const getListNotificationByStudentId = async (req, res) => {
 export const createNotification = async (req, res) => {
   try {
     const notification = await new Notification(req.body).save();
+    res.status(200).json({
+      notification,
+      success: true,
+    });
+  } catch (error) {
+    res.json(error);
+  }
+};
+
+export const updateSendNoti = async (req, res) => {
+  try {
+    const notification = await Notification.findByIdAndUpdate(
+      req.params.id,
+      { status: true },
+      { new: true }
+    );
     res.status(200).json({
       notification,
       success: true,
@@ -73,7 +89,6 @@ export const sendMessage = async (req, res) => {
         console.log(error);
       });
   } catch (error) {
-    console.log("áddsadasdas231312321");
     res.json({
       error,
     });
