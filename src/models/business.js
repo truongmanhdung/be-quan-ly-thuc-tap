@@ -12,7 +12,7 @@ const businessSchema = mongoose.Schema({
   },
   majors: {
     type: ObjectId,
-    ref: 'Major'
+    ref: "Major",
   },
   amount: {
     type: Number,
@@ -29,14 +29,18 @@ const businessSchema = mongoose.Schema({
     type: ObjectId,
     ref: "Cumpus",
   },
-  code_request:{
+  code_request: {
     type: String,
   },
   request: {
-    type: String
+    type: String,
   },
-  description:{
-    type: String
+  description: {
+    type: String,
+  },
+  status: {
+    type: Number,
+    default: 1,
   },
   createAt: {
     type: Date,
