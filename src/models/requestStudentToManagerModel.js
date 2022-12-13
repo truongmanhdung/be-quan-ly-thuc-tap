@@ -13,6 +13,11 @@ const RequestStudentToManagerModel = mongoose.Schema({
     type: String,
     require: true
   },
+  status: {
+    type: Number,
+    default: 1
+    
+  },
   createAt: {
     type: Date,
     default: Date.now,

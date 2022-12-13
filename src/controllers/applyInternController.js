@@ -18,7 +18,8 @@ export const signUpCVForSupport = async (req, res) => {
     emailEnterprise,
     business,
     _id,
-    narrow
+    narrow,
+    signTheContract
   } = req.body;
   try {
     const ms = req.body.user_code.toLowerCase();
@@ -79,7 +80,7 @@ export const signUpCVForSupport = async (req, res) => {
       phoneNumberCompany: numberEnterprise,
       emailEnterprise: emailEnterprise,
       business: business,
-      narrow: narrow
+      narrow: narrow,
     };
 
     // if (findStudent.statusCheck === 1 && findStudent.support === 0) {
@@ -272,7 +273,6 @@ export const signUpCVForSupport = async (req, res) => {
         .send({ message: "Đăng ký thông tin thành công!", support: support });
     }
   } catch (error) {
-    console.log(error);
     return res.status(500).send({
       message: "Đã xảy ra lỗi! Đăng ký lại sau ít phút!",
     });

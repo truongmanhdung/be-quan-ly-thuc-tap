@@ -43,7 +43,6 @@ export const insertBusiness = async (req, res) => {
 
 export const listBusiness = async (req, res) => {
   const { limit, page } = req.query;
-  console.log(req.query);
   try {
     if (page && limit) {
       //getPage

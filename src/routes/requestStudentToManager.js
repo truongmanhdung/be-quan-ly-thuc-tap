@@ -26,7 +26,7 @@ const { isAuthenticateUser, authorizeRoles } = require('../middlewares/CheckAuth
     resetStudent
   );
 
-  router.delete(
+  router.patch(
     "/removeRequest/:id",
     isAuthenticateUser,
     authorizeRoles([role.manager]),

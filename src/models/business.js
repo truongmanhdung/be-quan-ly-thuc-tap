@@ -38,6 +38,9 @@ const businessSchema = mongoose.Schema({
   description: {
     type: String,
   },
+  benefish:{
+    type: String
+  },
   status: {
     type: Number,
     default: 1,

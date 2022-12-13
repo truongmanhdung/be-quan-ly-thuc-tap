@@ -11,7 +11,8 @@ export const report = async (req, res) => {
     report,
     nameCompany,
     resultScore,
-    _id
+    _id,
+    signTheContract
   } = req.body;
   const filter = { mssv: mssv, email: email, _id };
   const findStudent = await Student.findOne(filter);
@@ -63,6 +64,7 @@ export const report = async (req, res) => {
       resultScore: resultScore,
       report: report,
       statusCheck: 7,
+      signTheContract: signTheContract
     };
 
     if (findStudent.statusCheck === 0 && findStudent.form) {
