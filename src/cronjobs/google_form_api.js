@@ -81,7 +81,6 @@ const task = cron.schedule(
         data1.map((item) => {
           item.majors = getSecondPart(item.majors);
         });
-        console.log("data1: ", data1);
         const resultBS = differenceBy(data1, data2, "code_request");
 
         const removeNoneMajors = resultBS.filter(function (o1) {
@@ -113,15 +112,12 @@ const task = cron.schedule(
           });
           return o1;
         });
-        console.log("filnal data: ", addCampusId);
         await business.insertMany(addCampusId);
-        console.log("Auto insert Doanh nghiep success");
       } else {
         console.log("No data found.");
       }
     } catch (error) {
       // Log the error
-      console.log(error);
       // Exit the process with error
       process.exit(1);
     }

@@ -66,7 +66,9 @@ export async function resetStudent(req, res) {
 
   try {
     Student.findOneAndUpdate({ _id: req.params.id }, valueReset, { new: true })
-      .then((r) => requestStudentToManagerModel.findByIdAndDelete(id))
+      .then((r) => requestStudentToManagerModel.findByIdAndUpdate(id, {
+        status: 2
+      }, { new: true }))
       .then((r) =>
         res.status(200).json({
           success: true,
@@ -83,7 +85,9 @@ export async function resetStudent(req, res) {
 
 export async function cancelResetStudent(req, res) {
   try {
-    await requestStudentToManagerModel.findByIdAndDelete(req.params.id);
+    await requestStudentToManagerModel.findByIdAndUpdate(req.params.id,{
+      status: 3
+    });
 
     res.status(200).json({
       success: true,

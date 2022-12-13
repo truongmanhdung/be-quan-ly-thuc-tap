@@ -162,6 +162,10 @@ const studentSchema = mongoose.Schema(
         },
       },
     ],
+    signTheContract:{
+      type: Number,
+      default: null
+    },
     createdAt: {
       type: Date,
       default: Date.now,
