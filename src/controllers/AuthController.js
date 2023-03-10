@@ -6,7 +6,6 @@ const jwt = require('jsonwebtoken');
 const { OAuth2Client } = require('google-auth-library');
 const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 const ObjectId = require('mongodb').ObjectID;
-
 const generateAccessToken = (user) => {
   return jwt.sign({ userId: user._id, campusId: user.campus_id }, process.env.ACCESS_TOKEN_SECRET);
 };
@@ -22,7 +21,7 @@ export const loginGoogle = async (req, res) => {
 
     const ticket = await client.verifyIdToken({
       idToken: token,
-      audience: process.env.GOOGLE_CLIENT_ID,
+      requiredAudience: process.env.GOOGLE_CLIENT_ID,
     });
 
     const { email, name, picture } = ticket.getPayload();
